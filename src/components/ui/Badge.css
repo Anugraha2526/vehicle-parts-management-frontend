@@ -1,0 +1,62 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.badge--active {
+  background: var(--ok-soft);
+  color: var(--ok-ink);
+}
+
+.badge--active .badge-dot {
+  background: var(--ok);
+}
+
+.badge--inactive {
+  background: var(--bg-sunk);
+  color: var(--ink-500);
+}
+
+.badge--inactive .badge-dot {
+  background: var(--ink-300);
+}
+
+.badge--admin {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.badge--admin .badge-dot {
+  background: var(--accent);
+}
+
+.badge--staff {
+  background: var(--bg-sunk);
+  color: var(--ink-600);
+}
+
+.badge--staff .badge-dot {
+  background: var(--ink-400);
+}
+
+.badge--customer {
+  background: var(--bg-card-alt);
+  color: var(--ink-600);
+}
+
+.badge--customer .badge-dot {
+  background: var(--ink-500);
+}

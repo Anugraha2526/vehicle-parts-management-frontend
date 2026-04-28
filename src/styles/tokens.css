@@ -1,0 +1,43 @@
+:root {
+  /* Primary Orange */
+  --accent: #E86B2B;
+  --accent-hover: #D55E22;
+  --accent-press: #C25018;
+  --accent-soft: #FBE7D7;
+  --accent-softer: #FDF1E6;
+  --accent-ink: #8A3A12;
+
+  /* Surfaces */
+  --bg-app: #FAF8F5;
+  --bg-sunk: #F5F0E8;
+  --bg-card: #FFFEFB;
+  --bg-card-alt: #F8F4EE;
+
+  /* Text */
+  --ink-900: #2C2A26;
+  --ink-700: #44423D;
+  --ink-600: #5C5A56;
+  --ink-500: #76746F;
+  --ink-400: #9C9A92;
+  --ink-300: #BFBCB3;
+
+  /* Borders */
+  --line: #E8E4DC;
+  --line-soft: #EFEAE0;
+  --line-strong: #D9D2C4;
+
+  /* Semantic — success */
+  --ok: #6E8E5E;
+  --ok-soft: #E6EDDD;
+  --ok-ink: #3F5A30;
+
+  /* Semantic — warning */
+  --warn: #C8861E;
+  --warn-soft: #FBE9C7;
+  --warn-ink: #6E4A0B;
+
+  /* Semantic — error */
+  --err: #B8543C;
+  --err-soft: #F4DCD3;
+  --err-ink: #7A2E1A;
+}

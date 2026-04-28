@@ -1,17 +1,14 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
+import "./AdminLayout.css";
 
 export default function AdminLayout() {
   return (
-    <div className="admin-shell">
+    <div className="admin-layout">
       <Sidebar />
-      <div className="admin-content">
-        <Navbar />
-        <main className="admin-main">
-          <Outlet />
-        </main>
-      </div>
+      <main className="admin-layout-main">
+        <Outlet />
+      </main>
     </div>
   );
 }

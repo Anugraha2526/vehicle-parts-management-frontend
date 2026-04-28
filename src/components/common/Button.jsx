@@ -1,14 +1,23 @@
+import "./Button.css";
+
 export default function Button({
   children,
+  variant = "primary",
+  size = "md",
+  loading = false,
+  disabled = false,
+  onClick,
   type = "button",
-  variant = "secondary",
-  className = "",
-  ...props
 }) {
-  const nextClassName = `cs-button cs-button--${variant} ${className}`.trim();
-
   return (
-    <button type={type} className={nextClassName} {...props}>
+    <button
+      type={type}
+      className={`btn btn-${variant} btn-${size}`}
+      onClick={onClick}
+      disabled={disabled || loading}
+      aria-busy={loading}
+    >
+      {loading && <span className="btn-spinner" aria-hidden="true" />}
       {children}
     </button>
   );

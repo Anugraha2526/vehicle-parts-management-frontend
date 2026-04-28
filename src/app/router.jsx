@@ -6,6 +6,7 @@ import ProtectedRoute from "../routes/ProtectedRoute";
 import RoleBasedRoute from "../routes/RoleBasedRoute";
 import LoginPage from "../features/auth/pages/LoginPage";
 import AdminDashboardPage from "../features/admin-core/pages/AdminDashboardPage";
+import StaffPage from "../features/admin-core/pages/StaffPage";
 import PurchaseInvoicePage from "../features/finance/pages/PurchaseInvoicePage";
 import FinancialReportsPage from "../features/finance/pages/FinancialReportsPage";
 import LowStockAlertsPage from "../features/finance/pages/LowStockAlertsPage";
@@ -27,8 +28,8 @@ export function AppRouter() {
             </RoleBasedRoute>
           }
         >
-          <Route index element={<Navigate to="finance/purchase-invoices" replace />} />
-          <Route path="dashboard" element={<AdminDashboardPage />} />
+          <Route index element={<AdminDashboardPage />} />
+          <Route path="staff" element={<StaffPage />} />
           <Route path="finance/purchase-invoices" element={<PurchaseInvoicePage />} />
           <Route path="finance/reports" element={<FinancialReportsPage />} />
           <Route path="finance/low-stock" element={<LowStockAlertsPage />} />
