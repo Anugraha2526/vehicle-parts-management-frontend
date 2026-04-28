@@ -4,12 +4,14 @@ import Sidebar from "./Sidebar";
 
 export default function AdminLayout() {
   return (
-    <div>
-      <Navbar />
+    <div className="admin-shell">
       <Sidebar />
-      <main>
-        <Outlet />
-      </main>
+      <div className="admin-content">
+        <Navbar />
+        <main className="admin-main">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }

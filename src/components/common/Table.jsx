@@ -1,3 +1,3 @@
-export default function Table({ children }) {
-  return <table>{children}</table>;
+export default function Table({ children, className = "" }) {
+  return <table className={`cs-table ${className}`.trim()}>{children}</table>;
 }

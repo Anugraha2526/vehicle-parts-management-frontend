@@ -1,6 +1,8 @@
-export default function Select({ options = [], ...props }) {
+export default function Select({ options = [], className = "", ...props }) {
+  const nextClassName = `cs-select ${className}`.trim();
+
   return (
-    <select {...props}>
+    <select className={nextClassName} {...props}>
       {options.map((option) => (
         <option key={option.value} value={option.value}>
           {option.label}
