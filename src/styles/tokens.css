@@ -40,4 +40,9 @@
   --err: #B8543C;
   --err-soft: #F4DCD3;
   --err-ink: #7A2E1A;
+
+  /* Semantic — info (Dusty Steel Blue) */
+  --info: #4A6B8A;
+  --info-soft: #DCE5EE;
+  --info-ink: #28425C;
 }
