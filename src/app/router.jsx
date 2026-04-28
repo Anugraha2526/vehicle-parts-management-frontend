@@ -6,6 +6,7 @@ import ProtectedRoute from "../routes/ProtectedRoute";
 import RoleBasedRoute from "../routes/RoleBasedRoute";
 import LoginPage from "../features/auth/pages/LoginPage";
 import AdminDashboardPage from "../features/admin-core/pages/AdminDashboardPage";
+import StaffPage from "../features/admin-core/pages/StaffPage";
 import PurchaseInvoicePage from "../features/finance/pages/PurchaseInvoicePage";
 import CustomerListPage from "../features/customer-crm/pages/CustomerListPage";
 import SalesDashboardPage from "../features/sales/pages/SalesDashboardPage";
@@ -26,6 +27,7 @@ export function AppRouter() {
           }
         >
           <Route index element={<AdminDashboardPage />} />
+          <Route path="staff" element={<StaffPage />} />
         </Route>
 
         <Route path="/staff" element={<StaffLayout />}>
