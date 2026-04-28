@@ -214,16 +214,6 @@ p {
   font-size: 0.92rem;
 }
 
-.topbar-chip {
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--cs-border-hover);
-  background: var(--cs-primary-tint);
-  color: var(--cs-primary-on);
-  padding: 8px 12px;
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
 .finance-page {
   display: grid;
   gap: 14px;

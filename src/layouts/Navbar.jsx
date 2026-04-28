@@ -38,7 +38,6 @@ export default function Navbar() {
         <h1 className="topbar-title">{meta.title}</h1>
         <p className="topbar-subtitle">{meta.subtitle}</p>
       </div>
-      <span className="topbar-chip">Member 2 Scope</span>
     </header>
   );
 }
