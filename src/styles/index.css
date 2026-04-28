@@ -136,49 +136,63 @@ a {
 
 /* shared card and form primitives */
 .cs-card {
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-soft);
   background: var(--bg-card);
   border-radius: var(--radius-card);
-  padding: 16px;
-  box-shadow: var(--shadow-soft);
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(44, 42, 38, 0.03), 0 12px 30px rgba(44, 42, 38, 0.04);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.cs-card:hover {
+  box-shadow: 0 8px 30px rgba(44, 42, 38, 0.05), 0 16px 40px rgba(44, 42, 38, 0.06);
+  border-color: var(--line);
 }
 
 .cs-form {
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 
 .cs-form-grid {
   display: grid;
-  gap: 12px;
+  gap: 16px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .cs-field {
   display: grid;
-  gap: 5px;
-  color: var(--ink-600);
+  gap: 6px;
+  color: var(--ink-700);
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .cs-input,
 .cs-select {
   width: 100%;
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid var(--line);
-  background: var(--bg-card);
-  padding: 10px 11px;
+  background: #ffffff;
+  padding: 10px 14px;
   color: var(--ink-900);
   font: inherit;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02) inset;
+}
+
+.cs-input:hover,
+.cs-select:hover {
+  border-color: var(--line-strong);
 }
 
 .cs-input:focus,
 .cs-select:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(232, 107, 43, 0.18);
+  background: #fff;
+  box-shadow: 0 0 0 4px var(--accent-softer);
+  transform: translateY(-1px);
 }
 
 .cs-input::placeholder {
@@ -186,31 +200,41 @@ a {
 }
 
 .cs-button {
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid transparent;
   font: inherit;
-  font-weight: 700;
-  padding: 9px 12px;
+  font-weight: 600;
+  padding: 10px 16px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .cs-button:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
+  transform: none !important;
 }
 
 .cs-button--primary {
-  background: var(--accent);
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-hover) 100%);
   color: #fff;
+  box-shadow: 0 2px 4px rgba(232, 107, 43, 0.2), 0 0 0 1px var(--accent-press);
+  text-shadow: 0 1px 1px rgba(0,0,0,0.1);
 }
 
 .cs-button--primary:hover:not(:disabled) {
-  background: var(--accent-hover);
+  background: linear-gradient(180deg, var(--accent-hover) 0%, var(--accent-press) 100%);
+  box-shadow: 0 4px 8px rgba(232, 107, 43, 0.3), 0 0 0 1px var(--accent-press);
+  transform: translateY(-1px);
 }
 
 .cs-button--primary:active:not(:disabled) {
-  background: var(--accent-press);
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(232, 107, 43, 0.2), 0 0 0 1px var(--accent-press);
 }
 
 .cs-button--secondary {
@@ -221,23 +245,26 @@ a {
 
 .cs-button--secondary:hover:not(:disabled) {
   background: #f9e5b8;
+  transform: translateY(-1px);
 }
 
 .cs-button--ghost {
   background: transparent;
   color: var(--ink-600);
-  border-color: var(--line);
+  border-color: transparent;
 }
 
 .cs-button--ghost:hover:not(:disabled) {
-  border-color: var(--line-strong);
   color: var(--ink-900);
-  background: var(--bg-card-alt);
+  background: var(--bg-sunk);
 }
 
 .cs-table-wrapper {
   width: 100%;
   overflow: auto;
+  border-radius: 8px;
+  border: 1px solid var(--line-soft);
+  background: #ffffff;
 }
 
 .cs-table {
@@ -249,21 +276,33 @@ a {
 .cs-table thead th {
   text-align: left;
   color: var(--ink-500);
-  font-size: 0.82rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   font-weight: 700;
-  padding: 10px 8px;
-  border-bottom: 1px solid var(--line-soft);
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--line-soft);
+  background: var(--bg-app);
+}
+
+.cs-table tbody tr {
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.cs-table tbody tr:hover {
+  background: var(--bg-sunk);
+  transform: translateY(-1px);
 }
 
 .cs-table tbody td {
-  padding: 10px 8px;
+  padding: 16px;
   border-bottom: 1px solid var(--line-soft);
   color: var(--ink-700);
-  vertical-align: top;
+  vertical-align: middle;
 }
 
-.cs-table tbody tr:nth-child(even) {
-  background: var(--bg-card-alt);
+.cs-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 /* summary / report cards */
