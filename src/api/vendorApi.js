@@ -1,5 +1,5 @@
 import axiosClient from "./axiosClient";
 
 export const vendorApi = {
-  list: () => axiosClient.get("/api/finance/vendors"),
+  list: () => axiosClient.get("/api/vendors"),
 };

@@ -1,21 +1,502 @@
 @import "./tokens.css";
 
+/* alias cs-* variable names to our tokens so finance feature components work */
 :root {
-  font-family: 'Inter Tight', 'DM Sans', sans-serif;
-  line-height: 1.5;
+  --cs-primary: var(--accent);
+  --cs-primary-hover: var(--accent-hover);
+  --cs-primary-pressed: var(--accent-press);
+  --cs-primary-soft: var(--accent-soft);
+  --cs-primary-tint: var(--accent-softer);
+  --cs-primary-on: var(--accent-ink);
+
+  --cs-secondary: #f5a623;
+  --cs-secondary-soft: #fcefd2;
+  --cs-secondary-on: #7a4e08;
+
+  --cs-success: var(--ok);
+  --cs-success-soft: var(--ok-soft);
+  --cs-success-on: var(--ok-ink);
+
+  --cs-warning: var(--warn);
+  --cs-warning-soft: var(--warn-soft);
+  --cs-warning-on: var(--warn-ink);
+
+  --cs-error: var(--err);
+  --cs-error-soft: var(--err-soft);
+  --cs-error-on: var(--err-ink);
+
+  --cs-info: #4a6b8a;
+  --cs-info-soft: #dce5ee;
+  --cs-info-on: #28425c;
+
+  --cs-surface-page: var(--bg-app);
+  --cs-surface-sidebar: var(--bg-sunk);
+  --cs-surface-card: var(--bg-card);
+  --cs-surface-alt: var(--bg-card-alt);
+  --cs-overlay: rgba(44, 42, 38, 0.42);
+
+  --cs-text-primary: var(--ink-900);
+  --cs-text-body: var(--ink-700);
+  --cs-text-muted: var(--ink-600);
+  --cs-text-subtle: var(--ink-500);
+  --cs-text-placeholder: var(--ink-400);
+  --cs-text-disabled: var(--ink-300);
+
+  --cs-border-soft: var(--line-soft);
+  --cs-border-default: var(--line);
+  --cs-border-hover: var(--line-strong);
+
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  --shadow-soft: 0 12px 30px rgba(44, 42, 38, 0.08);
 }
 
+/* global reset */
 * {
   box-sizing: border-box;
 }
 
-body {
+html,
+body,
+#root {
   margin: 0;
+  min-height: 100%;
+}
+
+body {
   padding: 0;
+  font-family: 'Inter Tight', 'DM Sans', sans-serif;
   background: var(--bg-app);
   color: var(--ink-700);
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  color: var(--ink-900);
+}
+
+p {
+  margin: 0;
 }
 
 a {
+  color: inherit;
   text-decoration: none;
+}
+
+/* finance feature layout classes */
+.finance-page {
+  display: grid;
+  gap: 14px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+
+.page-title {
+  font-family: "Fraunces", serif;
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+}
+
+.page-subtitle {
+  color: var(--ink-500);
+  margin-top: 4px;
+  font-size: 0.95rem;
+}
+
+.page-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.finance-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.finance-grid--invoice {
+  grid-template-columns: minmax(0, 1fr) 320px;
+}
+
+.finance-main {
+  display: grid;
+  gap: 16px;
+}
+
+.finance-side {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+/* shared card and form primitives */
+.cs-card {
+  border: 1px solid var(--line);
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  padding: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.cs-form {
+  display: grid;
+  gap: 10px;
+}
+
+.cs-form-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cs-field {
+  display: grid;
+  gap: 5px;
+  color: var(--ink-600);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.cs-input,
+.cs-select {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--bg-card);
+  padding: 10px 11px;
+  color: var(--ink-900);
+  font: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cs-input:focus,
+.cs-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(232, 107, 43, 0.18);
+}
+
+.cs-input::placeholder {
+  color: var(--ink-400);
+}
+
+.cs-button {
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 700;
+  padding: 9px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cs-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cs-button--primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.cs-button--primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.cs-button--primary:active:not(:disabled) {
+  background: var(--accent-press);
+}
+
+.cs-button--secondary {
+  background: var(--cs-secondary-soft);
+  color: var(--cs-secondary-on);
+  border-color: #f2deaf;
+}
+
+.cs-button--secondary:hover:not(:disabled) {
+  background: #f9e5b8;
+}
+
+.cs-button--ghost {
+  background: transparent;
+  color: var(--ink-600);
+  border-color: var(--line);
+}
+
+.cs-button--ghost:hover:not(:disabled) {
+  border-color: var(--line-strong);
+  color: var(--ink-900);
+  background: var(--bg-card-alt);
+}
+
+.cs-table-wrapper {
+  width: 100%;
+  overflow: auto;
+}
+
+.cs-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.cs-table thead th {
+  text-align: left;
+  color: var(--ink-500);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.cs-table tbody td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--ink-700);
+  vertical-align: top;
+}
+
+.cs-table tbody tr:nth-child(even) {
+  background: var(--bg-card-alt);
+}
+
+/* summary / report cards */
+.summary-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.summary-item {
+  display: grid;
+  gap: 2px;
+}
+
+.summary-label {
+  color: var(--ink-500);
+  font-size: 0.85rem;
+}
+
+.summary-value {
+  color: var(--ink-900);
+  font-size: 1.1rem;
+}
+
+.summary-value--money {
+  font-family: "Fraunces", serif;
+}
+
+.summary-submit {
+  width: 100%;
+  margin-top: 14px;
+}
+
+.report-filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.report-pill {
+  border: 1px solid var(--line);
+  background: var(--bg-card);
+  color: var(--ink-600);
+  border-radius: var(--radius-pill);
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.report-pill:hover {
+  border-color: var(--line-strong);
+  color: var(--ink-900);
+}
+
+.report-pill.is-active {
+  border-color: #f0c59f;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.report-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.metric-card {
+  display: grid;
+  gap: 4px;
+}
+
+.metric-label {
+  color: var(--ink-500);
+  font-size: 0.85rem;
+}
+
+.metric-net--positive {
+  color: var(--ok);
+}
+
+.metric-net--negative {
+  color: var(--err);
+}
+
+/* low stock */
+.low-stock-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.low-stock-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* status badges used by finance components */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.status-badge--success {
+  background: var(--ok-soft);
+  color: var(--ok-ink);
+  border-color: #d5e2ca;
+}
+
+.status-badge--warning {
+  background: var(--warn-soft);
+  color: var(--warn-ink);
+  border-color: #f1d398;
+}
+
+.status-badge--error {
+  background: var(--err-soft);
+  color: var(--err-ink);
+  border-color: #e9c5b9;
+}
+
+.status-badge--info {
+  background: var(--cs-info-soft);
+  color: var(--cs-info-on);
+  border-color: #c6d5e6;
+}
+
+/* alerts */
+.cs-alert {
+  border-radius: 12px;
+  border: 1px solid transparent;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.cs-alert--success {
+  background: var(--ok-soft);
+  color: var(--ok-ink);
+  border-color: #d7e5cc;
+}
+
+.cs-alert--warning {
+  background: var(--warn-soft);
+  color: var(--warn-ink);
+  border-color: #f0d5a2;
+}
+
+.cs-alert--error {
+  background: var(--err-soft);
+  color: var(--err-ink);
+  border-color: #e3bfaf;
+}
+
+.cs-alert--info {
+  background: var(--cs-info-soft);
+  color: var(--cs-info-on);
+  border-color: #c4d2e3;
+}
+
+/* misc helpers */
+.card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.cs-helper {
+  color: var(--ink-500);
+  font-size: 0.84rem;
+}
+
+.cs-muted {
+  color: var(--ink-500);
+  font-size: 0.84rem;
+  margin-top: 4px;
+}
+
+.cs-mono {
+  font-family: "JetBrains Mono", monospace;
+  letter-spacing: -0.01em;
+}
+
+@keyframes fadeRise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.finance-page > * {
+  animation: fadeRise 0.35s ease both;
+}
+
+.finance-grid > *:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+/* responsive */
+@media (max-width: 1080px) {
+  .finance-grid--invoice {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cs-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .low-stock-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
