@@ -1,5 +1,7 @@
+@import "./tokens.css";
+
 :root {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter Tight', 'DM Sans', sans-serif;
   line-height: 1.5;
 }
 
@@ -10,4 +12,10 @@
 body {
   margin: 0;
   padding: 0;
+  background: var(--bg-app);
+  color: var(--ink-700);
+}
+
+a {
+  text-decoration: none;
 }
