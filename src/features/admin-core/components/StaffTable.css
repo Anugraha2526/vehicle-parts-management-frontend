@@ -1,0 +1,16 @@
+.staff-table-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.staff-table-date {
+  color: var(--ink-500);
+  font-size: 13px;
+}
+
+.staff-table-email {
+  color: var(--ink-600);
+  font-size: 13px;
+}
