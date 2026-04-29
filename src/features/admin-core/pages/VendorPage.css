@@ -1,0 +1,44 @@
+.vendor-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.vendor-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.vendor-page-title {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0 0 4px 0;
+  letter-spacing: -0.02em;
+}
+
+.vendor-page-subtitle {
+  font-size: 14px;
+  color: var(--ink-500);
+  margin: 0;
+}
+
+.vendor-page-notification {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.vendor-page-notification--success {
+  background: var(--ok-soft);
+  color: var(--ok-ink);
+}
+
+.vendor-page-notification--error {
+  background: var(--err-soft);
+  color: var(--err-ink);
+}
