@@ -7,6 +7,7 @@ import RoleBasedRoute from "../routes/RoleBasedRoute";
 import LoginPage from "../features/auth/pages/LoginPage";
 import AdminDashboardPage from "../features/admin-core/pages/AdminDashboardPage";
 import StaffPage from "../features/admin-core/pages/StaffPage";
+import VendorPage from "../features/admin-core/pages/VendorPage";
 import PurchaseInvoicePage from "../features/finance/pages/PurchaseInvoicePage";
 import FinancialReportsPage from "../features/finance/pages/FinancialReportsPage";
 import LowStockAlertsPage from "../features/finance/pages/LowStockAlertsPage";
@@ -30,6 +31,7 @@ export function AppRouter() {
         >
           <Route index element={<AdminDashboardPage />} />
           <Route path="staff" element={<StaffPage />} />
+          <Route path="vendors" element={<VendorPage />} />
           <Route path="finance/purchase-invoices" element={<PurchaseInvoicePage />} />
           <Route path="finance/reports" element={<FinancialReportsPage />} />
           <Route path="finance/low-stock" element={<LowStockAlertsPage />} />

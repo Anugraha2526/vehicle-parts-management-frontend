@@ -1,0 +1,11 @@
+.vendor-table-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.vendor-table-empty {
+  color: var(--ink-400);
+  font-size: 13px;
+}
