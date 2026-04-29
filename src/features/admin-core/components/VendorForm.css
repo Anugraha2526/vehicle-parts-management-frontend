@@ -1,0 +1,25 @@
+.vendor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.vendor-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.vendor-form-textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: 'Inter Tight', 'DM Sans', sans-serif;
+}
+
+.vendor-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line-soft);
+}
