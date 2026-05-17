@@ -1,22 +1,68 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createSalesInvoice } from '../../../api/salesApi';
+import { partsApi } from '../../../api/partsApi';
+import { customerApi } from '../../../api/customerApi';
+import { staffApi } from '../../../api/staffApi';
 
 export default function CreateInvoiceModule({ onSuccess, onCancel }) {
-  const [customerId, setCustomerId] = useState('f4a2b3c1-2d5e-4f6a-8b9c-1d2e3f4a5b6c'); // default to Bikash
-  const [staffId, setStaffId] = useState('c7f3d2a1-1b4e-4c8f-9a2d-3e5f6b7c8d9e'); // default to Anugraha
-  const [items, setItems] = useState([{ partId: 'a1b2c3d4-1111-2222-3333-444455556666', quantity: 1 }]);
+  const [customers, setCustomers] = useState([]);
+  const [staffList, setStaffList] = useState([]);
+  const [partsList, setPartsList] = useState([]);
+  const [isLoadingData, setIsLoadingData] = useState(true);
+
+  const [customerId, setCustomerId] = useState('');
+  const [staffId, setStaffId] = useState('');
+  const [items, setItems] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
-  // Available Mock Parts for the dropdown based on backend seed
-  const partsList = [
-    { id: 'a1b2c3d4-1111-2222-3333-444455556666', name: 'NGK Spark Plug', price: 350 },
-    { id: 'b2c3d4e5-2222-3333-4444-555566667777', name: 'Bosch Brake Disc', price: 1200 },
-    { id: 'e5f6a7b8-5555-6666-7777-888899990000', name: 'Clutch Plate Kit', price: 8500 }
-  ];
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        const [custRes, staffRes, partsRes] = await Promise.all([
+          customerApi.list(),
+          staffApi.getAll(),
+          partsApi.list()
+        ]);
+        
+        const rawCust = custRes.data?.data || custRes.data || [];
+        const rawStaff = staffRes.data?.data || staffRes.data || [];
+        const rawParts = partsRes.data?.data || partsRes.data || [];
+
+        const cData = Array.isArray(rawCust) ? rawCust : [];
+        const sData = Array.isArray(rawStaff) ? rawStaff : [];
+        const pData = Array.isArray(rawParts) ? rawParts : [];
+
+        setCustomers(cData);
+        setStaffList(sData);
+
+        const mappedParts = pData.map(p => ({
+          id: p.id || p.Id,
+          name: p.partName || p.PartName || p.name || p.Name || 'Unknown Part',
+          price: p.sellingPrice || p.SellingPrice || p.unitPrice || p.UnitPrice || p.price || p.Price || 0
+        }));
+        
+        setPartsList(mappedParts);
+
+        if (cData.length > 0) setCustomerId(cData[0].id || cData[0].Id);
+        if (sData.length > 0) setStaffId(sData[0].id || sData[0].Id);
+        if (mappedParts.length > 0 && mappedParts[0].id) {
+          setItems([{ partId: mappedParts[0].id, quantity: 1 }]);
+        }
+      } catch (err) {
+        console.error("Failed to load initial data", err);
+        setError("Could not load form options from server. Please try again.");
+      } finally {
+        setIsLoadingData(false);
+      }
+    };
+    fetchInitialData();
+  }, []);
 
   const handleAddItem = () => {
-    setItems([...items, { partId: partsList[0].id, quantity: 1 }]);
+    // Scalable check: default to empty string if no parts exist in the live database yet.
+    const defaultPartId = partsList.length > 0 ? (partsList[0].id || partsList[0].Id) : "";
+    setItems([...items, { partId: defaultPartId, quantity: 1 }]);
   };
 
   const handleRemoveItem = (index) => {
@@ -66,33 +112,53 @@ export default function CreateInvoiceModule({ onSuccess, onCancel }) {
         <h2 className="page-title" style={{ fontSize: '1.2rem', marginBottom: 0 }}>Create New Invoice</h2>
       </div>
       
-      {error && (
-        <div className="cs-alert cs-alert--error" style={{ marginBottom: '14px' }}>
-          {error}
+      {isLoadingData ? (
+        <div style={{ padding: '40px', textAlign: 'center', color: 'var(--ink-500)' }}>
+          Loading options...
         </div>
-      )}
+      ) : (
+        <>
+          {error && (
+            <div className="cs-alert cs-alert--error" style={{ marginBottom: '14px' }}>
+              {error}
+            </div>
+          )}
 
       <form className="cs-form" onSubmit={handleSubmit}>
         <div className="cs-form-grid" style={{ marginBottom: '16px' }}>
           <label className="cs-field">
-            Customer ID
-            <input 
-              type="text" 
-              className="cs-input cs-mono" 
+            Customer
+            <select 
+              className="cs-select" 
               value={customerId} 
               onChange={(e) => setCustomerId(e.target.value)} 
-              required 
-            />
+              required
+            >
+              <option value="" disabled>Select Customer</option>
+              {(customers || []).map((c) => {
+                const cId = c.id || c.Id;
+                return (
+                  <option key={cId} value={cId}>{c.fullName || c.FullName || c.name || `ID: ${(cId || '').substring(0, 8)}`}</option>
+                );
+              })}
+            </select>
           </label>
           <label className="cs-field">
-            Staff ID
-            <input 
-              type="text" 
-              className="cs-input cs-mono" 
+            Staff Rep
+            <select 
+              className="cs-select" 
               value={staffId} 
               onChange={(e) => setStaffId(e.target.value)} 
-              required 
-            />
+              required
+            >
+              <option value="" disabled>Select Staff</option>
+              {(staffList || []).map((s) => {
+                const sId = s.id || s.Id;
+                return (
+                  <option key={sId} value={sId}>{s.fullName || s.FullName || s.name || `ID: ${(sId || '').substring(0, 8)}`}</option>
+                );
+              })}
+            </select>
           </label>
         </div>
 
@@ -127,8 +193,8 @@ export default function CreateInvoiceModule({ onSuccess, onCancel }) {
                         value={item.partId}
                         onChange={(e) => handleItemChange(index, 'partId', e.target.value)}
                       >
-                        {partsList.map((p) => (
-                          <option key={p.id} value={p.id}>{p.name} ({p.id.substring(0, 8)}...)</option>
+                        {(partsList || []).map((p) => (
+                          <option key={p.id} value={p.id}>{p.name} ({(p.id || '').substring(0, 8)}...)</option>
                         ))}
                       </select>
                     </td>
@@ -190,11 +256,13 @@ export default function CreateInvoiceModule({ onSuccess, onCancel }) {
           <button type="button" className="cs-button cs-button--ghost" onClick={onCancel} disabled={isSubmitting}>
             Cancel
           </button>
-          <button type="submit" className="cs-button cs-button--primary" disabled={isSubmitting} style={{minWidth: '140px'}}>
+          <button type="submit" className="cs-button cs-button--primary" disabled={isSubmitting || partsList.length === 0} style={{minWidth: '140px'}}>
             {isSubmitting ? 'Processing...' : 'Create Invoice'}
           </button>
         </div>
       </form>
+      </>
+      )}
     </div>
   );
 }
