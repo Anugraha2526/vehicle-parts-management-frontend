@@ -13,6 +13,7 @@ import FinancialReportsPage from "../features/finance/pages/FinancialReportsPage
 import LowStockAlertsPage from "../features/finance/pages/LowStockAlertsPage";
 import CustomerListPage from "../features/customer-crm/pages/CustomerListPage";
 import SalesDashboardPage from "../features/sales/pages/SalesDashboardPage";
+import OverdueRemindersPage from "../features/sales/pages/OverdueRemindersPage";
 import CustomerHomePage from "../features/customer-portal/pages/CustomerHomePage";
 
 export function AppRouter() {
@@ -35,6 +36,7 @@ export function AppRouter() {
           <Route path="finance/purchase-invoices" element={<PurchaseInvoicePage />} />
           <Route path="finance/reports" element={<FinancialReportsPage />} />
           <Route path="finance/low-stock" element={<LowStockAlertsPage />} />
+          <Route path="reminders" element={<OverdueRemindersPage />} />
         </Route>
 
         <Route path="/staff" element={<StaffLayout />}>

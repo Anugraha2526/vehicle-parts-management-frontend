@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { to: "/admin/staff",   label: "Staff",             icon: "👤" },
   { to: "/admin/vendors", label: "Vendors",           icon: "🏪" },
   { to: "/admin/parts",   label: "Parts & Inventory", icon: "⚙" },
+  { to: "/admin/reminders", label: "Credit Reminders", icon: "📧" },
 ];
 
 export default function Sidebar() {
