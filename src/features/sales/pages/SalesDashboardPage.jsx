@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import CreateInvoiceModule from '../components/CreateInvoiceModule';
-import { getRecentInvoices } from '../../../api/salesApi';
+import { getRecentInvoices, sendInvoiceEmail } from '../../../api/salesApi';
 
 export default function SalesDashboardPage() {
   const [isCreating, setIsCreating] = useState(false);
@@ -19,6 +19,16 @@ export default function SalesDashboardPage() {
       console.error(e);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleSendEmail = async (invoiceId) => {
+    try {
+      setLastResponse({ message: 'Sending email...', type: 'info' });
+      const res = await sendInvoiceEmail(invoiceId);
+      setLastResponse({ message: res.message || 'Email sent successfully!', type: 'success' });
+    } catch (e) {
+      setLastResponse({ message: e || 'Failed to send email.', type: 'error' });
     }
   };
 
@@ -49,8 +59,8 @@ export default function SalesDashboardPage() {
       </header>
 
       {lastResponse && !isCreating && (
-        <div className="cs-alert cs-alert--info">
-          <strong>Success:</strong> {lastResponse.message}
+        <div className={`cs-alert cs-alert--${lastResponse.type || 'info'}`}>
+          <strong>{lastResponse.type === 'error' ? 'Error:' : 'Status:'}</strong> {lastResponse.message}
           {lastResponse.data && (
             <div style={{ marginTop: '8px' }}>
               <span className="status-badge status-badge--success">
@@ -82,6 +92,7 @@ export default function SalesDashboardPage() {
                   <th>Customer</th>
                   <th>Status</th>
                   <th style={{ textAlign: 'right' }}>Amount</th>
+                  <th style={{ textAlign: 'center' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -107,6 +118,15 @@ export default function SalesDashboardPage() {
                         <span className="status-badge status-badge--success">Paid</span>
                       </td>
                       <td style={{ textAlign: 'right', fontWeight: 600 }}>Rs. {inv.totalAmount.toFixed(2)}</td>
+                      <td style={{ textAlign: 'center' }}>
+                        <button 
+                          className="cs-button cs-button--ghost" 
+                          style={{ padding: '4px 8px', fontSize: '0.8rem' }}
+                          onClick={() => handleSendEmail(inv.invoiceId)}
+                        >
+                          Email
+                        </button>
+                      </td>
                     </tr>
                   ))
                 )}

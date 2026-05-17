@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5144/api';
+const API_BASE_URL = 'https://localhost:7294/api';
 
 export const createSalesInvoice = async (invoiceData) => {
   try {
@@ -17,5 +17,14 @@ export const getRecentInvoices = async (limit = 10) => {
     return response.data;
   } catch (error) {
     throw error.response?.data?.message || 'Failed to fetch invoices';
+  }
+};
+
+export const sendInvoiceEmail = async (invoiceId) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/Sales/invoice/${invoiceId}/email`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data?.message || 'Failed to send email';
   }
 };
