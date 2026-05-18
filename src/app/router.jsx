@@ -9,6 +9,7 @@ import LandingPage from "../features/landing/LandingPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import AdminDashboardPage from "../features/admin-core/pages/AdminDashboardPage";
 import StaffPage from "../features/admin-core/pages/StaffPage";
+import StaffDashboardPage from "../features/staff/pages/StaffDashboardPage";
 import VendorPage from "../features/admin-core/pages/VendorPage";
 import PartsPage from "../features/admin-core/pages/PartsPage";
 import PurchaseInvoicePage from "../features/finance/pages/PurchaseInvoicePage";
@@ -61,10 +62,12 @@ export function AppRouter() {
         </Route>
 
         <Route path="/staff" element={<StaffLayout />}>
+          <Route index element={<StaffDashboardPage />} />
           <Route path="finance" element={<PurchaseInvoicePage />} />
           <Route path="finance/reports" element={<FinancialReportsPage />} />
           <Route path="finance/low-stock" element={<LowStockAlertsPage />} />
           <Route path="sales" element={<SalesDashboardPage />} />
+          <Route path="reminders" element={<OverdueRemindersPage />} />
           <Route path="crm" element={<CustomerListPage />} />
         </Route>
 
