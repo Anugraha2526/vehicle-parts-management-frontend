@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Input from "../../../components/common/Input";
 import Select from "../../../components/common/Select";
 import Button from "../../../components/common/Button";
@@ -58,6 +58,14 @@ export default function PartForm({ initialData, vendors, onSubmit, onCancel, loa
   const isEditMode = Boolean(initialData);
   const [fields, setFields] = useState(EMPTY_FIELDS);
   const [errors, setErrors] = useState({});
+  const errorRef = useRef(null);
+
+  // scroll error banner into view whenever a new submit error arrives
+  useEffect(() => {
+    if (submitError && errorRef.current) {
+      errorRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [submitError]);
 
   // reset form fields when initialData prop changes
   useEffect(() => {
@@ -117,7 +125,7 @@ export default function PartForm({ initialData, vendors, onSubmit, onCancel, loa
   return (
     <form className="part-form" onSubmit={handleSubmit} noValidate>
       {submitError && (
-        <div className="form-submit-error" role="alert">
+        <div className="form-submit-error" role="alert" ref={errorRef}>
           {submitError}
         </div>
       )}
