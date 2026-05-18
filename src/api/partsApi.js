@@ -2,6 +2,9 @@ import axiosClient from "./axiosClient";
 
 // all parts api calls go through this module
 export const partsApi = {
+  // used by finance and sales modules
+  list: () => axiosClient.get("/api/Parts"),
+
   // get all parts
   getAll: () => axiosClient.get("/api/Parts"),
 

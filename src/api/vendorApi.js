@@ -2,6 +2,9 @@ import axiosClient from "./axiosClient";
 
 // all vendor api calls go through this module
 export const vendorApi = {
+  // used by finance and sales modules
+  list: () => axiosClient.get("/api/Vendors"),
+
   // get all vendors
   getAll: () => axiosClient.get("/api/Vendors"),
 
