@@ -21,7 +21,7 @@ const PublicRegister = () => {
       alert('Account created successfully! Please login.');
       navigate('/login');
     } catch (error) {
-      alert('Registration failed. Email might already be in use.');
+      alert(error.message || 'Registration failed. Email or phone number might already be in use.');
     }
   };
 
