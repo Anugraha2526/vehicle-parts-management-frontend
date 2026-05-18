@@ -1,0 +1,335 @@
+/* full-page wrapper — warm app background, vertical scroll */
+.landing {
+  min-height: 100vh;
+  background: var(--bg-app);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter Tight', 'DM Sans', sans-serif;
+}
+
+/* sticky top navigation bar */
+.landing-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  height: 64px;
+  background: var(--bg-sunk);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.landing-nav-logo {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+}
+
+.landing-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* hero — two-column layout, content left, visual right */
+.landing-hero {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  padding: 100px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.landing-hero-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* pill badge above the headline */
+.landing-badge {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.landing-hero-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(38px, 5vw, 64px);
+  font-weight: 700;
+  color: var(--ink-900);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+/* last line of the headline uses brand orange for emphasis */
+.landing-hero-accent {
+  color: var(--accent);
+}
+
+.landing-hero-desc {
+  font-size: 17px;
+  color: var(--ink-600);
+  line-height: 1.75;
+  max-width: 480px;
+  margin: 0;
+}
+
+.landing-hero-ctas {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* image placeholder — swap inner content for <img> when asset is ready */
+.landing-hero-visual {
+  flex: 0 0 420px;
+  height: 380px;
+  background: var(--bg-sunk);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* image sits above the fallback content and covers it when loaded */
+.landing-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+  z-index: 2;
+}
+
+/* fallback C mark and label sit below the image, visible only if the image fails */
+.landing-hero-visual-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.landing-logo-mark {
+  width: 80px;
+  height: 80px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-size: 46px;
+  font-weight: 700;
+  box-shadow: 0 12px 32px rgba(232, 107, 43, 0.35);
+}
+
+.landing-visual-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-400);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* three-column feature card grid */
+.landing-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 0 60px 88px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.landing-feature-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-soft);
+  border-radius: 16px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.landing-feature-card:hover {
+  box-shadow: 0 8px 28px rgba(44, 42, 38, 0.08);
+  border-color: var(--line);
+  transform: translateY(-2px);
+}
+
+.landing-feature-title {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.landing-feature-desc {
+  font-size: 14px;
+  color: var(--ink-500);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* full-width CTA band with sandy background to contrast the page */
+.landing-cta {
+  background: var(--bg-sunk);
+  border-top: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+  padding: 88px 60px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.landing-cta-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(28px, 3.5vw, 46px);
+  font-weight: 700;
+  color: var(--ink-900);
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.landing-cta-sub {
+  font-size: 17px;
+  color: var(--ink-500);
+  margin: 0 0 8px;
+}
+
+.landing-cta-login {
+  font-size: 14px;
+  color: var(--ink-500);
+  margin: 8px 0 0;
+}
+
+.landing-cta-link {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.landing-cta-link:hover {
+  text-decoration: underline;
+}
+
+/* minimal footer */
+.landing-footer {
+  padding: 24px 60px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-400);
+}
+
+/* button system — self-contained so the landing page has no layout dependencies */
+.landing-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-family: 'Inter Tight', 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 9px 18px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.landing-btn--lg {
+  padding: 14px 30px;
+  font-size: 15px;
+  border-radius: 10px;
+}
+
+.landing-btn--primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.landing-btn--primary:hover {
+  background: var(--accent-hover);
+}
+
+.landing-btn--outline {
+  background: transparent;
+  border-color: var(--line-strong);
+  color: var(--ink-700);
+}
+
+.landing-btn--outline:hover {
+  background: var(--bg-sunk);
+  border-color: var(--ink-400);
+}
+
+.landing-btn--ghost {
+  background: transparent;
+  color: var(--ink-600);
+}
+
+.landing-btn--ghost:hover {
+  color: var(--ink-900);
+  background: var(--bg-sunk);
+}
+
+/* stack hero vertically on smaller screens */
+@media (max-width: 900px) {
+  .landing-nav,
+  .landing-cta,
+  .landing-footer {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .landing-hero {
+    flex-direction: column;
+    padding: 60px 24px;
+    gap: 40px;
+  }
+
+  .landing-hero-visual {
+    flex: none;
+    width: 100%;
+    height: 240px;
+  }
+
+  .landing-features {
+    grid-template-columns: 1fr;
+    padding: 0 24px 60px;
+  }
+}

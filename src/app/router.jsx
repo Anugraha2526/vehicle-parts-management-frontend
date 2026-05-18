@@ -5,6 +5,7 @@ import CustomerLayout from "../layouts/CustomerLayout";
 import MainLayout from "../layouts/MainLayout";
 import ProtectedRoute from "../routes/ProtectedRoute";
 import RoleBasedRoute from "../routes/RoleBasedRoute";
+import LandingPage from "../features/landing/LandingPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import AdminDashboardPage from "../features/admin-core/pages/AdminDashboardPage";
 import StaffPage from "../features/admin-core/pages/StaffPage";
@@ -27,13 +28,14 @@ import RegisterCustomer from "../pages/RegisterCustomer";
 export function AppRouter() {
   return (
     <Routes>
+      {/* public entry points */}
+      <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<PublicRegister />} />
       <Route path="/my-profile/:id" element={<CustomerProfile />} />
 
-      {/* User's Original Pages */}
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<AdminDashboardPage />} />
+      {/* pathless layout wraps the staff-facing customer management pages */}
+      <Route element={<MainLayout />}>
         <Route path="customers" element={<CustomersPage />} />
         <Route path="customers/:id" element={<CustomerDetails />} />
         <Route path="register-customer" element={<RegisterCustomer />} />
@@ -71,7 +73,7 @@ export function AppRouter() {
         </Route>
       </Route>
 
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
