@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import AiChatWidget from '../components/common/AiChatWidget';
 import { api } from '../services/api';
 
 const CustomerProfile = () => {
@@ -212,6 +213,7 @@ const CustomerProfile = () => {
           <p style={{ color: 'var(--ink-500)', fontSize: '14px', textAlign: 'center', padding: '20px' }}>You haven't had any services yet. Your history will appear here!</p>
         )}
       </div>
+      <AiChatWidget />
     </div>
   );
 };
