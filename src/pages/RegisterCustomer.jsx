@@ -28,7 +28,7 @@ const RegisterCustomer = () => {
       alert('Customer registered successfully');
       navigate('/customers');
     } catch (error) {
-      alert('Failed to register customer');
+      alert(error.message || 'Failed to register customer');
     }
   };
 
