@@ -57,10 +57,24 @@ export default function VendorPage() {
       handleCloseModal();
       showNotification("success", "Vendor saved successfully.");
     } catch (err) {
-      const message =
-        err?.response?.status === 409
-          ? "A vendor with this email already exists."
-          : "Failed to save vendor. Please check your inputs.";
+      const status = err?.response?.status;
+      const data = err?.response?.data;
+      const serverMsg = typeof data === "string" && data.trim()
+        ? data.trim()
+        : (data?.errors ? Object.values(data.errors).flat()[0] : null)
+          ?? data?.title
+          ?? null;
+
+      let message;
+      if (status === 409 && serverMsg) {
+        message = serverMsg;
+      } else if (status === 400 && serverMsg) {
+        message = `Invalid input: ${serverMsg}`;
+      } else if (status === 500) {
+        message = "A server error occurred. Please try again later.";
+      } else {
+        message = serverMsg ?? "Failed to save vendor. Please try again.";
+      }
       setFormError(message);
     } finally {
       setFormLoading(false);

@@ -69,11 +69,22 @@ export default function PartsPage() {
       handleCloseModal();
       showNotification("success", "Part saved successfully.");
     } catch (err) {
-      const serverMsg = typeof err?.response?.data === "string" ? err.response.data : null;
-      const message =
-        err?.response?.status === 409 && serverMsg
-          ? serverMsg
-          : "Failed to save part. Please check your inputs.";
+      const status = err?.response?.status;
+      const data = err?.response?.data;
+      const serverMsg = typeof data === "string" && data.trim()
+        ? data.trim()
+        : (data?.errors ? Object.values(data.errors).flat()[0] : null)
+          ?? data?.title
+          ?? null;
+
+      let message;
+      if ((status === 409 || status === 400) && serverMsg) {
+        message = serverMsg;
+      } else if (status === 500) {
+        message = "A server error occurred. Please try again later.";
+      } else {
+        message = serverMsg ?? "Failed to save part. Please check your inputs.";
+      }
       setFormError(message);
     } finally {
       setFormLoading(false);

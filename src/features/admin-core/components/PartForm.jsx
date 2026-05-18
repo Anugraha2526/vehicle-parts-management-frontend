@@ -19,20 +19,26 @@ const EMPTY_FIELDS = {
 function validate(fields, isEditMode) {
   const errors = {};
 
-  if (!fields.partName.trim() || fields.partName.trim().length < 2) {
-    errors.partName = "Part name is required.";
+  const pName = fields.partName.trim();
+  if (!pName || pName.length < 3) {
+    errors.partName = "Part name must be at least 3 characters (e.g. Brake Pad Set).";
   }
 
-  if (!fields.partNumber.trim()) {
+  const pNum = fields.partNumber.trim();
+  if (!pNum) {
     errors.partNumber = "Part number is required.";
+  } else if (pNum.length < 3) {
+    errors.partNumber = "Part number must be at least 3 characters.";
+  } else if (!/^[A-Za-z0-9][A-Za-z0-9\-_./ ]*$/.test(pNum)) {
+    errors.partNumber = "Part number may only contain letters, digits, hyphens, dots, or slashes.";
   }
 
-  if (!fields.category.trim()) {
-    errors.category = "Category is required.";
+  if (!fields.category.trim() || fields.category.trim().length < 2) {
+    errors.category = "Category is required (e.g. Brakes, Engine, Filters).";
   }
 
   if (!fields.vendorId) {
-    errors.vendorId = "Vendor is required.";
+    errors.vendorId = "Please select a vendor.";
   }
 
   if (!isEditMode) {
@@ -42,18 +48,22 @@ function validate(fields, isEditMode) {
   } else if (fields.quantityPurchased !== "") {
     const qty = Number(fields.quantityPurchased);
     if (qty === 0) {
-      errors.quantityPurchased = "Quantity cannot be zero.";
+      errors.quantityPurchased = "Enter a non-zero value (positive to add stock, negative to remove).";
     } else if (qty < 0 && Math.abs(qty) > (fields._currentStock ?? Infinity)) {
-      errors.quantityPurchased = `Cannot remove more than current stock (${fields._currentStock}).`;
+      errors.quantityPurchased = `Cannot remove ${Math.abs(qty)} units — only ${fields._currentStock} currently in stock.`;
     }
   }
 
-  if (fields.unitCost === "" || Number(fields.unitCost) <= 0) {
+  const unitCost = Number(fields.unitCost);
+  if (fields.unitCost === "" || unitCost <= 0) {
     errors.unitCost = "Unit cost must be greater than 0.";
   }
 
-  if (fields.sellingPrice === "" || Number(fields.sellingPrice) <= 0) {
+  const sellingPrice = Number(fields.sellingPrice);
+  if (fields.sellingPrice === "" || sellingPrice <= 0) {
     errors.sellingPrice = "Selling price must be greater than 0.";
+  } else if (!errors.unitCost && unitCost > 0 && sellingPrice < unitCost) {
+    errors.sellingPrice = `Selling price (NPR ${sellingPrice.toLocaleString()}) cannot be less than the unit cost (NPR ${unitCost.toLocaleString()}).`;
   }
 
   return errors;

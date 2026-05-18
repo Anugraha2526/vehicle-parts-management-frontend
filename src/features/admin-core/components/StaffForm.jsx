@@ -20,23 +20,36 @@ const EMPTY_FIELDS = {
 function validate(fields, isEditMode) {
   const errors = {};
 
-  if (!fields.fullName.trim() || fields.fullName.trim().length < 2) {
-    errors.fullName = "Full name is required (minimum 2 characters).";
+  const nameWords = fields.fullName.trim().split(/\s+/).filter(Boolean);
+  if (nameWords.length < 2) {
+    errors.fullName = "Full name must be at least two words (e.g. Aarav Sharma).";
   }
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!fields.email.trim() || !emailPattern.test(fields.email)) {
-    errors.email = "A valid email address is required.";
+  if (!fields.email.trim()) {
+    errors.email = "Email address is required.";
+  } else if (!emailPattern.test(fields.email.trim())) {
+    errors.email = "Enter a valid email address (e.g. aarav@chitospare.com).";
   }
 
   if (!isEditMode && !fields.password) {
     errors.password = "Password is required.";
-  } else if (fields.password && fields.password.length < 8) {
-    errors.password = "Password must be at least 8 characters.";
+  } else if (fields.password) {
+    if (fields.password.length < 8) {
+      errors.password = "Password must be at least 8 characters long.";
+    } else if (!/[A-Z]/.test(fields.password)) {
+      errors.password = "Password must include at least one uppercase letter (A–Z).";
+    } else if (!/[a-z]/.test(fields.password)) {
+      errors.password = "Password must include at least one lowercase letter (a–z).";
+    } else if (!/[0-9]/.test(fields.password)) {
+      errors.password = "Password must include at least one number (0–9).";
+    } else if (!/[^A-Za-z0-9]/.test(fields.password)) {
+      errors.password = "Password must include at least one special character (e.g. !@#$%).";
+    }
   }
 
   if (!fields.role) {
-    errors.role = "Role is required.";
+    errors.role = "Please select a role for this staff member.";
   }
 
   return errors;
