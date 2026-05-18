@@ -23,11 +23,13 @@ function normalizeAlert(rawAlert) {
 
 export function useLowStock() {
   const [alerts, setAlerts] = useState([]);
-  const [threshold, setThreshold] = useState(10);
+  const [thresholdInput, setThresholdInput] = useState("10");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [acknowledgingAlertId, setAcknowledgingAlertId] = useState("");
+
+  const threshold = Math.max(1, Math.floor(asNumber(thresholdInput, 10)));
 
   const fetchAlerts = useCallback(async (scan = true) => {
     setIsLoading(true);
@@ -90,9 +92,14 @@ export function useLowStock() {
     return fetchAlerts(true);
   }, [fetchAlerts]);
 
+  const setThreshold = useCallback((value) => {
+    const next = String(value ?? "").replace(/[^\d]/g, "");
+    setThresholdInput(next);
+  }, []);
+
   return {
     alerts,
-    threshold,
+    threshold: thresholdInput,
     setThreshold,
     isLoading,
     error,
