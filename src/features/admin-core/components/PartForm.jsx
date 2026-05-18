@@ -54,7 +54,7 @@ function validate(fields, isEditMode) {
   return errors;
 }
 
-export default function PartForm({ initialData, vendors, onSubmit, onCancel, loading }) {
+export default function PartForm({ initialData, vendors, onSubmit, onCancel, loading, submitError }) {
   const isEditMode = Boolean(initialData);
   const [fields, setFields] = useState(EMPTY_FIELDS);
   const [errors, setErrors] = useState({});
@@ -116,6 +116,11 @@ export default function PartForm({ initialData, vendors, onSubmit, onCancel, loa
 
   return (
     <form className="part-form" onSubmit={handleSubmit} noValidate>
+      {submitError && (
+        <div className="form-submit-error" role="alert">
+          {submitError}
+        </div>
+      )}
       <div className="part-form-fields">
         <Input
           label="Part Name"

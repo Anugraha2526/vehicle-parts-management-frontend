@@ -21,6 +21,7 @@ export default function StaffPage() {
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [formLoading, setFormLoading] = useState(false);
   const [notification, setNotification] = useState(null);
+  const [formError, setFormError] = useState(null);
 
   function showNotification(type, message) {
     setNotification({ type, message });
@@ -42,25 +43,28 @@ export default function StaffPage() {
   const handleCloseModal = useCallback(() => {
     setModalOpen(false);
     setSelectedStaff(null);
+    setFormError(null);
   }, []);
 
   async function handleFormSubmit(data) {
     setFormLoading(true);
+    setFormError(null);
     try {
       if (selectedStaff) {
         await updateStaff(selectedStaff.id, data);
+        handleCloseModal();
         showNotification("success", "Staff member updated successfully.");
       } else {
         await createStaff(data);
+        handleCloseModal();
         showNotification("success", "Staff member added successfully.");
       }
-      handleCloseModal();
     } catch (err) {
       const serverMessage = err?.response?.data?.message ?? "";
       const message = serverMessage.toLowerCase().includes("email")
         ? "Email is already registered."
         : "Failed to save staff member. Please check your inputs.";
-      showNotification("error", message);
+      setFormError(message);
     } finally {
       setFormLoading(false);
     }
@@ -133,6 +137,7 @@ export default function StaffPage() {
           onSubmit={handleFormSubmit}
           onCancel={handleCloseModal}
           loading={formLoading}
+          submitError={formError}
         />
       </Modal>
     </div>

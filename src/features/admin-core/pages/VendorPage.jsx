@@ -20,6 +20,7 @@ export default function VendorPage() {
   const [selectedVendor, setSelectedVendor] = useState(null);
   const [formLoading, setFormLoading] = useState(false);
   const [notification, setNotification] = useState(null);
+  const [formError, setFormError] = useState(null);
 
   function showNotification(type, message) {
     setNotification({ type, message });
@@ -41,17 +42,18 @@ export default function VendorPage() {
   const handleCloseModal = useCallback(() => {
     setModalOpen(false);
     setSelectedVendor(null);
+    setFormError(null);
   }, []);
 
   async function handleFormSubmit(data) {
     setFormLoading(true);
+    setFormError(null);
     try {
       if (selectedVendor) {
         await updateVendor(selectedVendor.id, data);
       } else {
         await createVendor(data);
       }
-      // close modal and show success message after saving
       handleCloseModal();
       showNotification("success", "Vendor saved successfully.");
     } catch (err) {
@@ -59,7 +61,7 @@ export default function VendorPage() {
         err?.response?.status === 409
           ? "A vendor with this email already exists."
           : "Failed to save vendor. Please check your inputs.";
-      showNotification("error", message);
+      setFormError(message);
     } finally {
       setFormLoading(false);
     }
@@ -124,6 +126,7 @@ export default function VendorPage() {
           onSubmit={handleFormSubmit}
           onCancel={handleCloseModal}
           loading={formLoading}
+          submitError={formError}
         />
       </Modal>
     </div>
