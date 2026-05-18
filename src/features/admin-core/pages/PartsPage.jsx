@@ -29,7 +29,7 @@ export default function PartsPage() {
   useEffect(() => {
     vendorsForPartsApi.getAll()
       .then((res) => setVendors(res.data))
-      .catch(() => {});
+      .catch(() => showNotification("error", "Could not load vendor list. Please refresh the page."));
   }, []);
 
   function showNotification(type, message) {
