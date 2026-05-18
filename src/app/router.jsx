@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import AdminLayout from "../layouts/AdminLayout";
 import StaffLayout from "../layouts/StaffLayout";
 import CustomerLayout from "../layouts/CustomerLayout";
+import MainLayout from "../layouts/MainLayout";
 import ProtectedRoute from "../routes/ProtectedRoute";
 import RoleBasedRoute from "../routes/RoleBasedRoute";
 import LoginPage from "../features/auth/pages/LoginPage";
@@ -30,6 +31,14 @@ export function AppRouter() {
       <Route path="/signup" element={<PublicRegister />} />
       <Route path="/my-profile/:id" element={<CustomerProfile />} />
 
+      {/* User's Original Pages */}
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<AdminDashboardPage />} />
+        <Route path="customers" element={<CustomersPage />} />
+        <Route path="customers/:id" element={<CustomerDetails />} />
+        <Route path="register-customer" element={<RegisterCustomer />} />
+      </Route>
+
       <Route element={<ProtectedRoute />}>
         <Route
           path="/admin"
@@ -40,9 +49,6 @@ export function AppRouter() {
           }
         >
           <Route index element={<AdminDashboardPage />} />
-          <Route path="customers" element={<CustomersPage />} />
-          <Route path="customers/:id" element={<CustomerDetails />} />
-          <Route path="register-customer" element={<RegisterCustomer />} />
           <Route path="staff" element={<StaffPage />} />
           <Route path="vendors" element={<VendorPage />} />
           <Route path="parts" element={<PartsPage />} />

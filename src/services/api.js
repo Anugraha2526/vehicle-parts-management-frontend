@@ -1,13 +1,13 @@
 const API_BASE_URL = 'https://localhost:7294/api';
 
 export const api = {
-  async get(endpoint: string) {
+  async get(endpoint) {
     const response = await fetch(`${API_BASE_URL}${endpoint}`);
     if (!response.ok) throw new Error('API error');
     return response.json();
   },
 
-  async post(endpoint: string, data: any) {
+  async post(endpoint, data) {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -17,7 +17,7 @@ export const api = {
     return response.json();
   },
 
-  async put(endpoint: string, data: any) {
+  async put(endpoint, data) {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },

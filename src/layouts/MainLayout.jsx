@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 import './MainLayout.css';
 
-const MainLayout: React.FC = () => {
+const MainLayout = () => {
   return (
     <div className="layout-container">
       <aside className="sidebar">

@@ -4,10 +4,8 @@ import "./Sidebar.css";
 
 const NAV_ITEMS = [
   { to: "/admin",         label: "Dashboard",        icon: "⊞", end: true },
-  { to: "/admin/staff",   label: "Staff",             icon: "👤" },
-  { to: "/admin/vendors", label: "Vendors",           icon: "🏪" },
-  { to: "/admin/parts",   label: "Parts & Inventory", icon: "⚙" },
-  { to: "/admin/reminders", label: "Credit Reminders", icon: "📧" },
+  { to: "/customers",     label: "Customers",        icon: "👤" },
+  { to: "/register-customer", label: "Registration", icon: "➕" },
 ];
 
 export default function Sidebar() {
