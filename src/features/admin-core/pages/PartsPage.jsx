@@ -23,6 +23,7 @@ export default function PartsPage() {
   const [selectedPart, setSelectedPart] = useState(null);
   const [formLoading, setFormLoading] = useState(false);
   const [notification, setNotification] = useState(null);
+  const [formError, setFormError] = useState(null);
 
   // load vendor list once so the form dropdown is ready when the modal opens
   useEffect(() => {
@@ -52,18 +53,19 @@ export default function PartsPage() {
   const handleCloseModal = useCallback(() => {
     setModalOpen(false);
     setSelectedPart(null);
+    setFormError(null);
   }, []);
 
   // save the part then close the modal; surfaces 409 as a duplicate part-number message
   async function handleFormSubmit(data) {
     setFormLoading(true);
+    setFormError(null);
     try {
       if (selectedPart) {
         await updatePart(selectedPart.id, data);
       } else {
         await createPart(data);
       }
-      // close modal and show success message after saving
       handleCloseModal();
       showNotification("success", "Part saved successfully.");
     } catch (err) {
@@ -71,7 +73,7 @@ export default function PartsPage() {
         err?.response?.status === 409
           ? "A part with this part number already exists."
           : "Failed to save part. Please check your inputs.";
-      showNotification("error", message);
+      setFormError(message);
     } finally {
       setFormLoading(false);
     }
@@ -138,6 +140,7 @@ export default function PartsPage() {
           onSubmit={handleFormSubmit}
           onCancel={handleCloseModal}
           loading={formLoading}
+          submitError={formError}
         />
       </Modal>
     </div>

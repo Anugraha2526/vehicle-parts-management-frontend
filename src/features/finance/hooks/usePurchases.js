@@ -24,8 +24,8 @@ function createEmptyItem() {
   return {
     key: createRowKey(),
     partId: "",
-    quantity: 1,
-    unitCost: 0,
+    quantity: "1",
+    unitCost: "0",
   };
 }
 
@@ -59,9 +59,23 @@ function normalizeVendor(rawVendor) {
 function normalizePart(rawPart) {
   const id = rawPart?.id ?? rawPart?.partId ?? rawPart?.Id;
   const name = rawPart?.name ?? rawPart?.partName ?? rawPart?.Name ?? "Unnamed part";
-  const sku = rawPart?.sku ?? rawPart?.code ?? rawPart?.partCode ?? rawPart?.Sku ?? "";
+  const sku =
+    rawPart?.sku ??
+    rawPart?.partNumber ??
+    rawPart?.code ??
+    rawPart?.partCode ??
+    rawPart?.Sku ??
+    rawPart?.PartNumber ??
+    "";
   const stockQuantity =
-    Number(rawPart?.stockQuantity ?? rawPart?.quantity ?? rawPart?.StockQuantity ?? 0) || 0;
+    Number(
+      rawPart?.stockQuantity ??
+      rawPart?.quantityInStock ??
+      rawPart?.quantity ??
+      rawPart?.StockQuantity ??
+      rawPart?.QuantityInStock ??
+      0
+    ) || 0;
 
   return {
     id: id ? String(id) : "",
@@ -72,10 +86,13 @@ function normalizePart(rawPart) {
 }
 
 function cleanInvoiceItem(item) {
+  const quantity = Math.floor(asNumber(item.quantity));
+  const unitCost = asNumber(item.unitCost);
+
   return {
     partId: String(item.partId || "").trim(),
-    quantity: Math.floor(asNumber(item.quantity)),
-    unitCost: asNumber(item.unitCost),
+    quantity,
+    unitCost,
   };
 }
 
@@ -160,11 +177,11 @@ export function usePurchases() {
         }
 
         if (field === "quantity") {
-          return { ...item, quantity: Math.max(0, asNumber(value)) };
+          return { ...item, quantity: String(value) };
         }
 
         if (field === "unitCost") {
-          return { ...item, unitCost: Math.max(0, asNumber(value)) };
+          return { ...item, unitCost: String(value) };
         }
 
         return { ...item, [field]: value };

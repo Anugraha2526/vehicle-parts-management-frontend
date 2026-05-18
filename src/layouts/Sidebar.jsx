@@ -3,9 +3,14 @@ import { useAuth } from "../hooks/useAuth";
 import "./Sidebar.css";
 
 const NAV_ITEMS = [
-  { to: "/admin",         label: "Dashboard",        icon: "⊞", end: true },
-  { to: "/customers",     label: "Customers",        icon: "👤" },
-  { to: "/register-customer", label: "Registration", icon: "➕" },
+  { to: "/admin", label: "Dashboard", icon: "DB", end: true },
+  { to: "/admin/staff", label: "Staff", icon: "ST" },
+  { to: "/admin/vendors", label: "Vendors", icon: "VN" },
+  { to: "/admin/parts", label: "Parts & Inventory", icon: "PT" },
+  { to: "/admin/finance/purchase-invoices", label: "Purchase Invoices", icon: "PI" },
+  { to: "/admin/finance/reports", label: "Financial Reports", icon: "FR" },
+  { to: "/admin/finance/low-stock", label: "Low Stock Alerts", icon: "LS" },
+  { to: "/admin/reminders", label: "Credit Reminders", icon: "CR" },
 ];
 
 export default function Sidebar() {
@@ -43,18 +48,12 @@ export default function Sidebar() {
       </nav>
 
       <div className="sidebar-footer">
-        <div className="sidebar-dark-toggle" aria-label="Dark mode (coming soon)">
-          <span className="sidebar-dark-icon" aria-hidden="true">🌙</span>
-          Dark mode
-        </div>
         <div className="sidebar-user">
           <div className="sidebar-avatar" aria-hidden="true">
             {initials}
           </div>
           <div className="sidebar-user-info">
-            <span className="sidebar-user-name">
-              {user?.fullName ?? user?.role ?? "Admin"}
-            </span>
+            <span className="sidebar-user-name">{user?.fullName ?? user?.role ?? "Admin"}</span>
             <span className="sidebar-user-role">{user?.role ?? "Admin"}</span>
           </div>
           <button
@@ -63,7 +62,7 @@ export default function Sidebar() {
             aria-label="Sign out"
             title="Sign out"
           >
-            ⇥
+            OUT
           </button>
         </div>
       </div>

@@ -35,7 +35,7 @@ function validate(fields) {
   return errors;
 }
 
-export default function VendorForm({ initialData, onSubmit, onCancel, loading }) {
+export default function VendorForm({ initialData, onSubmit, onCancel, loading, submitError }) {
   const isEditMode = Boolean(initialData);
   const [fields, setFields] = useState(EMPTY_FIELDS);
   const [errors, setErrors] = useState({});
@@ -83,6 +83,11 @@ export default function VendorForm({ initialData, onSubmit, onCancel, loading })
 
   return (
     <form className="vendor-form" onSubmit={handleSubmit} noValidate>
+      {submitError && (
+        <div className="form-submit-error" role="alert">
+          {submitError}
+        </div>
+      )}
       <div className="vendor-form-fields">
         <Input
           label="Vendor Name"

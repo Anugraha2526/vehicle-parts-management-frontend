@@ -20,7 +20,14 @@ export default function PurchaseInvoiceItemsTable({
       </div>
 
       <div className="cs-table-wrapper">
-        <table className="cs-table">
+        <table className="cs-table cs-table--invoice-items">
+          <colgroup>
+            <col className="invoice-col-part" />
+            <col className="invoice-col-qty" />
+            <col className="invoice-col-unit" />
+            <col className="invoice-col-total" />
+            <col className="invoice-col-action" />
+          </colgroup>
           <thead>
             <tr>
               <th>Part</th>
@@ -88,11 +95,17 @@ export default function PurchaseInvoiceItemsTable({
                       }
                     />
                   </td>
-                  <td className="cs-mono">{formatCurrency(lineTotal, "NPR", "en-NP")}</td>
-                  <td>
+                  <td
+                    className="cs-mono cs-line-total-cell"
+                    title={formatCurrency(lineTotal, "NPR", "en-NP")}
+                  >
+                    {formatCurrency(lineTotal, "NPR", "en-NP")}
+                  </td>
+                  <td className="cs-action-cell">
                     <Button
                       type="button"
                       variant="ghost"
+                      className="cs-action-remove-btn"
                       onClick={() => onRemoveItem(item.key)}
                       disabled={items.length === 1}
                     >

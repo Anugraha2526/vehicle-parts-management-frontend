@@ -4,16 +4,6 @@ import "./Modal.css";
 export default function Modal({ isOpen, onClose, title, children }) {
   const modalRef = useRef(null);
 
-  // close on Escape key
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
-
   // move focus into modal when it opens
   useEffect(() => {
     if (isOpen && modalRef.current) {
@@ -26,7 +16,6 @@ export default function Modal({ isOpen, onClose, title, children }) {
   return (
     <div
       className="modal-backdrop"
-      onClick={onClose}
       aria-modal="true"
       role="presentation"
     >

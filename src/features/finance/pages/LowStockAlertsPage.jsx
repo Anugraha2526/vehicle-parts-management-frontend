@@ -36,7 +36,7 @@ export default function LowStockAlertsPage() {
             type="number"
             min="1"
             value={threshold}
-            onChange={(event) => setThreshold(Number(event.target.value) || 1)}
+            onChange={(event) => setThreshold(event.target.value)}
           />
         </label>
 

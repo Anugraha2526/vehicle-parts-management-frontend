@@ -42,7 +42,7 @@ function validate(fields, isEditMode) {
   return errors;
 }
 
-export default function StaffForm({ initialData, onSubmit, onCancel, loading }) {
+export default function StaffForm({ initialData, onSubmit, onCancel, loading, submitError }) {
   const isEditMode = Boolean(initialData);
   const [fields, setFields] = useState(EMPTY_FIELDS);
   const [errors, setErrors] = useState({});
@@ -95,6 +95,11 @@ export default function StaffForm({ initialData, onSubmit, onCancel, loading }) 
 
   return (
     <form className="staff-form" onSubmit={handleSubmit} noValidate>
+      {submitError && (
+        <div className="form-submit-error" role="alert">
+          {submitError}
+        </div>
+      )}
       <div className="staff-form-fields">
         <Input
           label="Full Name"
