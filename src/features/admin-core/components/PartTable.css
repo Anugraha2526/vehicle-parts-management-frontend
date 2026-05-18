@@ -1,0 +1,30 @@
+.part-table-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.part-table-empty {
+  color: var(--ink-400);
+  font-size: 13px;
+}
+
+/* monospace font so part numbers align and scan quickly */
+.part-table-part-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+}
+
+.part-table-stock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* warn color draws attention to stock that needs restocking */
+.part-table-stock--low {
+  color: var(--warn);
+  font-weight: 600;
+}

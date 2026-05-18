@@ -1,0 +1,32 @@
+.part-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.part-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* monospace font so part numbers are easy to read and compare */
+.part-form-part-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+}
+
+.part-form-textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: 'Inter Tight', 'DM Sans', sans-serif;
+}
+
+.part-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line-soft);
+}
