@@ -3,7 +3,7 @@
   min-height: 100vh;
 }
 
-.sidebar {
+.layout-container .sidebar {
   width: 260px;
   background-color: var(--sidebar-bg);
   border-right: 1px solid var(--border);
@@ -16,7 +16,7 @@
   top: 0;
 }
 
-.logo-section {
+.layout-container .logo-section {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -24,7 +24,7 @@
   padding-left: 8px;
 }
 
-.logo-icon {
+.layout-container .logo-icon {
   width: 32px;
   height: 32px;
   background-color: var(--primary);
@@ -36,20 +36,20 @@
   font-weight: bold;
 }
 
-.logo-section h1 {
+.layout-container .logo-section h1 {
   font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
 }
 
-.nav-menu {
+.layout-container .nav-menu {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.nav-item {
+.layout-container .nav-item {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -61,24 +61,24 @@
   transition: all 0.2s;
 }
 
-.nav-item:hover {
+.layout-container .nav-item:hover {
   background-color: rgba(0, 0, 0, 0.03);
   color: var(--text-primary);
 }
 
-.nav-item.active {
+.layout-container .nav-item.active {
   background-color: var(--primary-light);
   color: var(--primary);
 }
 
-.nav-item .icon {
+.layout-container .nav-item .icon {
   font-size: 18px;
   width: 24px;
   display: flex;
   justify-content: center;
 }
 
-.nav-item .badge {
+.layout-container .nav-item .badge {
   margin-left: auto;
   background-color: var(--primary);
   color: white;
@@ -87,14 +87,14 @@
   border-radius: 10px;
 }
 
-.sidebar-footer {
+.layout-container .sidebar-footer {
   margin-top: auto;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.dark-mode-toggle {
+.layout-container .dark-mode-toggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -103,7 +103,7 @@
   padding: 0 8px;
 }
 
-.toggle-switch {
+.layout-container .toggle-switch {
   width: 36px;
   height: 20px;
   background-color: #ddd;
@@ -111,7 +111,7 @@
   position: relative;
 }
 
-.user-profile {
+.layout-container .user-profile {
   background-color: white;
   border-radius: 12px;
   padding: 12px;
@@ -121,7 +121,7 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
-.avatar {
+.layout-container .avatar {
   width: 36px;
   height: 36px;
   background-color: #4A6076;
@@ -134,30 +134,30 @@
   font-weight: 600;
 }
 
-.user-info {
+.layout-container .user-info {
   display: flex;
   flex-direction: column;
 }
 
-.user-name {
+.layout-container .user-name {
   font-size: 13px;
   font-weight: 600;
   color: var(--text-primary);
 }
 
-.user-role {
+.layout-container .user-role {
   font-size: 11px;
   color: var(--text-secondary);
 }
 
-.logout-icon {
+.layout-container .logout-icon {
   margin-left: auto;
   font-size: 14px;
   color: var(--text-secondary);
   cursor: pointer;
 }
 
-.content-area {
+.layout-container .content-area {
   flex: 1;
   margin-left: 260px;
   padding: 40px;
