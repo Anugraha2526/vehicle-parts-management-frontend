@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import AdminLayout from "../layouts/AdminLayout";
 import StaffLayout from "../layouts/StaffLayout";
 import CustomerLayout from "../layouts/CustomerLayout";
+import MainLayout from "../layouts/MainLayout";
 import ProtectedRoute from "../routes/ProtectedRoute";
 import RoleBasedRoute from "../routes/RoleBasedRoute";
 import LoginPage from "../features/auth/pages/LoginPage";
@@ -17,10 +18,26 @@ import SalesDashboardPage from "../features/sales/pages/SalesDashboardPage";
 import OverdueRemindersPage from "../features/sales/pages/OverdueRemindersPage";
 import CustomerHomePage from "../features/customer-portal/pages/CustomerHomePage";
 
+import PublicRegister from "../pages/PublicRegister";
+import CustomerProfile from "../pages/CustomerProfile";
+import CustomersPage from "../pages/CustomersPage";
+import CustomerDetails from "../pages/CustomerDetails";
+import RegisterCustomer from "../pages/RegisterCustomer";
+
 export function AppRouter() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<PublicRegister />} />
+      <Route path="/my-profile/:id" element={<CustomerProfile />} />
+
+      {/* User's Original Pages */}
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<AdminDashboardPage />} />
+        <Route path="customers" element={<CustomersPage />} />
+        <Route path="customers/:id" element={<CustomerDetails />} />
+        <Route path="register-customer" element={<RegisterCustomer />} />
+      </Route>
 
       <Route element={<ProtectedRoute />}>
         <Route
