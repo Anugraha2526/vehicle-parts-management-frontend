@@ -39,8 +39,13 @@ function validate(fields, isEditMode) {
     if (fields.quantityPurchased === "" || Number(fields.quantityPurchased) < 0) {
       errors.quantityPurchased = "Initial stock must be 0 or more.";
     }
-  } else if (fields.quantityPurchased !== "" && Number(fields.quantityPurchased) < 0) {
-    errors.quantityPurchased = "Quantity to add must be 0 or more.";
+  } else if (fields.quantityPurchased !== "") {
+    const qty = Number(fields.quantityPurchased);
+    if (qty === 0) {
+      errors.quantityPurchased = "Quantity cannot be zero.";
+    } else if (qty < 0 && Math.abs(qty) > (fields._currentStock ?? Infinity)) {
+      errors.quantityPurchased = `Cannot remove more than current stock (${fields._currentStock}).`;
+    }
   }
 
   if (fields.unitCost === "" || Number(fields.unitCost) <= 0) {
@@ -75,8 +80,8 @@ export default function PartForm({ initialData, vendors, onSubmit, onCancel, loa
         partNumber: initialData.partNumber ?? "",
         category: initialData.category ?? "",
         vendorId: initialData.vendorId ?? "",
-        // quantity field represents additional stock to add, not the current total
         quantityPurchased: "",
+        _currentStock: initialData.quantityInStock ?? 0,
         unitCost: String(initialData.unitCost ?? ""),
         sellingPrice: String(initialData.sellingPrice ?? ""),
         description: initialData.description ?? "",
@@ -180,10 +185,9 @@ export default function PartForm({ initialData, vendors, onSubmit, onCancel, loa
           error={errors.vendorId}
           required
         />
-        {/* label and placeholder differ between create and edit to reflect what the field means */}
         <div className="input-group">
           <label htmlFor="quantityPurchased" className="input-label">
-            {isEditMode ? "Quantity to Add" : "Initial Stock"}
+            {isEditMode ? "Manage Qty" : "Initial Stock"}
             {!isEditMode && <span className="input-required" aria-hidden="true">*</span>}
           </label>
           <input
@@ -192,9 +196,9 @@ export default function PartForm({ initialData, vendors, onSubmit, onCancel, loa
             type="number"
             value={fields.quantityPurchased}
             onChange={handleChange}
-            min={0}
+            min={isEditMode ? undefined : 0}
             step={1}
-            placeholder={isEditMode ? "Leave blank to keep current stock" : "e.g. 50"}
+            placeholder={isEditMode ? "Positive to add stock, negative to remove" : "e.g. 50"}
             className={`input-field${errors.quantityPurchased ? " input-field--error" : ""}`}
             aria-invalid={Boolean(errors.quantityPurchased)}
             aria-describedby={errors.quantityPurchased ? "quantityPurchased-error" : undefined}

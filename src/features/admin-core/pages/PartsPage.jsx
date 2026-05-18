@@ -69,9 +69,10 @@ export default function PartsPage() {
       handleCloseModal();
       showNotification("success", "Part saved successfully.");
     } catch (err) {
+      const serverMsg = typeof err?.response?.data === "string" ? err.response.data : null;
       const message =
-        err?.response?.status === 409
-          ? "A part with this part number already exists."
+        err?.response?.status === 409 && serverMsg
+          ? serverMsg
           : "Failed to save part. Please check your inputs.";
       setFormError(message);
     } finally {
