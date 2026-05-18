@@ -122,18 +122,29 @@ a {
 }
 
 .finance-grid--invoice {
-  grid-template-columns: minmax(0, 1fr) 320px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
 }
 
 .finance-main {
   display: grid;
   gap: 16px;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .finance-side {
   display: grid;
   gap: 16px;
   align-content: start;
+  flex: 0 0 320px;
+  max-width: 320px;
+  min-width: 280px;
+}
+
+.finance-side .cs-card {
+  width: 100%;
 }
 
 /* shared card and form primitives */
@@ -276,6 +287,31 @@ a {
   min-width: 720px;
 }
 
+.cs-table--invoice-items {
+  table-layout: fixed;
+  min-width: 980px;
+}
+
+.cs-table--invoice-items col.invoice-col-part {
+  width: 24%;
+}
+
+.cs-table--invoice-items col.invoice-col-qty {
+  width: 19%;
+}
+
+.cs-table--invoice-items col.invoice-col-unit {
+  width: 19%;
+}
+
+.cs-table--invoice-items col.invoice-col-total {
+  width: 24%;
+}
+
+.cs-table--invoice-items col.invoice-col-action {
+  width: 14%;
+}
+
 .cs-table thead th {
   text-align: left;
   color: var(--ink-500);
@@ -305,6 +341,27 @@ a {
 
 .cs-table tbody tr:last-child td {
   border-bottom: none;
+}
+
+.cs-table--invoice-items .cs-input,
+.cs-table--invoice-items .cs-select {
+  min-width: 0;
+}
+
+.cs-line-total-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+  max-width: 0;
+}
+
+.cs-action-cell {
+  white-space: nowrap;
+}
+
+.cs-action-remove-btn {
+  min-width: 88px;
 }
 
 /* summary / report cards */
@@ -525,9 +582,16 @@ a {
 }
 
 /* responsive */
-@media (max-width: 1080px) {
+@media (max-width: 1400px) {
   .finance-grid--invoice {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .finance-side {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: none;
   }
 }
 
