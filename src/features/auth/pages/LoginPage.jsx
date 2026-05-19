@@ -15,15 +15,8 @@ export default function LoginPage() {
     setError('');
     try {
       const response = await api.post('/auth/login', { email, password });
-      
-      // Store user info and update AuthContext state
       login(response);
 
-      // Store token specifically for axiosClient
-      if (response.token) {
-        localStorage.setItem('chitospare_token', response.token);
-      }
-      
       const role = response.role?.toLowerCase() || '';
       if (role === 'customer') {
         navigate(`/my-profile/${response.id}`);

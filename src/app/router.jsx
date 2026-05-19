@@ -61,7 +61,7 @@ export function AppRouter() {
         <Route
           path="/staff"
           element={
-            <RoleBasedRoute allowedRoles={["Staff", "Admin"]}>
+            <RoleBasedRoute allowedRoles={["Admin", "Staff"]}>
               <StaffLayout />
             </RoleBasedRoute>
           }
@@ -71,18 +71,32 @@ export function AppRouter() {
           <Route path="finance/reports" element={<FinancialReportsPage />} />
           <Route path="finance/low-stock" element={<LowStockAlertsPage />} />
           <Route path="sales" element={<SalesDashboardPage />} />
+          <Route path="reminders" element={<OverdueRemindersPage />} />
           <Route path="crm" element={<CustomerListPage />} />
           <Route path="customers" element={<CustomersPage />} />
           <Route path="customers/:id" element={<CustomerDetails />} />
           <Route path="customers/register" element={<RegisterCustomer />} />
         </Route>
 
-        <Route path="/portal" element={<CustomerLayout />}>
+        <Route
+          path="/portal"
+          element={
+            <RoleBasedRoute allowedRoles={["Customer"]}>
+              <CustomerLayout />
+            </RoleBasedRoute>
+          }
+        >
           <Route index element={<CustomerHomePage />} />
         </Route>
 
-        {/* staff-facing customer management pages, require login */}
-        <Route element={<MainLayout />}>
+        {/* staff-facing customer management pages */}
+        <Route
+          element={
+            <RoleBasedRoute allowedRoles={["Admin", "Staff"]}>
+              <MainLayout />
+            </RoleBasedRoute>
+          }
+        >
           <Route path="customers" element={<CustomersPage />} />
           <Route path="customers/:id" element={<CustomerDetails />} />
           <Route path="register-customer" element={<RegisterCustomer />} />
