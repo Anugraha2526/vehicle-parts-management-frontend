@@ -274,8 +274,8 @@ const CustomerProfile = () => {
             <p style={{ color: 'var(--ink-500)', marginTop: '4px' }}>Welcome back, {customer.fullName}</p>
          </div>
          <div style={{ display: 'flex', gap: '10px' }}>
-            <button onClick={handleStartEdit} className="cs-button cs-button--secondary">✏️ Edit My Info</button>
-            <button onClick={() => setIsAddingVehicle(true)} className="cs-button cs-button--primary">🚗 Register New Vehicle</button>
+            <button onClick={handleStartEdit} className="cs-button cs-button--secondary">Edit My Info</button>
+            <button onClick={() => setIsAddingVehicle(true)} className="cs-button cs-button--primary">Register New Vehicle</button>
             <button onClick={() => navigate('/login')} className="cs-button cs-button--ghost" style={{ color: 'var(--err)' }}>Log Out</button>
          </div>
       </div>
