@@ -19,7 +19,7 @@ export default function LoginPage() {
 
       const role = response.role?.toLowerCase() || '';
       if (role === 'customer') {
-        navigate(`/my-profile/${response.id}`);
+        navigate('/portal');
       } else if (role === 'admin') {
         navigate('/admin');
       } else if (role === 'staff') {
