@@ -117,9 +117,8 @@ const PublicRegister = () => {
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-app)', padding: '40px 20px' }}>
       <div className="cs-card" style={{ width: '100%', maxWidth: '640px', padding: '40px' }}>
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-            <div style={{ width: '50px', height: '50px', backgroundColor: 'var(--accent)', borderRadius: '12px', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Fraunces, serif', fontSize: '28px', fontWeight: 700, margin: '0 auto 16px' }}>C</div>
-            <h1 className="page-title" style={{ fontSize: '28px', fontWeight: 700 }}>Join ChitoSpare</h1>
-            <p style={{ color: 'var(--ink-500)', marginTop: '8px' }}>Create your account to manage your vehicles and service history.</p>
+            <h1 className="page-title" style={{ fontSize: '28px', fontWeight: 600, fontFamily: 'Fraunces, serif', color: 'var(--ink-900)' }}>Join ChitoSpare</h1>
+            <p style={{ color: 'var(--ink-500)', marginTop: '8px', fontSize: '14px' }}>Create your account to manage your vehicles and service history.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="cs-form">
@@ -180,7 +179,7 @@ const PublicRegister = () => {
             </div>
           </div>
 
-          <button type="submit" className="cs-button cs-button--primary" style={{ width: '100%', marginTop: '32px', padding: '14px' }}>Create My Account</button>
+          <button type="submit" className="cs-button cs-button--primary" style={{ width: '100%', marginTop: '32px', padding: '10px 16px' }}>Create My Account</button>
           
           <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '14px', color: 'var(--ink-500)' }}>
             Already have an account? <Link to="/login" style={{ color: 'var(--accent)', fontWeight: 600 }}>Login here</Link>
