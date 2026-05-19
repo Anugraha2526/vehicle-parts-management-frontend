@@ -31,10 +31,13 @@ export function useLowStock() {
 
   const threshold = Math.max(1, Math.floor(asNumber(thresholdInput, 10)));
 
-  const fetchAlerts = useCallback(async (scan = true) => {
+  const fetchAlerts = useCallback(async (scan = true, options = {}) => {
+    const { showMessage = false, preserveMessage = false } = options;
     setIsLoading(true);
     setError("");
-    setMessage("");
+    if (!preserveMessage) {
+      setMessage("");
+    }
 
     try {
       const response = await lowStockApi.list({
@@ -46,12 +49,14 @@ export function useLowStock() {
       const normalizedAlerts = toArray(responseData).map(normalizeAlert);
 
       setAlerts(normalizedAlerts);
-      setMessage(
-        getApiMessage(
-          response,
-          scan ? "Low stock scan complete." : "Active low stock alerts loaded."
-        )
-      );
+      if (showMessage) {
+        setMessage(
+          getApiMessage(
+            response,
+            scan ? "Low stock scan complete." : "Existing active alerts reloaded."
+          )
+        );
+      }
     } catch (requestError) {
       setError(getErrorMessage(requestError, "Failed to load low stock alerts."));
       setAlerts([]);
@@ -61,10 +66,24 @@ export function useLowStock() {
   }, [threshold]);
 
   useEffect(() => {
-    void fetchAlerts(true);
+    void fetchAlerts(true, { showMessage: false });
     // Initial scan on first mount only.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!message) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setMessage("");
+    }, 3200);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [message]);
 
   const acknowledgeAlert = useCallback(
     async (alertId) => {
@@ -74,7 +93,7 @@ export function useLowStock() {
       try {
         const response = await lowStockApi.acknowledge(alertId);
         setMessage(getApiMessage(response, "Low stock alert acknowledged."));
-        await fetchAlerts(false);
+        await fetchAlerts(false, { showMessage: false, preserveMessage: true });
       } catch (requestError) {
         setError(getErrorMessage(requestError, "Failed to acknowledge low stock alert."));
       } finally {
@@ -85,11 +104,11 @@ export function useLowStock() {
   );
 
   const refreshActiveAlerts = useCallback(() => {
-    return fetchAlerts(false);
+    return fetchAlerts(false, { showMessage: true });
   }, [fetchAlerts]);
 
   const scanNow = useCallback(() => {
-    return fetchAlerts(true);
+    return fetchAlerts(true, { showMessage: true });
   }, [fetchAlerts]);
 
   const setThreshold = useCallback((value) => {

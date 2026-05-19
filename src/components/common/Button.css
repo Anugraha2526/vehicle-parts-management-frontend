@@ -55,6 +55,18 @@
   background: var(--bg-card-alt);
 }
 
+/* ghost */
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--ink-600);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--ok-soft);
+  color: var(--ok-ink);
+}
+
 /* danger */
 .btn-danger {
   background: var(--err);

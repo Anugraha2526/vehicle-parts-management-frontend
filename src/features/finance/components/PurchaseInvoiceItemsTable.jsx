@@ -73,7 +73,7 @@ export default function PurchaseInvoiceItemsTable({
                   </td>
                   <td>
                     <input
-                      className="cs-input"
+                      className="cs-input cs-input--numeric"
                       type="number"
                       min="1"
                       step="1"
@@ -85,7 +85,7 @@ export default function PurchaseInvoiceItemsTable({
                   </td>
                   <td>
                     <input
-                      className="cs-input"
+                      className="cs-input cs-input--numeric"
                       type="number"
                       min="0"
                       step="0.01"
@@ -99,7 +99,9 @@ export default function PurchaseInvoiceItemsTable({
                     className="cs-mono cs-line-total-cell"
                     title={formatCurrency(lineTotal, "NPR", "en-NP")}
                   >
-                    {formatCurrency(lineTotal, "NPR", "en-NP")}
+                    <span className="cs-line-total-value">
+                      {formatCurrency(lineTotal, "NPR", "en-NP")}
+                    </span>
                   </td>
                   <td className="cs-action-cell">
                     <Button
