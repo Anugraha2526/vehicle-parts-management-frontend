@@ -301,15 +301,15 @@ a {
 }
 
 .cs-table--invoice-items col.invoice-col-qty {
-  width: 19%;
+  width: 18%;
 }
 
 .cs-table--invoice-items col.invoice-col-unit {
-  width: 19%;
+  width: 18%;
 }
 
 .cs-table--invoice-items col.invoice-col-total {
-  width: 24%;
+  width: 26%;
 }
 
 .cs-table--invoice-items col.invoice-col-action {
@@ -352,16 +352,32 @@ a {
   min-width: 0;
 }
 
+.cs-input--numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.cs-input--numeric[type="number"]::-webkit-outer-spin-button,
+.cs-input--numeric[type="number"]::-webkit-inner-spin-button {
+  margin: 0;
+}
+
 .cs-line-total-cell {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  padding-right: 18px;
+}
+
+.cs-line-total-value {
+  display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-variant-numeric: tabular-nums;
-  max-width: 0;
 }
 
 .cs-action-cell {
   white-space: nowrap;
+  text-align: right;
 }
 
 .cs-action-remove-btn {
@@ -675,6 +691,71 @@ a {
 
 .report-transactions-table {
   min-width: 980px;
+}
+
+.report-transactions-footer {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.report-transactions-meta {
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 0.8rem;
+}
+
+.report-transactions-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.report-page-size-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-600);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.report-page-size-select {
+  min-height: 34px;
+  padding: 6px 10px;
+  min-width: 72px;
+}
+
+.report-page-btn {
+  border: 1px solid var(--line);
+  background: var(--bg-card);
+  color: var(--ink-700);
+  border-radius: 8px;
+  padding: 7px 11px;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.report-page-btn:hover:not(:disabled) {
+  border-color: var(--line-strong);
+  background: var(--bg-card-alt);
+}
+
+.report-page-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.report-page-indicator {
+  color: var(--ink-600);
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 .report-tx-id {
@@ -1044,6 +1125,11 @@ a {
 
   .report-actions {
     justify-content: flex-start;
+  }
+
+  .report-transactions-footer {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .report-period-field {

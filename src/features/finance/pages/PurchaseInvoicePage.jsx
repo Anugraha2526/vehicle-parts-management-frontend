@@ -40,7 +40,11 @@ export default function PurchaseInvoicePage() {
 
       {referencesError ? <Alert variant="warning">{referencesError}</Alert> : null}
       {formError ? <Alert variant="error">{formError}</Alert> : null}
-      {successMessage ? <Alert variant="success">{successMessage}</Alert> : null}
+      {successMessage ? (
+        <div className="ui-toast-layer" role="status" aria-live="polite">
+          <Alert variant="success">{successMessage}</Alert>
+        </div>
+      ) : null}
 
       <div className="finance-grid finance-grid--invoice">
         <div className="finance-main">

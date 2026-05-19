@@ -122,8 +122,8 @@ export default function AdminDashboardRevenueComparisonChart({
             </div>
             <div className="admin-comparison-foot">
               <strong>{entry.label}</strong>
-              <span>S {valueLabel(mode, entry.salesValue)}</span>
-              <span>P {valueLabel(mode, entry.purchaseValue)}</span>
+              <span>Sales: {valueLabel(mode, entry.salesValue)}</span>
+              <span>Purchases: {valueLabel(mode, entry.purchaseValue)}</span>
             </div>
           </article>
         ))}
