@@ -35,13 +35,6 @@ export function AppRouter() {
       <Route path="/signup" element={<PublicRegister />} />
       <Route path="/my-profile/:id" element={<CustomerProfile />} />
 
-      {/* pathless layout wraps the staff-facing customer management pages */}
-      <Route element={<MainLayout />}>
-        <Route path="customers" element={<CustomersPage />} />
-        <Route path="customers/:id" element={<CustomerDetails />} />
-        <Route path="register-customer" element={<RegisterCustomer />} />
-      </Route>
-
       <Route element={<ProtectedRoute />}>
         <Route
           path="/admin"
@@ -73,6 +66,13 @@ export function AppRouter() {
 
         <Route path="/portal" element={<CustomerLayout />}>
           <Route index element={<CustomerHomePage />} />
+        </Route>
+
+        {/* staff-facing customer management pages, require login */}
+        <Route element={<MainLayout />}>
+          <Route path="customers" element={<CustomersPage />} />
+          <Route path="customers/:id" element={<CustomerDetails />} />
+          <Route path="register-customer" element={<RegisterCustomer />} />
         </Route>
       </Route>
 
