@@ -277,11 +277,11 @@ const CustomerProfile = () => {
             <button onClick={handleStartEdit} className="cs-button cs-button--secondary">Edit My Info</button>
             <button onClick={() => setIsAddingVehicle(true)} className="cs-button cs-button--primary">Register New Vehicle</button>
             <button onClick={() => navigate('/login')} className="cs-button cs-button--ghost" style={{ color: 'var(--err)' }}>Log Out</button>
-         </div>
-      </div>
+          </div>
+       </div>
 
-      {/* Edit Profile Modal */}
-      {isEditing && (
+       {/* Edit Profile Modal */}
+       {isEditing && (
         <div style={{ 
           position: 'fixed', 
           top: 0, 
@@ -305,22 +305,22 @@ const CustomerProfile = () => {
               {/* Profile Details */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--ink-900)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  👤 Contact Details
+                  Contact Details
                 </h3>
                 <div className="cs-field">
                   <label>Full Name</label>
                   <input type="text" className="cs-input" style={{ borderColor: errors.fullName ? 'var(--err)' : 'var(--line)' }} value={editForm.fullName} onChange={e => setEditForm({...editForm, fullName: e.target.value})} required />
-                  {errors.fullName && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.fullName}</span>}
+                  {errors.fullName && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.fullName}</span>}
                 </div>
                 <div className="cs-field">
                   <label>Phone Number</label>
                   <input type="text" className="cs-input" style={{ borderColor: errors.phoneNumber ? 'var(--err)' : 'var(--line)' }} value={editForm.phoneNumber} onChange={e => setEditForm({...editForm, phoneNumber: e.target.value})} required />
-                  {errors.phoneNumber && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.phoneNumber}</span>}
+                  {errors.phoneNumber && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.phoneNumber}</span>}
                 </div>
                 <div className="cs-field">
                   <label>Residential Address</label>
                   <input type="text" className="cs-input" style={{ borderColor: errors.address ? 'var(--err)' : 'var(--line)' }} value={editForm.address} onChange={e => setEditForm({...editForm, address: e.target.value})} required />
-                  {errors.address && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.address}</span>}
+                  {errors.address && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.address}</span>}
                 </div>
               </div>
 
@@ -328,7 +328,7 @@ const CustomerProfile = () => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--ink-900)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    🚗 My Vehicles
+                    My Vehicles
                   </h3>
                   <button 
                     type="button" 
@@ -336,7 +336,7 @@ const CustomerProfile = () => {
                     className="cs-button cs-button--secondary" 
                     style={{ padding: '6px 12px', fontSize: '12px' }}
                   >
-                    ➕ Register Another
+                    Register Another
                   </button>
                 </div>
 
@@ -352,7 +352,7 @@ const CustomerProfile = () => {
                             style={{ position: 'absolute', top: '12px', right: '12px', background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '16px', color: 'var(--err)', padding: '4px' }}
                             title="Remove Vehicle"
                           >
-                            🗑️
+                            ✕
                           </button>
                           
                           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '8px' }}>
@@ -367,7 +367,7 @@ const CustomerProfile = () => {
                                 placeholder="e.g. BA 2 PA 1234"
                                 required 
                               />
-                              {vErr.vehicleNumber && <span style={{ color: 'var(--err)', fontSize: '11px', marginTop: '2px' }}>⚠️ {vErr.vehicleNumber}</span>}
+                              {vErr.vehicleNumber && <span style={{ color: 'var(--err)', fontSize: '11px', marginTop: '2px' }}>{vErr.vehicleNumber}</span>}
                             </div>
                             <div className="cs-field">
                               <label>Make</label>
@@ -380,7 +380,7 @@ const CustomerProfile = () => {
                                 placeholder="e.g. Toyota"
                                 required 
                               />
-                              {vErr.make && <span style={{ color: 'var(--err)', fontSize: '11px', marginTop: '2px' }}>⚠️ {vErr.make}</span>}
+                              {vErr.make && <span style={{ color: 'var(--err)', fontSize: '11px', marginTop: '2px' }}>{vErr.make}</span>}
                             </div>
                             <div className="cs-field">
                               <label>Model</label>
@@ -393,7 +393,7 @@ const CustomerProfile = () => {
                                 placeholder="e.g. Corolla"
                                 required 
                               />
-                              {vErr.model && <span style={{ color: 'var(--err)', fontSize: '11px', marginTop: '2px' }}>⚠️ {vErr.model}</span>}
+                              {vErr.model && <span style={{ color: 'var(--err)', fontSize: '11px', marginTop: '2px' }}>{vErr.model}</span>}
                             </div>
                             <div className="cs-field" style={{ gridColumn: 'span 2' }}>
                               <label>Year</label>
@@ -406,7 +406,7 @@ const CustomerProfile = () => {
                                 placeholder="e.g. 2022"
                                 required 
                               />
-                              {vErr.year && <span style={{ color: 'var(--err)', fontSize: '11px', marginTop: '2px' }}>⚠️ {vErr.year}</span>}
+                              {vErr.year && <span style={{ color: 'var(--err)', fontSize: '11px', marginTop: '2px' }}>{vErr.year}</span>}
                             </div>
                           </div>
                         </div>
@@ -427,32 +427,32 @@ const CustomerProfile = () => {
             </div>
           </form>
         </div>
-      )}
+       )}
 
-      {/* Add Vehicle Modal */}
-      {isAddingVehicle && (
+       {/* Add Vehicle Modal */}
+       {isAddingVehicle && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'var(--cs-overlay)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
           <form onSubmit={handleAddVehicle} className="cs-card cs-form" style={{ width: '400px' }}>
             <h2 className="page-title" style={{ fontSize: '20px', marginBottom: '16px' }}>Register New Vehicle</h2>
             <div className="cs-field">
               <label>Vehicle Number</label>
               <input type="text" className="cs-input" style={{ borderColor: errors.addVehicleNumber ? 'var(--err)' : 'var(--line)' }} value={vehicleForm.vehicleNumber} onChange={e => setVehicleForm({...vehicleForm, vehicleNumber: e.target.value})} required />
-              {errors.addVehicleNumber && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.addVehicleNumber}</span>}
+              {errors.addVehicleNumber && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.addVehicleNumber}</span>}
             </div>
             <div className="cs-field">
               <label>Make</label>
               <input type="text" className="cs-input" style={{ borderColor: errors.addMake ? 'var(--err)' : 'var(--line)' }} value={vehicleForm.make} onChange={e => setVehicleForm({...vehicleForm, make: e.target.value})} required />
-              {errors.addMake && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.addMake}</span>}
+              {errors.addMake && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.addMake}</span>}
             </div>
             <div className="cs-field">
               <label>Model</label>
               <input type="text" className="cs-input" style={{ borderColor: errors.addModel ? 'var(--err)' : 'var(--line)' }} value={vehicleForm.model} onChange={e => setVehicleForm({...vehicleForm, model: e.target.value})} required />
-              {errors.addModel && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.addModel}</span>}
+              {errors.addModel && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.addModel}</span>}
             </div>
             <div className="cs-field">
               <label>Year</label>
               <input type="number" className="cs-input" style={{ borderColor: errors.addYear ? 'var(--err)' : 'var(--line)' }} value={vehicleForm.year} onChange={e => setVehicleForm({...vehicleForm, year: parseInt(e.target.value) || new Date().getFullYear()})} required />
-              {errors.addYear && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.addYear}</span>}
+              {errors.addYear && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.addYear}</span>}
             </div>
             <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
               <button type="submit" className="cs-button cs-button--primary">Add Vehicle</button>
@@ -460,7 +460,7 @@ const CustomerProfile = () => {
             </div>
           </form>
         </div>
-      )}
+       )}
 
       <div className="cs-form-grid">
         <div className="cs-card">

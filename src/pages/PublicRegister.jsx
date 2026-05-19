@@ -127,30 +127,30 @@ const PublicRegister = () => {
             <div className="cs-field">
               <label>Full Name</label>
               <input type="text" name="fullName" className="cs-input" style={{ borderColor: errors.fullName ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-              {errors.fullName && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.fullName}</span>}
+              {errors.fullName && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.fullName}</span>}
             </div>
             <div className="cs-field">
               <label>Email Address</label>
               <input type="email" name="email" className="cs-input" style={{ borderColor: errors.email ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-              {errors.email && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.email}</span>}
+              {errors.email && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.email}</span>}
             </div>
           </div>
           <div className="cs-form-grid" style={{ marginTop: '16px' }}>
             <div className="cs-field">
               <label>Phone Number</label>
               <input type="text" name="phoneNumber" className="cs-input" style={{ borderColor: errors.phoneNumber ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-              {errors.phoneNumber && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.phoneNumber}</span>}
+              {errors.phoneNumber && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.phoneNumber}</span>}
             </div>
             <div className="cs-field">
               <label>Password</label>
               <input type="password" name="password" className="cs-input" style={{ borderColor: errors.password ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-              {errors.password && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.password}</span>}
+              {errors.password && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.password}</span>}
             </div>
           </div>
           <div className="cs-field" style={{ marginTop: '16px' }}>
             <label>Residential Address</label>
             <input type="text" name="address" className="cs-input" style={{ borderColor: errors.address ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-            {errors.address && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.address}</span>}
+            {errors.address && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.address}</span>}
           </div>
 
           <h2 style={{ fontSize: '18px', fontFamily: 'Fraunces, serif', fontWeight: 600, marginTop: '32px', marginBottom: '16px', borderBottom: '1px solid var(--line-soft)', paddingBottom: '12px' }}>Primary Vehicle Details</h2>
@@ -158,24 +158,24 @@ const PublicRegister = () => {
             <div className="cs-field">
               <label>Vehicle Number</label>
               <input type="text" name="vehicleNumber" className="cs-input" placeholder="e.g. BA-1-PA-1234" style={{ borderColor: errors.vehicleNumber ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-              {errors.vehicleNumber && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.vehicleNumber}</span>}
+              {errors.vehicleNumber && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.vehicleNumber}</span>}
             </div>
             <div className="cs-field">
               <label>Make</label>
               <input type="text" name="make" className="cs-input" placeholder="e.g. Honda" style={{ borderColor: errors.make ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-              {errors.make && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.make}</span>}
+              {errors.make && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.make}</span>}
             </div>
           </div>
           <div className="cs-form-grid" style={{ marginTop: '16px' }}>
             <div className="cs-field">
               <label>Model</label>
               <input type="text" name="model" className="cs-input" placeholder="e.g. Civic" style={{ borderColor: errors.model ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-              {errors.model && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.model}</span>}
+              {errors.model && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.model}</span>}
             </div>
             <div className="cs-field">
               <label>Year</label>
               <input type="number" name="year" className="cs-input" defaultValue={2024} style={{ borderColor: errors.year ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-              {errors.year && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.year}</span>}
+              {errors.year && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.year}</span>}
             </div>
           </div>
 

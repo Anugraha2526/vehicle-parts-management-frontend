@@ -53,7 +53,7 @@ export default function LoginPage() {
               marginBottom: '16px',
               border: '1px solid rgba(219, 75, 75, 0.15)'
             }}>
-              ⚠️ {error}
+              {error}
             </div>
           )}
           <div className="cs-field">

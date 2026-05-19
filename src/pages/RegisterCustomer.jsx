@@ -137,27 +137,27 @@ const RegisterCustomer = () => {
         <h2 style={{ fontSize: '18px', fontFamily: 'Fraunces, serif', fontWeight: 600, marginBottom: '20px', borderBottom: '1px solid var(--line-soft)', paddingBottom: '12px' }}>Personal Details</h2>
         <div className="vendor-form-fields">
           <Input label="Full Name" name="fullName" value={formData.fullName} style={{ borderColor: errors.fullName ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-          {errors.fullName && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.fullName}</span>}
+          {errors.fullName && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.fullName}</span>}
           <Input label="Phone Number" name="phoneNumber" value={formData.phoneNumber} style={{ borderColor: errors.phoneNumber ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-          {errors.phoneNumber && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.phoneNumber}</span>}
+          {errors.phoneNumber && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.phoneNumber}</span>}
           <Input label="Email Address" type="email" name="email" value={formData.email} style={{ borderColor: errors.email ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-          {errors.email && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.email}</span>}
+          {errors.email && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.email}</span>}
           <Input label="Address" name="address" value={formData.address} style={{ borderColor: errors.address ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-          {errors.address && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.address}</span>}
+          {errors.address && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.address}</span>}
           <Input label="Initial Password" type="password" name="password" value={formData.password} style={{ borderColor: errors.password ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-          {errors.password && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.password}</span>}
+          {errors.password && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.password}</span>}
         </div>
 
         <h2 style={{ fontSize: '18px', fontFamily: 'Fraunces, serif', fontWeight: 600, marginTop: '32px', marginBottom: '20px', borderBottom: '1px solid var(--line-soft)', paddingBottom: '12px' }}>Vehicle Details</h2>
         <div className="vendor-form-fields">
           <Input label="Vehicle Number" name="vehicleNumber" placeholder="e.g. BA-1-PA-1234" value={formData.vehicleNumber} style={{ borderColor: errors.vehicleNumber ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-          {errors.vehicleNumber && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.vehicleNumber}</span>}
+          {errors.vehicleNumber && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.vehicleNumber}</span>}
           <Input label="Company" name="make" placeholder="e.g. Honda" value={formData.make} style={{ borderColor: errors.make ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-          {errors.make && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.make}</span>}
+          {errors.make && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.make}</span>}
           <Input label="Model" name="model" value={formData.model} style={{ borderColor: errors.model ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-          {errors.model && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.model}</span>}
+          {errors.model && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.model}</span>}
           <Input label="Year" type="number" name="year" value={formData.year} style={{ borderColor: errors.year ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
-          {errors.year && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.year}</span>}
+          {errors.year && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>{errors.year}</span>}
         </div>
 
         <div className="vendor-form-actions" style={{ marginTop: '32px' }}>
