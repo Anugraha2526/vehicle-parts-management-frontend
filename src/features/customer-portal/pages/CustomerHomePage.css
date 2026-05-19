@@ -1,0 +1,148 @@
+.ch-page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* hero section */
+.ch-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* pill badge above the title, matches landing-badge style */
+.ch-badge {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.ch-hero-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 700;
+  color: var(--ink-900);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+/* customer name highlighted in brand orange to personalise the greeting */
+.ch-hero-accent {
+  color: var(--accent);
+}
+
+.ch-hero-desc {
+  font-size: 15px;
+  color: var(--ink-600);
+  line-height: 1.75;
+  max-width: 560px;
+  margin: 0;
+}
+
+/* three-column card grid, wraps to two on smaller screens */
+.ch-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* each card lifts slightly on hover to signal it is interactive */
+.ch-card {
+  border: 1px solid var(--line-soft);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.ch-card:hover {
+  box-shadow: 0 8px 28px rgba(44, 42, 38, 0.08);
+  border-color: var(--line);
+  transform: translateY(-2px);
+}
+
+/* sunk header strip matches the table-header and portal-info-card pattern */
+.ch-card-header {
+  background: var(--bg-sunk);
+  border-bottom: 1px solid var(--line-soft);
+  padding: 16px 20px;
+}
+
+.ch-card-title {
+  font-family: 'Fraunces', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.ch-card-body {
+  background: var(--bg-card);
+  padding: 18px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.ch-card-desc {
+  font-size: 14px;
+  color: var(--ink-500);
+  line-height: 1.7;
+  margin: 0;
+  flex: 1;
+}
+
+/* outline button that fills orange on hover to draw the eye */
+.ch-card-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--ink-700);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  width: fit-content;
+}
+
+.ch-card-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* orange left border on stat cards ties them to the brand accent */
+.ch-page .portal-stat-card {
+  border-left: 3px solid var(--accent);
+  background: var(--bg-sunk);
+}
+
+.ch-page .portal-stat-value {
+  color: var(--accent);
+}
+
+@media (max-width: 900px) {
+  .ch-cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .ch-cards { grid-template-columns: 1fr; }
+}

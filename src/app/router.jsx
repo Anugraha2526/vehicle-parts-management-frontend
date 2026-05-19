@@ -23,6 +23,7 @@ import CustomerAppointmentsPage from "../features/customer-portal/pages/Customer
 import CustomerReviewsPage from "../features/customer-portal/pages/CustomerReviewsPage";
 import CustomerPartRequestsPage from "../features/customer-portal/pages/CustomerPartRequestsPage";
 import CustomerServiceHistoryPage from "../features/customer-portal/pages/CustomerServiceHistoryPage";
+import CustomerHomePage from "../features/customer-portal/pages/CustomerHomePage";
 
 import PublicRegister from "../pages/PublicRegister";
 import CustomerProfile from "../pages/CustomerProfile";
@@ -92,7 +93,7 @@ export function AppRouter() {
             </RoleBasedRoute>
           }
         >
-          <Route index element={<Navigate to="profile" replace />} />
+          <Route index element={<CustomerHomePage />} />
           <Route path="profile" element={<CustomerProfile />} />
           <Route path="appointments" element={<CustomerAppointmentsPage />} />
           <Route path="service-history" element={<CustomerServiceHistoryPage />} />

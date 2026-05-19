@@ -3,6 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 import "./Sidebar.css";
 
 const NAV_ITEMS = [
+  { to: "/portal", label: "Home", icon: "HM", end: true },
   { to: "/portal/profile", label: "My Profile", icon: "PR" },
   { to: "/portal/appointments", label: "My Appointments", icon: "AP" },
   { to: "/portal/service-history", label: "Service History", icon: "SH" },
@@ -31,6 +32,7 @@ export default function CustomerSidebar() {
           <NavLink
             key={item.to}
             to={item.to}
+            end={item.end}
             className={({ isActive }) =>
               `sidebar-nav-item${isActive ? " sidebar-nav-item--active" : ""}`
             }
