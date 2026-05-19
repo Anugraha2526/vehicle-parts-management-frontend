@@ -6,7 +6,7 @@ const NAV_ITEMS = [
   { to: "/staff", label: "Dashboard", icon: "DB", end: true },
   { to: "/staff/sales", label: "Sales and Invoices", icon: "SD" },
   { to: "/staff/customers", label: "Customer Management", icon: "CM" },
-  { to: "/staff/finance/reports", label: "Reports", icon: "FR" },
+  { to: "/staff/reports", label: "Reports", icon: "FR" },
 ];
 
 export default function StaffSidebar() {

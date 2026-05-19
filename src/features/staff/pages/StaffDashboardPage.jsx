@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { api } from "../../../services/api";
 import { Link } from "react-router-dom";
+import PageHeader from "../../../components/ui/PageHeader";
 import {
   BarChart,
   Bar,
@@ -11,11 +12,8 @@ import {
   ResponsiveContainer,
   LineChart,
   Line,
-  PieChart,
-  Pie,
-  Cell
 } from "recharts";
-import "../../admin-core/pages/AdminDashboard.css"; // Reuse existing css
+import "../../admin-core/pages/AdminDashboard.css";
 
 export default function StaffDashboardPage() {
   const [stats, setStats] = useState(null);
@@ -37,12 +35,10 @@ export default function StaffDashboardPage() {
 
   return (
     <div className="admin-dashboard">
-      <div className="admin-dashboard-header">
-        <h1 className="admin-dashboard-title">Staff Dashboard</h1>
-        <p className="admin-dashboard-subtitle">
-          Overview of key metrics and recent sales activity.
-        </p>
-      </div>
+      <PageHeader 
+        title="Staff Dashboard" 
+        subtitle="Overview of key metrics and recent sales activity." 
+      />
       
       {/* Quick Action Links */}
       <div style={{ display: 'flex', gap: '12px' }}>
@@ -50,25 +46,25 @@ export default function StaffDashboardPage() {
         <Link to="/staff/customers/register" className="btn btn-secondary btn-md">Register Customer</Link>
       </div>
 
-      <div className="admin-dashboard-grid">
-        <div className="admin-dashboard-card">
-          <div className="admin-dashboard-card-label">Total Customers</div>
-          <p style={{ fontSize: '24px', fontWeight: 700, margin: '8px 0 0 0', color: 'var(--ink-900)' }}>{stats?.totalCustomers || 0}</p>
+      <div className="admin-kpi-grid">
+        <div className="admin-kpi-card">
+          <p className="admin-kpi-label">Total Customers</p>
+          <p className="admin-kpi-value">{stats?.totalCustomers || 0}</p>
         </div>
-        <div className="admin-dashboard-card">
-          <div className="admin-dashboard-card-label">Total Vehicles</div>
-          <p style={{ fontSize: '24px', fontWeight: 700, margin: '8px 0 0 0', color: 'var(--ink-900)' }}>{stats?.totalVehicles || 0}</p>
+        <div className="admin-kpi-card">
+          <p className="admin-kpi-label">Total Vehicles</p>
+          <p className="admin-kpi-value">{stats?.totalVehicles || 0}</p>
         </div>
-        <div className="admin-dashboard-card">
-          <div className="admin-dashboard-card-label">Sales Invoices</div>
-          <p style={{ fontSize: '24px', fontWeight: 700, margin: '8px 0 0 0', color: 'var(--ink-900)' }}>{stats?.totalSalesInvoices || 0}</p>
+        <div className="admin-kpi-card">
+          <p className="admin-kpi-label">Sales Invoices</p>
+          <p className="admin-kpi-value">{stats?.totalSalesInvoices || 0}</p>
         </div>
       </div>
 
       {/* Charts Section */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', marginTop: '24px' }}>
         <div className="cs-card" style={{ padding: '24px' }}>
-          <h3 className="admin-dashboard-title" style={{ marginBottom: '24px', fontSize: '18px', color: 'var(--ink-900)' }}>Weekly Sales Performance</h3>
+          <h3 style={{ marginBottom: '24px', fontSize: '18px', color: 'var(--ink-900)', fontFamily: '"Fraunces", serif', fontWeight: 600 }}>Weekly Sales Performance</h3>
           {loading ? (
              <div style={{ height: '250px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--ink-500)' }}>Loading chart data...</div>
           ) : (
@@ -90,7 +86,7 @@ export default function StaffDashboardPage() {
         </div>
 
         <div className="cs-card" style={{ padding: '24px' }}>
-          <h3 className="admin-dashboard-title" style={{ marginBottom: '24px', fontSize: '18px', color: 'var(--ink-900)' }}>Sales Trend (Line)</h3>
+          <h3 style={{ marginBottom: '24px', fontSize: '18px', color: 'var(--ink-900)', fontFamily: '"Fraunces", serif', fontWeight: 600 }}>Sales Trend (Line)</h3>
           {loading ? (
              <div style={{ height: '250px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--ink-500)' }}>Loading chart data...</div>
           ) : (
@@ -111,7 +107,7 @@ export default function StaffDashboardPage() {
         </div>
 
         <div className="cs-card" style={{ padding: '24px' }}>
-          <h3 className="admin-dashboard-title" style={{ marginBottom: '24px', fontSize: '18px', color: 'var(--ink-900)' }}>System Overview</h3>
+          <h3 style={{ marginBottom: '24px', fontSize: '18px', color: 'var(--ink-900)', fontFamily: '"Fraunces", serif', fontWeight: 600 }}>System Overview</h3>
           {loading ? (
              <div style={{ height: '250px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--ink-500)' }}>Loading chart data...</div>
           ) : (
