@@ -4,15 +4,18 @@ import Select from "../../../components/common/Select";
 import Button from "../../../components/common/Button";
 import "./StaffForm.css";
 
+// values match the C# UserRole enum: Admin = 0, Staff = 1
 const ROLE_OPTIONS = [
-  { value: 1, label: "Admin" },
-  { value: 2, label: "Staff" },
+  { value: "0", label: "Admin" },
+  { value: "1", label: "Staff" },
 ];
 
 const EMPTY_FIELDS = {
   fullName: "",
   email: "",
   password: "",
+  phoneNumber: "",
+  address: "",
   role: "",
   isActive: true,
 };
@@ -20,23 +23,48 @@ const EMPTY_FIELDS = {
 function validate(fields, isEditMode) {
   const errors = {};
 
-  if (!fields.fullName.trim() || fields.fullName.trim().length < 2) {
-    errors.fullName = "Full name is required (minimum 2 characters).";
+  const nameWords = fields.fullName.trim().split(/\s+/).filter(Boolean);
+  if (nameWords.length < 2) {
+    errors.fullName = "Full name must be at least two words (e.g. Aarav Sharma).";
   }
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!fields.email.trim() || !emailPattern.test(fields.email)) {
-    errors.email = "A valid email address is required.";
+  if (!fields.email.trim()) {
+    errors.email = "Email address is required.";
+  } else if (!emailPattern.test(fields.email.trim())) {
+    errors.email = "Enter a valid email address (e.g. aarav@chitospare.com).";
   }
 
   if (!isEditMode && !fields.password) {
     errors.password = "Password is required.";
-  } else if (fields.password && fields.password.length < 8) {
-    errors.password = "Password must be at least 8 characters.";
+  } else if (fields.password) {
+    if (fields.password.length < 8) {
+      errors.password = "Password must be at least 8 characters long.";
+    } else if (!/[A-Z]/.test(fields.password)) {
+      errors.password = "Password must include at least one uppercase letter (A–Z).";
+    } else if (!/[a-z]/.test(fields.password)) {
+      errors.password = "Password must include at least one lowercase letter (a–z).";
+    } else if (!/[0-9]/.test(fields.password)) {
+      errors.password = "Password must include at least one number (0–9).";
+    } else if (!/[^A-Za-z0-9]/.test(fields.password)) {
+      errors.password = "Password must include at least one special character (e.g. !@#$%).";
+    }
   }
 
-  if (!fields.role) {
-    errors.role = "Role is required.";
+  if (fields.phoneNumber.trim()) {
+    const digits = fields.phoneNumber.replace(/[\s\-().+]/g, "");
+    if (!/^\d+$/.test(digits) || digits.length !== 10) {
+      errors.phoneNumber = "Phone number must be exactly 10 digits (e.g. 9841000000).";
+    }
+  }
+
+  if (fields.address.trim() && fields.address.trim().length < 5) {
+    errors.address = "Address must be at least 5 characters if provided (e.g. Kathmandu, Nepal).";
+  }
+
+  // role is only required when editing (to allow promotion/demotion)
+  if (isEditMode && !fields.role) {
+    errors.role = "Please select a role for this staff member.";
   }
 
   return errors;
@@ -54,7 +82,9 @@ export default function StaffForm({ initialData, onSubmit, onCancel, loading, su
         fullName: initialData.fullName ?? "",
         email: initialData.email ?? "",
         password: "",
-        role: initialData.role ?? "",
+        phoneNumber: initialData.phoneNumber ?? "",
+        address: initialData.address ?? "",
+        role: initialData.role === "Admin" ? "0" : initialData.role === "Staff" ? "1" : "",
         isActive: initialData.isActive ?? true,
       });
     } else {
@@ -83,11 +113,14 @@ export default function StaffForm({ initialData, onSubmit, onCancel, loading, su
     const payload = {
       fullName: fields.fullName.trim(),
       email: fields.email.trim(),
-      role: Number(fields.role),
-      isActive: fields.isActive,
+      phoneNumber: fields.phoneNumber.trim() || null,
+      address: fields.address.trim() || null,
     };
-    if (fields.password) {
-      payload.password = fields.password;
+
+    if (fields.password) payload.password = fields.password;
+    if (isEditMode) {
+      payload.role = parseInt(fields.role, 10);
+      payload.isActive = fields.isActive;
     }
 
     onSubmit(payload);
@@ -120,7 +153,7 @@ export default function StaffForm({ initialData, onSubmit, onCancel, loading, su
           placeholder="e.g. aarav@chitospare.com"
           required
         />
-        {/* password field is optional on edit mode */}
+        {/* password is optional on edit, required on add */}
         <Input
           label={isEditMode ? "New Password (optional)" : "Password"}
           name="password"
@@ -131,16 +164,38 @@ export default function StaffForm({ initialData, onSubmit, onCancel, loading, su
           placeholder={isEditMode ? "Leave blank to keep current" : "Min. 8 characters"}
           required={!isEditMode}
         />
-        <Select
-          label="Role"
-          name="role"
-          value={fields.role}
+        <Input
+          label="Phone Number (optional)"
+          name="phoneNumber"
+          type="tel"
+          value={fields.phoneNumber}
           onChange={handleChange}
-          options={ROLE_OPTIONS}
-          error={errors.role}
-          required
+          error={errors.phoneNumber}
+          placeholder="e.g. 9841000000"
+          maxLength={20}
         />
-        {/* only show active toggle when editing an existing staff member */}
+        <Input
+          label="Address (optional)"
+          name="address"
+          value={fields.address}
+          onChange={handleChange}
+          error={errors.address}
+          placeholder="e.g. Kathmandu, Nepal"
+          maxLength={300}
+        />
+        {/* role selector only shown in edit mode for promoting or demoting staff */}
+        {isEditMode && (
+          <Select
+            label="Role"
+            name="role"
+            value={fields.role}
+            onChange={handleChange}
+            options={ROLE_OPTIONS}
+            error={errors.role}
+            required
+          />
+        )}
+        {/* active toggle only shown when editing an existing staff member */}
         {isEditMode && (
           <div className="staff-form-toggle">
             <label className="staff-form-toggle-label">

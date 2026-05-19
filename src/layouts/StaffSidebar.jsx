@@ -1,19 +1,17 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import "./Sidebar.css";
+import "./Sidebar.css"; // Reuse existing Sidebar styling
 
 const NAV_ITEMS = [
-  { to: "/admin", label: "Dashboard", icon: "DB", end: true },
-  { to: "/admin/staff", label: "Staff", icon: "ST" },
-  { to: "/admin/vendors", label: "Vendors", icon: "VN" },
-  { to: "/admin/parts", label: "Parts & Inventory", icon: "PT" },
-  { to: "/admin/finance/purchase-invoices", label: "Purchase Invoices", icon: "PI" },
-  { to: "/admin/finance/reports", label: "Financial Reports", icon: "FR" },
-  { to: "/admin/finance/low-stock", label: "Low Stock Alerts", icon: "LS" },
-  { to: "/admin/reminders", label: "Credit Reminders", icon: "CR" },
+  { to: "/staff", label: "Dashboard", icon: "DB", end: true },
+  { to: "/staff/sales", label: "Sales & Invoices", icon: "SD" },
+  { to: "/customers", label: "Customers & Search", icon: "👥" },
+  { to: "/register-customer", label: "Register Customer", icon: "➕" },
+  { to: "/staff/reminders", label: "Pending Credits", icon: "CR" },
+  { to: "/staff/finance/reports", label: "Reports", icon: "FR" },
 ];
 
-export default function Sidebar() {
+export default function StaffSidebar() {
   const { user, logout } = useAuth();
 
   const initials = user?.fullName
@@ -23,13 +21,13 @@ export default function Sidebar() {
         .join("")
         .slice(0, 2)
         .toUpperCase()
-    : (user?.role?.[0] ?? "A").toUpperCase();
+    : (user?.role?.[0] ?? "S").toUpperCase();
 
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">ChitoSpare</div>
 
-      <nav className="sidebar-nav" aria-label="Admin navigation">
+      <nav className="sidebar-nav" aria-label="Staff navigation">
         {NAV_ITEMS.map((item) => (
           <NavLink
             key={item.to}
@@ -53,8 +51,8 @@ export default function Sidebar() {
             {initials}
           </div>
           <div className="sidebar-user-info">
-            <span className="sidebar-user-name">{user?.fullName ?? user?.role ?? "Admin"}</span>
-            <span className="sidebar-user-role">{user?.role ?? "Admin"}</span>
+            <span className="sidebar-user-name">{user?.fullName ?? user?.role ?? "Staff"}</span>
+            <span className="sidebar-user-role">{user?.role ?? "Staff"}</span>
           </div>
           <button
             className="sidebar-logout"

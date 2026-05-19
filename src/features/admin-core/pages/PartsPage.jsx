@@ -29,7 +29,7 @@ export default function PartsPage() {
   useEffect(() => {
     vendorsForPartsApi.getAll()
       .then((res) => setVendors(res.data))
-      .catch(() => {});
+      .catch(() => showNotification("error", "Could not load vendor list. Please refresh the page."));
   }, []);
 
   function showNotification(type, message) {
@@ -69,10 +69,22 @@ export default function PartsPage() {
       handleCloseModal();
       showNotification("success", "Part saved successfully.");
     } catch (err) {
-      const message =
-        err?.response?.status === 409
-          ? "A part with this part number already exists."
-          : "Failed to save part. Please check your inputs.";
+      const status = err?.response?.status;
+      const data = err?.response?.data;
+      const serverMsg = typeof data === "string" && data.trim()
+        ? data.trim()
+        : (data?.errors ? Object.values(data.errors).flat()[0] : null)
+          ?? data?.title
+          ?? null;
+
+      let message;
+      if ((status === 409 || status === 400) && serverMsg) {
+        message = serverMsg;
+      } else if (status === 500) {
+        message = "A server error occurred. Please try again later.";
+      } else {
+        message = serverMsg ?? "Failed to save part. Please check your inputs.";
+      }
       setFormError(message);
     } finally {
       setFormLoading(false);

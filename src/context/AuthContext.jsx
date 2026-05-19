@@ -3,9 +3,9 @@ import { createContext, useMemo, useState } from "react";
 export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState({
-    role: "Admin",
-    fullName: "Sabin Devkota",
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
   });
 
   if (!localStorage.getItem("chitospare_token")) {
@@ -17,8 +17,15 @@ export function AuthProvider({ children }) {
     () => ({
       user,
       isAuthenticated,
-      login: (nextUser) => setUser(nextUser),
-      logout: () => setUser(null),
+      login: (nextUser) => {
+        localStorage.setItem("user", JSON.stringify(nextUser));
+        setUser(nextUser);
+      },
+      logout: () => {
+        localStorage.removeItem("user");
+        localStorage.removeItem("chitospare_token");
+        setUser(null);
+      },
     }),
     [user, isAuthenticated]
   );

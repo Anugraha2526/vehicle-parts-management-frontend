@@ -22,8 +22,10 @@ export default function LoginPage() {
         navigate(`/my-profile/${response.id}`);
       } else if (role === 'admin') {
         navigate('/admin');
+      } else if (role === 'staff') {
+        navigate('/staff');
       } else {
-        navigate('/'); // Staff goes to the main dashboard
+        navigate('/'); // Default fallback
       }
     } catch (err) {
       setError('Invalid email or password.');

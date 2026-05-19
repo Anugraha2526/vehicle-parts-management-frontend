@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Input from "../../../components/common/Input";
 import Select from "../../../components/common/Select";
 import Button from "../../../components/common/Button";
@@ -19,36 +19,51 @@ const EMPTY_FIELDS = {
 function validate(fields, isEditMode) {
   const errors = {};
 
-  if (!fields.partName.trim() || fields.partName.trim().length < 2) {
-    errors.partName = "Part name is required.";
+  const pName = fields.partName.trim();
+  if (!pName || pName.length < 3) {
+    errors.partName = "Part name must be at least 3 characters (e.g. Brake Pad Set).";
   }
 
-  if (!fields.partNumber.trim()) {
+  const pNum = fields.partNumber.trim();
+  if (!pNum) {
     errors.partNumber = "Part number is required.";
+  } else if (pNum.length < 3) {
+    errors.partNumber = "Part number must be at least 3 characters.";
+  } else if (!/^[A-Za-z0-9][A-Za-z0-9\-_./ ]*$/.test(pNum)) {
+    errors.partNumber = "Part number may only contain letters, digits, hyphens, dots, or slashes.";
   }
 
-  if (!fields.category.trim()) {
-    errors.category = "Category is required.";
+  if (!fields.category.trim() || fields.category.trim().length < 2) {
+    errors.category = "Category is required (e.g. Brakes, Engine, Filters).";
   }
 
   if (!fields.vendorId) {
-    errors.vendorId = "Vendor is required.";
+    errors.vendorId = "Please select a vendor.";
   }
 
   if (!isEditMode) {
     if (fields.quantityPurchased === "" || Number(fields.quantityPurchased) < 0) {
       errors.quantityPurchased = "Initial stock must be 0 or more.";
     }
-  } else if (fields.quantityPurchased !== "" && Number(fields.quantityPurchased) < 0) {
-    errors.quantityPurchased = "Quantity to add must be 0 or more.";
+  } else if (fields.quantityPurchased !== "") {
+    const qty = Number(fields.quantityPurchased);
+    if (qty === 0) {
+      errors.quantityPurchased = "Enter a non-zero value (positive to add stock, negative to remove).";
+    } else if (qty < 0 && Math.abs(qty) > (fields._currentStock ?? Infinity)) {
+      errors.quantityPurchased = `Cannot remove ${Math.abs(qty)} units — only ${fields._currentStock} currently in stock.`;
+    }
   }
 
-  if (fields.unitCost === "" || Number(fields.unitCost) <= 0) {
+  const unitCost = Number(fields.unitCost);
+  if (fields.unitCost === "" || unitCost <= 0) {
     errors.unitCost = "Unit cost must be greater than 0.";
   }
 
-  if (fields.sellingPrice === "" || Number(fields.sellingPrice) <= 0) {
+  const sellingPrice = Number(fields.sellingPrice);
+  if (fields.sellingPrice === "" || sellingPrice <= 0) {
     errors.sellingPrice = "Selling price must be greater than 0.";
+  } else if (!errors.unitCost && unitCost > 0 && sellingPrice < unitCost) {
+    errors.sellingPrice = `Selling price (NPR ${sellingPrice.toLocaleString()}) cannot be less than the unit cost (NPR ${unitCost.toLocaleString()}).`;
   }
 
   return errors;
@@ -58,6 +73,14 @@ export default function PartForm({ initialData, vendors, onSubmit, onCancel, loa
   const isEditMode = Boolean(initialData);
   const [fields, setFields] = useState(EMPTY_FIELDS);
   const [errors, setErrors] = useState({});
+  const errorRef = useRef(null);
+
+  // scroll error banner into view whenever a new submit error arrives
+  useEffect(() => {
+    if (submitError && errorRef.current) {
+      errorRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [submitError]);
 
   // reset form fields when initialData prop changes
   useEffect(() => {
@@ -67,8 +90,8 @@ export default function PartForm({ initialData, vendors, onSubmit, onCancel, loa
         partNumber: initialData.partNumber ?? "",
         category: initialData.category ?? "",
         vendorId: initialData.vendorId ?? "",
-        // quantity field represents additional stock to add, not the current total
         quantityPurchased: "",
+        _currentStock: initialData.quantityInStock ?? 0,
         unitCost: String(initialData.unitCost ?? ""),
         sellingPrice: String(initialData.sellingPrice ?? ""),
         description: initialData.description ?? "",
@@ -117,7 +140,7 @@ export default function PartForm({ initialData, vendors, onSubmit, onCancel, loa
   return (
     <form className="part-form" onSubmit={handleSubmit} noValidate>
       {submitError && (
-        <div className="form-submit-error" role="alert">
+        <div className="form-submit-error" role="alert" ref={errorRef}>
           {submitError}
         </div>
       )}
@@ -172,10 +195,9 @@ export default function PartForm({ initialData, vendors, onSubmit, onCancel, loa
           error={errors.vendorId}
           required
         />
-        {/* label and placeholder differ between create and edit to reflect what the field means */}
         <div className="input-group">
           <label htmlFor="quantityPurchased" className="input-label">
-            {isEditMode ? "Quantity to Add" : "Initial Stock"}
+            {isEditMode ? "Manage Qty" : "Initial Stock"}
             {!isEditMode && <span className="input-required" aria-hidden="true">*</span>}
           </label>
           <input
@@ -184,9 +206,9 @@ export default function PartForm({ initialData, vendors, onSubmit, onCancel, loa
             type="number"
             value={fields.quantityPurchased}
             onChange={handleChange}
-            min={0}
+            min={isEditMode ? undefined : 0}
             step={1}
-            placeholder={isEditMode ? "Leave blank to keep current stock" : "e.g. 50"}
+            placeholder={isEditMode ? "Positive to add stock, negative to remove" : "e.g. 50"}
             className={`input-field${errors.quantityPurchased ? " input-field--error" : ""}`}
             aria-invalid={Boolean(errors.quantityPurchased)}
             aria-describedby={errors.quantityPurchased ? "quantityPurchased-error" : undefined}

@@ -5,9 +5,11 @@ import CustomerLayout from "../layouts/CustomerLayout";
 import MainLayout from "../layouts/MainLayout";
 import ProtectedRoute from "../routes/ProtectedRoute";
 import RoleBasedRoute from "../routes/RoleBasedRoute";
+import LandingPage from "../features/landing/LandingPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import AdminDashboardPage from "../features/admin-core/pages/AdminDashboardPage";
 import StaffPage from "../features/admin-core/pages/StaffPage";
+import StaffDashboardPage from "../features/staff/pages/StaffDashboardPage";
 import VendorPage from "../features/admin-core/pages/VendorPage";
 import PartsPage from "../features/admin-core/pages/PartsPage";
 import PurchaseInvoicePage from "../features/finance/pages/PurchaseInvoicePage";
@@ -27,17 +29,11 @@ import RegisterCustomer from "../pages/RegisterCustomer";
 export function AppRouter() {
   return (
     <Routes>
+      {/* public entry points */}
+      <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<PublicRegister />} />
       <Route path="/my-profile/:id" element={<CustomerProfile />} />
-
-      {/* User's Original Pages */}
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<AdminDashboardPage />} />
-        <Route path="customers" element={<CustomersPage />} />
-        <Route path="customers/:id" element={<CustomerDetails />} />
-        <Route path="register-customer" element={<RegisterCustomer />} />
-      </Route>
 
       <Route element={<ProtectedRoute />}>
         <Route
@@ -59,19 +55,28 @@ export function AppRouter() {
         </Route>
 
         <Route path="/staff" element={<StaffLayout />}>
+          <Route index element={<StaffDashboardPage />} />
           <Route path="finance" element={<PurchaseInvoicePage />} />
           <Route path="finance/reports" element={<FinancialReportsPage />} />
           <Route path="finance/low-stock" element={<LowStockAlertsPage />} />
           <Route path="sales" element={<SalesDashboardPage />} />
+          <Route path="reminders" element={<OverdueRemindersPage />} />
           <Route path="crm" element={<CustomerListPage />} />
         </Route>
 
         <Route path="/portal" element={<CustomerLayout />}>
           <Route index element={<CustomerHomePage />} />
         </Route>
+
+        {/* staff-facing customer management pages, require login */}
+        <Route element={<MainLayout />}>
+          <Route path="customers" element={<CustomersPage />} />
+          <Route path="customers/:id" element={<CustomerDetails />} />
+          <Route path="register-customer" element={<RegisterCustomer />} />
+        </Route>
       </Route>
 
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

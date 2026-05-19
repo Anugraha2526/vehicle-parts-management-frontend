@@ -115,7 +115,11 @@ export default function SalesDashboardPage() {
                       <td>{new Date(inv.soldAtUtc).toLocaleDateString()}</td>
                       <td>{inv.customerName}</td>
                       <td>
-                        <span className="status-badge status-badge--success">Paid</span>
+                        {inv.isPaid ? (
+                          <span className="status-badge status-badge--success">Paid</span>
+                        ) : (
+                          <span className="status-badge status-badge--warning">Pending</span>
+                        )}
                       </td>
                       <td style={{ textAlign: 'right', fontWeight: 600 }}>Rs. {inv.totalAmount.toFixed(2)}</td>
                       <td style={{ textAlign: 'center' }}>

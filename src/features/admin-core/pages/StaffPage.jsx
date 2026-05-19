@@ -60,10 +60,24 @@ export default function StaffPage() {
         showNotification("success", "Staff member added successfully.");
       }
     } catch (err) {
-      const serverMessage = err?.response?.data?.message ?? "";
-      const message = serverMessage.toLowerCase().includes("email")
-        ? "Email is already registered."
-        : "Failed to save staff member. Please check your inputs.";
+      const status = err?.response?.status;
+      const data = err?.response?.data;
+      const serverMsg = typeof data === "string" && data.trim()
+        ? data.trim()
+        : (data?.errors ? Object.values(data.errors).flat()[0] : null)
+          ?? data?.title
+          ?? null;
+
+      let message;
+      if (status === 409 && serverMsg) {
+        message = serverMsg;
+      } else if (status === 400 && serverMsg) {
+        message = `Invalid input: ${serverMsg}`;
+      } else if (status === 500) {
+        message = "A server error occurred. Please try again later.";
+      } else {
+        message = serverMsg ?? "Failed to save staff member. Please try again.";
+      }
       setFormError(message);
     } finally {
       setFormLoading(false);

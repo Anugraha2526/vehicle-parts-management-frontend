@@ -15,21 +15,37 @@ const EMPTY_FIELDS = {
 function validate(fields) {
   const errors = {};
 
-  if (!fields.vendorName.trim() || fields.vendorName.trim().length < 2) {
+  const vName = fields.vendorName.trim();
+  if (!vName) {
     errors.vendorName = "Vendor name is required.";
+  } else if (vName.length < 3) {
+    errors.vendorName = "Vendor name must be at least 3 characters.";
   }
 
-  if (!fields.contactPerson.trim()) {
-    errors.contactPerson = "Contact person is required.";
+  const contactWords = fields.contactPerson.trim().split(/\s+/).filter(Boolean);
+  if (contactWords.length < 2) {
+    errors.contactPerson = "Enter the full name of the contact person (e.g. Rajan Thapa).";
   }
 
-  if (!fields.phone.trim()) {
+  const phoneDigits = fields.phone.replace(/[\s\-().+]/g, "");
+  if (!phoneDigits) {
     errors.phone = "Phone number is required.";
+  } else if (!/^\d+$/.test(phoneDigits)) {
+    errors.phone = "Phone number may only contain digits, spaces, hyphens, or a leading +.";
+  } else if (phoneDigits.length !== 10) {
+    errors.phone = "Phone number must be exactly 10 digits (e.g. 9841000000).";
   }
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!fields.email.trim() || !emailPattern.test(fields.email)) {
-    errors.email = "A valid email address is required.";
+  if (!fields.email.trim()) {
+    errors.email = "Email address is required.";
+  } else if (!emailPattern.test(fields.email.trim())) {
+    errors.email = "Enter a valid email address (e.g. contact@vendor.com).";
+  }
+
+  const addr = fields.address.trim();
+  if (addr && addr.length < 5) {
+    errors.address = "Address must be at least 5 characters if provided.";
   }
 
   return errors;
