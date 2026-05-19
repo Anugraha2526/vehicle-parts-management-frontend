@@ -71,8 +71,8 @@ const CustomerDetails = () => {
             <p style={{ color: 'var(--ink-500)', marginTop: '4px' }}>Customer ID: {customer.id}</p>
          </div>
          <div style={{ display: 'flex', gap: '10px' }}>
-            <button onClick={() => setIsEditing(true)} className="cs-button cs-button--secondary">✏️ Edit Profile</button>
-            <button onClick={() => setIsAddingVehicle(true)} className="cs-button cs-button--primary">🚗 Add Vehicle</button>
+            <button onClick={() => setIsEditing(true)} className="cs-button cs-button--secondary">Edit Profile</button>
+            <button onClick={() => setIsAddingVehicle(true)} className="cs-button cs-button--primary">Add Vehicle</button>
          </div>
       </div>
 
