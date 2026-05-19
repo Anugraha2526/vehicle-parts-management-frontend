@@ -10,6 +10,7 @@ import LoginPage from "../features/auth/pages/LoginPage";
 import AdminDashboardPage from "../features/admin-core/pages/AdminDashboardPage";
 import StaffPage from "../features/admin-core/pages/StaffPage";
 import StaffDashboardPage from "../features/staff/pages/StaffDashboardPage";
+import StaffReportsPage from "../features/staff/pages/StaffReportsPage";
 import VendorPage from "../features/admin-core/pages/VendorPage";
 import PartsPage from "../features/admin-core/pages/PartsPage";
 import PurchaseInvoicePage from "../features/finance/pages/PurchaseInvoicePage";
@@ -68,8 +69,9 @@ export function AppRouter() {
         >
           <Route index element={<StaffDashboardPage />} />
           <Route path="finance" element={<PurchaseInvoicePage />} />
-          <Route path="finance/reports" element={<FinancialReportsPage />} />
+          <Route path="finance/reports" element={<Navigate to="../reports" replace />} />
           <Route path="finance/low-stock" element={<LowStockAlertsPage />} />
+          <Route path="reports" element={<StaffReportsPage />} />
           <Route path="sales" element={<SalesDashboardPage />} />
           <Route path="reminders" element={<OverdueRemindersPage />} />
           <Route path="crm" element={<CustomerListPage />} />
