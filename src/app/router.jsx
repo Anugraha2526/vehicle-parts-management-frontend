@@ -19,7 +19,10 @@ import LowStockAlertsPage from "../features/finance/pages/LowStockAlertsPage";
 import CustomerListPage from "../features/customer-crm/pages/CustomerListPage";
 import SalesDashboardPage from "../features/sales/pages/SalesDashboardPage";
 import OverdueRemindersPage from "../features/sales/pages/OverdueRemindersPage";
-import CustomerHomePage from "../features/customer-portal/pages/CustomerHomePage";
+import CustomerAppointmentsPage from "../features/customer-portal/pages/CustomerAppointmentsPage";
+import CustomerReviewsPage from "../features/customer-portal/pages/CustomerReviewsPage";
+import CustomerPartRequestsPage from "../features/customer-portal/pages/CustomerPartRequestsPage";
+import CustomerServiceHistoryPage from "../features/customer-portal/pages/CustomerServiceHistoryPage";
 
 import PublicRegister from "../pages/PublicRegister";
 import CustomerProfile from "../pages/CustomerProfile";
@@ -39,7 +42,8 @@ export function AppRouter() {
       <Route path="/signup" element={<PublicRegister />} />
 
       <Route element={<ProtectedRoute />}>
-        <Route path="/my-profile/:id" element={<CustomerProfile />} />
+        {/* legacy profile URL — redirect into the portal layout */}
+        <Route path="/my-profile/:id" element={<Navigate to="/portal/profile" replace />} />
 
         <Route
           path="/admin"
@@ -88,7 +92,12 @@ export function AppRouter() {
             </RoleBasedRoute>
           }
         >
-          <Route index element={<CustomerHomePage />} />
+          <Route index element={<Navigate to="profile" replace />} />
+          <Route path="profile" element={<CustomerProfile />} />
+          <Route path="appointments" element={<CustomerAppointmentsPage />} />
+          <Route path="service-history" element={<CustomerServiceHistoryPage />} />
+          <Route path="reviews" element={<CustomerReviewsPage />} />
+          <Route path="part-requests" element={<CustomerPartRequestsPage />} />
         </Route>
 
         {/* staff-facing customer management pages */}
