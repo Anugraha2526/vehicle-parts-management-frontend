@@ -4,9 +4,10 @@ import Select from "../../../components/common/Select";
 import Button from "../../../components/common/Button";
 import "./StaffForm.css";
 
+// values match the C# UserRole enum: Admin = 0, Staff = 1
 const ROLE_OPTIONS = [
-  { value: 1, label: "Admin" },
-  { value: 2, label: "Staff" },
+  { value: "0", label: "Admin" },
+  { value: "1", label: "Staff" },
 ];
 
 const EMPTY_FIELDS = {
@@ -83,7 +84,7 @@ export default function StaffForm({ initialData, onSubmit, onCancel, loading, su
         password: "",
         phoneNumber: initialData.phoneNumber ?? "",
         address: initialData.address ?? "",
-        role: initialData.role ?? "",
+        role: initialData.role === "Admin" ? "0" : initialData.role === "Staff" ? "1" : "",
         isActive: initialData.isActive ?? true,
       });
     } else {
@@ -118,7 +119,7 @@ export default function StaffForm({ initialData, onSubmit, onCancel, loading, su
 
     if (fields.password) payload.password = fields.password;
     if (isEditMode) {
-      payload.role = Number(fields.role);
+      payload.role = parseInt(fields.role, 10);
       payload.isActive = fields.isActive;
     }
 
