@@ -1,0 +1,287 @@
+/* Shared page shell — matches StaffPage.css / VendorPage.css exactly */
+.portal-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.portal-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.portal-page-title {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0 0 4px 0;
+  letter-spacing: -0.02em;
+}
+
+.portal-page-subtitle {
+  font-size: 14px;
+  color: var(--ink-500);
+  margin: 0;
+}
+
+/* Notification banner — same as staff-page-notification */
+.portal-notification {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.portal-notification--success {
+  background: var(--ok-soft);
+  color: var(--ok-ink);
+}
+
+.portal-notification--error {
+  background: var(--err-soft);
+  color: var(--err-ink);
+}
+
+/* Inline field error */
+.portal-field-error {
+  display: block;
+  color: var(--err-ink);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Form rows inside Modal */
+.portal-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.portal-form-field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-700);
+}
+
+.portal-form-field label .portal-optional {
+  color: var(--ink-400);
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.portal-form-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-soft);
+}
+
+/* Status badge pills — used in table cells */
+.portal-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.portal-badge--pending  { background: rgba(234,179,8,0.12); color: #92400e; }
+.portal-badge--confirmed { background: var(--ok-soft); color: var(--ok-ink); }
+.portal-badge--completed { background: rgba(99,102,241,0.10); color: #4338ca; }
+.portal-badge--cancelled { background: var(--err-soft); color: var(--err-ink); }
+.portal-badge--approved  { background: var(--ok-soft); color: var(--ok-ink); }
+.portal-badge--rejected  { background: var(--err-soft); color: var(--err-ink); }
+
+/* Star rating display */
+.portal-stars { display: inline-flex; gap: 1px; }
+.portal-star        { color: var(--ink-300); font-size: 14px; }
+.portal-star--filled { color: #f59e0b; }
+
+/* Interactive star picker in the review form */
+.portal-star-picker {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.portal-star-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--ink-300);
+  padding: 0 2px;
+  line-height: 1;
+  transition: color 0.1s, transform 0.1s;
+}
+
+.portal-star-btn:hover,
+.portal-star-btn--active { color: #f59e0b; transform: scale(1.1); }
+
+.portal-star-label {
+  font-size: 13px;
+  color: var(--ink-500);
+  margin-left: 8px;
+}
+
+/* Stat summary cards — used on service history page */
+.portal-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.portal-stat-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg-card);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(44, 42, 38, 0.05);
+}
+
+.portal-stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.portal-stat-value {
+  font-size: 22px;
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.portal-stat-meta {
+  font-size: 12px;
+  color: var(--ink-400);
+  margin: 0;
+}
+
+/* Info card with dark header — used on profile page */
+.portal-info-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(44, 42, 38, 0.05);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.portal-info-card__header {
+  background: var(--bg-sunk);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.portal-info-card__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-700);
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.portal-info-card__body {
+  background: var(--bg-card);
+  padding: 20px;
+  flex: 1;
+}
+
+.portal-profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+/* Filter bar for search/filter on list pages */
+.portal-filter-bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.portal-filter-bar .cs-input {
+  flex: 1;
+  min-width: 200px;
+}
+
+.portal-filter-select {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg-card);
+  color: var(--ink-700);
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  min-width: 140px;
+}
+
+.portal-filter-select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* Invoice items expandable table */
+.portal-invoice-items {
+  margin-top: 8px;
+  border-top: 1px solid var(--line-soft);
+  padding-top: 8px;
+}
+
+.portal-invoice-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--ink-500);
+  padding: 3px 0;
+}
+
+.portal-expand-btn {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 11px;
+  color: var(--ink-500);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.portal-expand-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .portal-stat-grid { grid-template-columns: 1fr 1fr; }
+  .portal-profile-grid { grid-template-columns: 1fr; }
+}
