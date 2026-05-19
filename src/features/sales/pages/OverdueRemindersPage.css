@@ -1,0 +1,158 @@
+.reminders-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.reminders-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.reminders-page-title {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0 0 4px 0;
+  letter-spacing: -0.02em;
+}
+
+.reminders-page-subtitle {
+  font-size: 14px;
+  color: var(--ink-500);
+  margin: 0;
+}
+
+.reminders-page-notification {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.reminders-page-notification--success {
+  background: var(--ok-soft);
+  color: var(--ok-ink);
+}
+
+.reminders-page-notification--error {
+  background: var(--err-soft);
+  color: var(--err-ink);
+}
+
+.reminders-page-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reminders-page-summary-label {
+  font-size: 14px;
+  color: var(--ink-500);
+}
+
+.reminders-page-summary-count {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-900);
+  background: var(--bg-sunk);
+  border-radius: 6px;
+  padding: 2px 10px;
+}
+
+.reminders-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: var(--bg-card);
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+
+.reminders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reminders-table thead th {
+  background: var(--bg-sunk);
+  color: var(--ink-500);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 10px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.reminders-table tbody tr {
+  border-bottom: 1px solid var(--line-soft);
+  transition: background 0.12s;
+}
+
+.reminders-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.reminders-table tbody tr:hover {
+  background: var(--bg-card-alt);
+}
+
+.reminders-table tbody td {
+  padding: 12px 16px;
+  color: var(--ink-700);
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.reminders-table-empty {
+  padding: 40px 16px;
+  text-align: center;
+  color: var(--ink-400);
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.reminders-table-empty-title {
+  font-weight: 600;
+  color: var(--ink-600);
+}
+
+.reminders-table-customer {
+  font-weight: 500;
+  color: var(--ink-900);
+}
+
+.reminders-table-invoice {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  color: var(--ink-600);
+}
+
+.reminders-table-amount {
+  text-align: right;
+}
+
+.reminders-table-amount--value {
+  font-weight: 600;
+  color: var(--ink-900);
+}
+
+.reminders-table-actions-col {
+  text-align: right;
+}
+
+.reminders-table-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}

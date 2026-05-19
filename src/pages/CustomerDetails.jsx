@@ -66,7 +66,7 @@ const CustomerDetails = () => {
     <div style={{ padding: '32px', maxWidth: '1200px', margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '32px' }}>
          <div>
-            <button onClick={() => navigate('/customers')} className="cs-button cs-button--ghost" style={{ padding: '0', marginBottom: '12px', color: 'var(--ink-500)' }}>← Back to Customers</button>
+            <button onClick={() => navigate('/staff/customers')} className="cs-button cs-button--ghost" style={{ padding: '0', marginBottom: '12px', color: 'var(--ink-500)' }}>← Back to Customers</button>
             <h1 className="page-title" style={{ fontSize: '28px', fontWeight: 700 }}>{customer.fullName}</h1>
             <p style={{ color: 'var(--ink-500)', marginTop: '4px' }}>Customer ID: {customer.id}</p>
          </div>
@@ -167,7 +167,7 @@ const CustomerDetails = () => {
       </div>
 
       <div className="cs-card" style={{ marginTop: '24px' }}>
-        <h2 className="page-title" style={{ fontSize: '18px', marginBottom: '20px' }}>Service & Purchase History</h2>
+        <h2 className="page-title" style={{ fontSize: '18px', marginBottom: '20px' }}>Service and Purchase History</h2>
         {customer.transactions && customer.transactions.length > 0 ? (
            <div className="cs-table-wrapper">
              <table className="cs-table">

@@ -2,9 +2,9 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import AdminLayout from "../layouts/AdminLayout";
 import StaffLayout from "../layouts/StaffLayout";
 import CustomerLayout from "../layouts/CustomerLayout";
-import MainLayout from "../layouts/MainLayout";
 import ProtectedRoute from "../routes/ProtectedRoute";
 import RoleBasedRoute from "../routes/RoleBasedRoute";
+import MainLayout from "../layouts/MainLayout";
 import LandingPage from "../features/landing/LandingPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import AdminDashboardPage from "../features/admin-core/pages/AdminDashboardPage";
@@ -25,17 +25,21 @@ import CustomerProfile from "../pages/CustomerProfile";
 import CustomersPage from "../pages/CustomersPage";
 import CustomerDetails from "../pages/CustomerDetails";
 import RegisterCustomer from "../pages/RegisterCustomer";
+import { useAuth } from "../hooks/useAuth";
 
 export function AppRouter() {
+  const { user } = useAuth();
+  const isAuthenticated = Boolean(user);
   return (
     <Routes>
       {/* public entry points */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<PublicRegister />} />
-      <Route path="/my-profile/:id" element={<CustomerProfile />} />
 
       <Route element={<ProtectedRoute />}>
+        <Route path="/my-profile/:id" element={<CustomerProfile />} />
+
         <Route
           path="/admin"
           element={
@@ -54,7 +58,14 @@ export function AppRouter() {
           <Route path="reminders" element={<OverdueRemindersPage />} />
         </Route>
 
-        <Route path="/staff" element={<StaffLayout />}>
+        <Route
+          path="/staff"
+          element={
+            <RoleBasedRoute allowedRoles={["Admin", "Staff"]}>
+              <StaffLayout />
+            </RoleBasedRoute>
+          }
+        >
           <Route index element={<StaffDashboardPage />} />
           <Route path="finance" element={<PurchaseInvoicePage />} />
           <Route path="finance/reports" element={<FinancialReportsPage />} />
@@ -62,14 +73,30 @@ export function AppRouter() {
           <Route path="sales" element={<SalesDashboardPage />} />
           <Route path="reminders" element={<OverdueRemindersPage />} />
           <Route path="crm" element={<CustomerListPage />} />
+          <Route path="customers" element={<CustomersPage />} />
+          <Route path="customers/:id" element={<CustomerDetails />} />
+          <Route path="customers/register" element={<RegisterCustomer />} />
         </Route>
 
-        <Route path="/portal" element={<CustomerLayout />}>
+        <Route
+          path="/portal"
+          element={
+            <RoleBasedRoute allowedRoles={["Customer"]}>
+              <CustomerLayout />
+            </RoleBasedRoute>
+          }
+        >
           <Route index element={<CustomerHomePage />} />
         </Route>
 
-        {/* staff-facing customer management pages, require login */}
-        <Route element={<MainLayout />}>
+        {/* staff-facing customer management pages */}
+        <Route
+          element={
+            <RoleBasedRoute allowedRoles={["Admin", "Staff"]}>
+              <MainLayout />
+            </RoleBasedRoute>
+          }
+        >
           <Route path="customers" element={<CustomersPage />} />
           <Route path="customers/:id" element={<CustomerDetails />} />
           <Route path="register-customer" element={<RegisterCustomer />} />

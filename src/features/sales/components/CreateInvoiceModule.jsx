@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { createSalesInvoice } from '../../../api/salesApi';
-import { partsApi } from '../../../api/partsApi';
 import { customerApi } from '../../../api/customerApi';
 import { staffApi } from '../../../api/staffApi';
+import { partsApi } from '../../../api/partsApi';
 
 export default function CreateInvoiceModule({ onSuccess, onCancel }) {
   const [customers, setCustomers] = useState([]);
@@ -19,15 +19,19 @@ export default function CreateInvoiceModule({ onSuccess, onCancel }) {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const [custRes, staffRes, partsRes] = await Promise.all([
+        // Use allSettled so one failing call doesn't crash the whole form
+        const [custResult, staffResult, partsResult] = await Promise.allSettled([
           customerApi.list(),
           staffApi.getAll(),
-          partsApi.list()
+          partsApi.list() 
         ]);
-        
-        const rawCust = custRes.data?.data || custRes.data || [];
-        const rawStaff = staffRes.data?.data || staffRes.data || [];
-        const rawParts = partsRes.data?.data || partsRes.data || [];
+
+        const rawCust = custResult.status === 'fulfilled'
+          ? (custResult.value.data?.data || custResult.value.data || []) : [];
+        const rawStaff = staffResult.status === 'fulfilled'
+          ? (staffResult.value.data?.data || staffResult.value.data || []) : [];
+        const rawParts = partsResult.status === 'fulfilled'
+          ? (Array.isArray(partsResult.value) ? partsResult.value : (partsResult.value?.data || [])) : [];
 
         const cData = Array.isArray(rawCust) ? rawCust : [];
         const sData = Array.isArray(rawStaff) ? rawStaff : [];
@@ -41,13 +45,25 @@ export default function CreateInvoiceModule({ onSuccess, onCancel }) {
           name: p.partName || p.PartName || p.name || p.Name || 'Unknown Part',
           price: p.sellingPrice || p.SellingPrice || p.unitPrice || p.UnitPrice || p.price || p.Price || 0
         }));
-        
+
         setPartsList(mappedParts);
 
         if (cData.length > 0) setCustomerId(cData[0].id || cData[0].Id);
         if (sData.length > 0) setStaffId(sData[0].id || sData[0].Id);
         if (mappedParts.length > 0 && mappedParts[0].id) {
           setItems([{ partId: mappedParts[0].id, quantity: 1 }]);
+        } else {
+          setItems([{ partId: '', quantity: 1 }]);
+        }
+
+        // Show warning if parts couldn't load
+        if (partsResult.status === 'rejected') {
+          const detail = partsResult.reason?.response?.status 
+            ? `(HTTP ${partsResult.reason.response.status})`
+            : String(partsResult.reason?.message || "Unknown error");
+            
+          console.error("Parts request failed details:", partsResult.reason);
+          setError(`Parts list could not be loaded ${detail}. Try refreshing or logging in again.`);
         }
       } catch (err) {
         console.error("Failed to load initial data", err);
@@ -228,8 +244,7 @@ export default function CreateInvoiceModule({ onSuccess, onCancel }) {
           padding: '24px', 
           borderRadius: '12px', 
           marginTop: '16px',
-          border: '1px solid var(--line-soft)',
-          boxShadow: '0 2px 10px rgba(44, 42, 38, 0.02) inset'
+          border: '1px solid var(--line-soft)'
         }}>
            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
              <span className="cs-field">Sub-Total:</span>

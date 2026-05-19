@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import CreateInvoiceModule from '../components/CreateInvoiceModule';
 import { getRecentInvoices, sendInvoiceEmail } from '../../../api/salesApi';
+import Table from '../../../components/common/Table';
+import Button from '../../../components/common/Button';
+import '../../admin-core/pages/VendorPage.css';
 
 export default function SalesDashboardPage() {
   const [isCreating, setIsCreating] = useState(false);
@@ -39,27 +42,67 @@ export default function SalesDashboardPage() {
   const handleSuccess = (response) => {
     setLastResponse(response);
     setIsCreating(false);
-    fetchInvoices(); // Refresh list automatically
+    fetchInvoices();
   };
 
+  const columns = useMemo(() => [
+    {
+      key: "invoiceNumber",
+      label: "INVOICE #",
+      render: (val) => <span className="cs-mono" style={{fontWeight: 600}}>{val}</span>
+    },
+    {
+      key: "soldAtUtc",
+      label: "DATE",
+      render: (val) => new Date(val).toLocaleDateString()
+    },
+    {
+      key: "customerName",
+      label: "CUSTOMER"
+    },
+    {
+      key: "status",
+      label: "STATUS",
+      render: (_, inv) => inv.isPaid ? (
+        <span className="status-badge status-badge--success">Paid</span>
+      ) : (
+        <span className="status-badge status-badge--warning">Pending</span>
+      )
+    },
+    {
+      key: "amount",
+      label: "AMOUNT",
+      render: (_, inv) => <span style={{ fontWeight: 600 }}>Rs. {inv.totalAmount.toFixed(2)}</span>
+    },
+    {
+      key: "actions",
+      label: "ACTIONS",
+      render: (_, inv) => (
+        <Button variant="secondary" size="sm" onClick={() => handleSendEmail(inv.invoiceId)}>
+          Email
+        </Button>
+      )
+    }
+  ], []);
+
   return (
-    <div className="finance-page">
-      <header className="page-header">
+    <div className="vendor-page">
+      <div className="vendor-page-header">
         <div>
-          <h1 className="page-title">Sales & Invoices</h1>
-          <p className="page-subtitle">Manage customer orders, process sales, and generate invoices.</p>
+          <h1 className="vendor-page-title">Sales and Invoices</h1>
+          <p className="vendor-page-subtitle">Manage customer orders, process sales, and generate invoices.</p>
         </div>
-        <div className="page-header-actions">
+        <div>
           {!isCreating && (
-            <button className="cs-button cs-button--primary" onClick={() => setIsCreating(true)}>
+            <Button variant="primary" onClick={() => setIsCreating(true)}>
               + New invoice
-            </button>
+            </Button>
           )}
         </div>
-      </header>
+      </div>
 
       {lastResponse && !isCreating && (
-        <div className={`cs-alert cs-alert--${lastResponse.type || 'info'}`}>
+        <div className={`vendor-page-notification vendor-page-notification--${lastResponse.type === 'error' ? 'error' : 'success'}`}>
           <strong>{lastResponse.type === 'error' ? 'Error:' : 'Status:'}</strong> {lastResponse.message}
           {lastResponse.data && (
             <div style={{ marginTop: '8px' }}>
@@ -78,65 +121,17 @@ export default function SalesDashboardPage() {
         />
       ) : (
         <div className="cs-card">
-          <div className="card-heading">
-            <h2 className="cs-field" style={{ margin: 0, fontSize: '1rem', color: 'var(--ink-900)' }}>Recent Invoices</h2>
-            <button className="cs-button cs-button--ghost">Export</button>
+          <div className="vendor-page-header" style={{ marginBottom: '16px' }}>
+            <h2 className="vendor-page-title" style={{ fontSize: '18px' }}>Recent Invoices</h2>
+            <Button variant="secondary" size="sm">Export</Button>
           </div>
           
-          <div className="cs-table-wrapper" style={{ marginTop: '16px' }}>
-            <table className="cs-table">
-              <thead>
-                <tr>
-                  <th>Invoice #</th>
-                  <th>Date</th>
-                  <th>Customer</th>
-                  <th>Status</th>
-                  <th style={{ textAlign: 'right' }}>Amount</th>
-                  <th style={{ textAlign: 'center' }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {isLoading ? (
-                   <tr>
-                     <td colSpan="5" style={{ textAlign: 'center', padding: '30px', color: 'var(--ink-500)' }}>
-                       Loading...
-                     </td>
-                   </tr>
-                ) : invoices.length === 0 ? (
-                  <tr>
-                    <td colSpan="5" style={{ textAlign: 'center', padding: '30px', color: 'var(--ink-500)' }}>
-                      No recent invoices. Click "+ New invoice" to get started.
-                    </td>
-                  </tr>
-                ) : (
-                  invoices.map(inv => (
-                    <tr key={inv.invoiceId}>
-                      <td className="cs-mono" style={{fontWeight: 600}}>{inv.invoiceNumber}</td>
-                      <td>{new Date(inv.soldAtUtc).toLocaleDateString()}</td>
-                      <td>{inv.customerName}</td>
-                      <td>
-                        {inv.isPaid ? (
-                          <span className="status-badge status-badge--success">Paid</span>
-                        ) : (
-                          <span className="status-badge status-badge--warning">Pending</span>
-                        )}
-                      </td>
-                      <td style={{ textAlign: 'right', fontWeight: 600 }}>Rs. {inv.totalAmount.toFixed(2)}</td>
-                      <td style={{ textAlign: 'center' }}>
-                        <button 
-                          className="cs-button cs-button--ghost" 
-                          style={{ padding: '4px 8px', fontSize: '0.8rem' }}
-                          onClick={() => handleSendEmail(inv.invoiceId)}
-                        >
-                          Email
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+          <Table 
+            columns={columns} 
+            data={invoices} 
+            loading={isLoading} 
+            emptyMessage="No recent invoices. Click '+ New invoice' to get started." 
+          />
         </div>
       )}
     </div>

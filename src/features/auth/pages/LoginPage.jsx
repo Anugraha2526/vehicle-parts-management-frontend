@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { api } from '../../../services/api';
+import { useAuth } from '../../../hooks/useAuth';
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -13,10 +15,8 @@ export default function LoginPage() {
     setError('');
     try {
       const response = await api.post('/auth/login', { email, password });
-      
-      // Store user info
-      localStorage.setItem('user', JSON.stringify(response));
-      
+      login(response);
+
       const role = response.role?.toLowerCase() || '';
       if (role === 'customer') {
         navigate(`/my-profile/${response.id}`);

@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { getOverdueInvoices, sendBulkReminders, sendSingleReminder, markInvoiceAsPaid } from '../../../api/salesApi';
+import { useEffect, useState } from "react";
+import Button from "../../../components/common/Button";
+import { getOverdueInvoices, sendBulkReminders, sendSingleReminder, markInvoiceAsPaid } from "../../../api/salesApi";
+import "./OverdueRemindersPage.css";
 
-const OverdueRemindersPage = () => {
+export default function OverdueRemindersPage() {
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [remindingAll, setRemindingAll] = useState(false);
   const [actionLoadingId, setActionLoadingId] = useState(null);
-  const [alert, setAlert] = useState(null); // { type: 'success' | 'error', message: string }
+  const [notification, setNotification] = useState(null);
 
-  const showAlert = (type, message) => {
-    setAlert({ type, message });
-    setTimeout(() => setAlert(null), 4000);
-  };
+  function showNotification(type, message) {
+    setNotification({ type, message });
+    setTimeout(() => setNotification(null), 3000);
+  }
 
   const fetchOverdue = async () => {
     try {
       setLoading(true);
       const data = await getOverdueInvoices(1);
-      // API returns { data: [...], message: '...' } wrapped in ServiceResult
       setInvoices(Array.isArray(data) ? data : (data?.data ?? []));
-    } catch (error) {
-      showAlert('error', 'Failed to load overdue invoices.');
+    } catch {
+      showNotification("error", "Failed to load overdue invoices. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -35,9 +36,9 @@ const OverdueRemindersPage = () => {
     try {
       setRemindingAll(true);
       const response = await sendBulkReminders(1);
-      showAlert('success', response?.message || 'Bulk reminders sent successfully!');
-    } catch (error) {
-      showAlert('error', error?.toString() || 'Failed to send reminders.');
+      showNotification("success", response?.message || "Bulk reminders sent successfully.");
+    } catch {
+      showNotification("error", "Failed to send reminders. Please try again.");
     } finally {
       setRemindingAll(false);
     }
@@ -47,131 +48,131 @@ const OverdueRemindersPage = () => {
     try {
       setActionLoadingId(invoiceId);
       const response = await sendSingleReminder(invoiceId);
-      showAlert('success', response?.message || 'Reminder sent!');
-    } catch (error) {
-      showAlert('error', error?.toString() || 'Failed to send reminder.');
+      showNotification("success", response?.message || "Reminder sent successfully.");
+    } catch {
+      showNotification("error", "Failed to send reminder. Please try again.");
     } finally {
       setActionLoadingId(null);
     }
   };
 
   const handleMarkPaid = async (invoiceId) => {
-    if (!window.confirm('Mark this invoice as Paid? It will be removed from this list.')) return;
+    if (!window.confirm("Mark this invoice as paid? It will be removed from this list.")) return;
     try {
       setActionLoadingId(invoiceId);
       const response = await markInvoiceAsPaid(invoiceId);
-      showAlert('success', response?.message || 'Invoice marked as paid!');
-      setInvoices(prev => prev.filter(inv => inv.invoiceId !== invoiceId));
-    } catch (error) {
-      showAlert('error', error?.toString() || 'Failed to mark as paid.');
+      showNotification("success", response?.message || "Invoice marked as paid.");
+      setInvoices((prev) => prev.filter((inv) => inv.invoiceId !== invoiceId));
+    } catch {
+      showNotification("error", "Failed to mark invoice as paid. Please try again.");
     } finally {
       setActionLoadingId(null);
     }
   };
 
-  if (loading) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-        <div style={{ color: 'var(--ink-500)', fontSize: '1.2rem' }}>Loading Overdue Invoices...</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="finance-page">
-      {/* Header */}
-      <header className="page-header">
+    <div className="reminders-page">
+      <div className="reminders-page-header">
         <div>
-          <h1 className="page-title">Pending Credits & Reminders</h1>
-          <p className="page-subtitle">
-            Customers with invoices unpaid for more than 1 month.
-            <span className="status-badge status-badge--warning" style={{ marginLeft: '12px' }}>
-              {invoices.length} Overdue
-            </span>
+          <h1 className="reminders-page-title">Credit Reminders</h1>
+          <p className="reminders-page-subtitle">
+            Customers with invoices unpaid for more than 1 month
           </p>
         </div>
-        <div className="page-header-actions">
-          <button
-            className="cs-button cs-button--primary"
-            onClick={handleSendBulk}
-            disabled={invoices.length === 0 || remindingAll}
-            style={{ backgroundColor: 'var(--red-600)', borderColor: 'var(--red-700)' }}
-          >
-            {remindingAll ? 'Sending...' : '📨 Send All Reminders'}
-          </button>
-        </div>
-      </header>
+        <Button
+          variant="primary"
+          onClick={handleSendBulk}
+          disabled={invoices.length === 0 || remindingAll}
+          loading={remindingAll}
+        >
+          {remindingAll ? "Sending..." : "Send All Reminders"}
+        </Button>
+      </div>
 
-      {/* Alert Banner */}
-      {alert && (
-        <div className={`cs-alert cs-alert--${alert.type}`} style={{ marginBottom: '24px' }}>
-          <strong>{alert.type === 'error' ? 'Error: ' : 'Status: '}</strong>
-          {alert.message}
+      {notification && (
+        <div
+          className={`reminders-page-notification reminders-page-notification--${notification.type}`}
+          role="status"
+          aria-live="polite"
+        >
+          {notification.message}
         </div>
       )}
 
-      {/* Table */}
-      <div className="cs-card">
-        <div className="card-heading">
-          <h2 className="cs-field" style={{ margin: 0, fontSize: '1rem', color: 'var(--ink-900)' }}>Unpaid Invoices</h2>
-        </div>
-        <div className="cs-table-wrapper" style={{ marginTop: '16px' }}>
-          <table className="cs-table">
-            <thead>
+      {/* overdue count summary */}
+      <div className="reminders-page-summary">
+        <span className="reminders-page-summary-label">Overdue invoices</span>
+        <span className="reminders-page-summary-count">{invoices.length}</span>
+      </div>
+
+      <div className="reminders-table-wrapper">
+        <table className="reminders-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Invoice No.</th>
+              <th>Issued On</th>
+              <th className="reminders-table-amount">Amount Due</th>
+              <th className="reminders-table-actions-col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading ? (
               <tr>
-                <th>Customer Name</th>
-                <th>Invoice #</th>
-                <th>Issued On</th>
-                <th style={{ textAlign: 'right' }}>Amount Due</th>
-                <th style={{ textAlign: 'center' }}>Actions</th>
+                <td colSpan="5" style={{ padding: 0 }}>
+                  <div className="reminders-table-empty">Loading overdue invoices...</div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {invoices.length === 0 ? (
-                <tr>
-                  <td colSpan="5" style={{ textAlign: 'center', padding: '48px', color: 'var(--ink-500)' }}>
-                    <div style={{ fontSize: '2rem', marginBottom: '8px' }}>🎉</div>
-                    <div style={{ fontWeight: 600, color: 'var(--ink-900)', fontSize: '1.1rem' }}>All Clear!</div>
-                    <div>No overdue unpaid invoices at this time.</div>
+            ) : invoices.length === 0 ? (
+              <tr>
+                <td colSpan="5" style={{ padding: 0 }}>
+                  <div className="reminders-table-empty">
+                    <span className="reminders-table-empty-title">All clear</span>
+                    <span>No overdue unpaid invoices at this time.</span>
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              invoices.map((inv) => (
+                <tr key={inv.invoiceId}>
+                  <td className="reminders-table-customer">{inv.customerName}</td>
+                  <td className="reminders-table-invoice">{inv.invoiceNumber}</td>
+                  <td>
+                    {new Date(inv.soldAtUtc).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </td>
+                  <td className="reminders-table-amount reminders-table-amount--value">
+                    NPR {Number(inv.totalAmount).toLocaleString()}
+                  </td>
+                  <td className="reminders-table-actions-col">
+                    <div className="reminders-table-actions">
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => handleSendSingle(inv.invoiceId)}
+                        disabled={actionLoadingId === inv.invoiceId}
+                      >
+                        {actionLoadingId === inv.invoiceId ? "..." : "Remind"}
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => handleMarkPaid(inv.invoiceId)}
+                        disabled={actionLoadingId === inv.invoiceId}
+                      >
+                        Mark Paid
+                      </Button>
+                    </div>
                   </td>
                 </tr>
-              ) : (
-                invoices.map((inv) => (
-                  <tr key={inv.invoiceId}>
-                    <td style={{ fontWeight: 500, color: 'var(--ink-900)' }}>{inv.customerName}</td>
-                    <td className="cs-mono">{inv.invoiceNumber}</td>
-                    <td>{new Date(inv.soldAtUtc).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
-                    <td style={{ textAlign: 'right', fontWeight: 600, color: 'var(--red-600)' }}>
-                      Rs. {Number(inv.totalAmount).toFixed(2)}
-                    </td>
-                    <td style={{ textAlign: 'center' }}>
-                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-                        <button
-                          className="cs-button cs-button--ghost"
-                          onClick={() => handleSendSingle(inv.invoiceId)}
-                          disabled={actionLoadingId === inv.invoiceId}
-                        >
-                          {actionLoadingId === inv.invoiceId ? '...' : 'Remind'}
-                        </button>
-                        <button
-                          className="cs-button cs-button--secondary"
-                          onClick={() => handleMarkPaid(inv.invoiceId)}
-                          disabled={actionLoadingId === inv.invoiceId}
-                          style={{ borderColor: 'var(--green-500)', color: 'var(--green-600)' }}
-                        >
-                          ✓ Paid
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
-};
-
-export default OverdueRemindersPage;
+}

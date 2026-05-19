@@ -4,14 +4,23 @@ export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
+    try {
+      const storedUser = localStorage.getItem("user");
+      if (!storedUser) return null;
+      const parsed = JSON.parse(storedUser);
+      // reject anything that isn't a real JWT (dev bypass tokens, stale test data)
+      if (!parsed?.token?.startsWith("eyJ")) {
+        localStorage.removeItem("user");
+        localStorage.removeItem("chitospare_token");
+        return null;
+      }
+      return parsed;
+    } catch {
+      return null;
+    }
   });
 
-  if (!localStorage.getItem("chitospare_token")) {
-    localStorage.setItem("chitospare_token", "dev-bypass-token");
-  }
-  const isAuthenticated = Boolean(user);
+  const isAuthenticated = Boolean(user) && Boolean(localStorage.getItem("chitospare_token"));
 
   const value = useMemo(
     () => ({
@@ -19,6 +28,9 @@ export function AuthProvider({ children }) {
       isAuthenticated,
       login: (nextUser) => {
         localStorage.setItem("user", JSON.stringify(nextUser));
+        if (nextUser?.token) {
+          localStorage.setItem("chitospare_token", nextUser.token);
+        }
         setUser(nextUser);
       },
       logout: () => {
