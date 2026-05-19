@@ -8,10 +8,7 @@ export function AuthProvider({ children }) {
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
-  if (!localStorage.getItem("chitospare_token")) {
-    localStorage.setItem("chitospare_token", "dev-bypass-token");
-  }
-  const isAuthenticated = Boolean(user);
+  const isAuthenticated = Boolean(user) && Boolean(localStorage.getItem("chitospare_token"));
 
   const value = useMemo(
     () => ({

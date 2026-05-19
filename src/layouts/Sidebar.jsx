@@ -11,8 +11,6 @@ const NAV_ITEMS = [
   { to: "/admin/finance/reports", label: "Financial Reports", icon: "FR" },
   { to: "/admin/finance/low-stock", label: "Low Stock Alerts", icon: "LS" },
   { to: "/admin/reminders", label: "Credit Reminders", icon: "CR" },
-  { to: "/customers",     label: "Customers",        icon: "👤" },
-  { to: "/register-customer", label: "Registration", icon: "➕" },
 ];
 
 export default function Sidebar() {

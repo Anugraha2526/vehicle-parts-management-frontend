@@ -4,6 +4,7 @@ import StaffLayout from "../layouts/StaffLayout";
 import CustomerLayout from "../layouts/CustomerLayout";
 import ProtectedRoute from "../routes/ProtectedRoute";
 import RoleBasedRoute from "../routes/RoleBasedRoute";
+import MainLayout from "../layouts/MainLayout";
 import LandingPage from "../features/landing/LandingPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import AdminDashboardPage from "../features/admin-core/pages/AdminDashboardPage";
@@ -24,17 +25,21 @@ import CustomerProfile from "../pages/CustomerProfile";
 import CustomersPage from "../pages/CustomersPage";
 import CustomerDetails from "../pages/CustomerDetails";
 import RegisterCustomer from "../pages/RegisterCustomer";
+import { useAuth } from "../hooks/useAuth";
 
 export function AppRouter() {
+  const { user } = useAuth();
+  const isAuthenticated = Boolean(user);
   return (
     <Routes>
       {/* public entry points */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<PublicRegister />} />
-      <Route path="/my-profile/:id" element={<CustomerProfile />} />
 
       <Route element={<ProtectedRoute />}>
+        <Route path="/my-profile/:id" element={<CustomerProfile />} />
+
         <Route
           path="/admin"
           element={
@@ -74,6 +79,13 @@ export function AppRouter() {
 
         <Route path="/portal" element={<CustomerLayout />}>
           <Route index element={<CustomerHomePage />} />
+        </Route>
+
+        {/* staff-facing customer management pages, require login */}
+        <Route element={<MainLayout />}>
+          <Route path="customers" element={<CustomersPage />} />
+          <Route path="customers/:id" element={<CustomerDetails />} />
+          <Route path="register-customer" element={<RegisterCustomer />} />
         </Route>
       </Route>
 
