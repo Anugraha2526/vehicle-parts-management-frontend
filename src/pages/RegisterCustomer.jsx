@@ -13,16 +13,104 @@ const RegisterCustomer = () => {
     vehicleNumber: '',
     make: '',
     model: '',
-    year: new Date().getFullYear()
+    year: 2024
   });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const tempErrors = {};
+    
+    // Full Name
+    const nameParts = (formData.fullName || '').trim().split(/\s+/);
+    if (!formData.fullName || formData.fullName.trim() === '') {
+      tempErrors.fullName = "Full Name is required.";
+    } else if (nameParts.length < 2) {
+      tempErrors.fullName = "Full Name must contain at least two words (First and Last Name).";
+    } else if (nameParts.some(part => !/^[a-zA-Z]+$/.test(part))) {
+      tempErrors.fullName = "Full Name can only contain letters.";
+    } else if (nameParts[0].length < 3 || nameParts[1].length < 3) {
+      tempErrors.fullName = "Both First and Last Name must be at least 3 letters long.";
+    }
+    
+    // Email
+    if (!formData.email) {
+      tempErrors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      tempErrors.email = "Email address is invalid.";
+    }
+    
+    // Phone Number
+    if (!formData.phoneNumber) {
+      tempErrors.phoneNumber = "Phone Number is required.";
+    } else if (!/^\d+$/.test(formData.phoneNumber)) {
+      tempErrors.phoneNumber = "Phone Number must contain only numeric digits.";
+    } else if (formData.phoneNumber.length !== 10) {
+      tempErrors.phoneNumber = "Phone Number must be exactly 10 digits.";
+    }
+    
+    // Password
+    if (!formData.password) {
+      tempErrors.password = "Initial Password is required.";
+    } else if (formData.password.length < 6) {
+      tempErrors.password = "Password must be at least 6 characters.";
+    } else if (!/(?=.*[a-z])/.test(formData.password)) {
+      tempErrors.password = "Password must contain at least one lowercase letter.";
+    } else if (!/(?=.*[A-Z])/.test(formData.password)) {
+      tempErrors.password = "Password must contain at least one uppercase letter.";
+    } else if (!/(?=.*\d)/.test(formData.password)) {
+      tempErrors.password = "Password must contain at least one number.";
+    } else if (!/(?=.*[@$!%*?&#])/.test(formData.password)) {
+      tempErrors.password = "Password must contain at least one special character (e.g. @, $, !, %, *, ?, &, #).";
+    }
+    
+    // Address
+    if (!formData.address || formData.address.trim().length < 5) {
+      tempErrors.address = "Address must be at least 5 characters.";
+    }
+    
+    // Vehicle Number
+    if (!formData.vehicleNumber || formData.vehicleNumber.trim().length < 3) {
+      tempErrors.vehicleNumber = "Vehicle number must be at least 3 characters.";
+    } else if (!/^[a-zA-Z0-9\s-]+$/.test(formData.vehicleNumber)) {
+      tempErrors.vehicleNumber = "Invalid format. Only alphanumeric characters, spaces, and hyphens.";
+    }
+    
+    // Make
+    if (!formData.make || formData.make.trim().length < 2) {
+      tempErrors.make = "Company/Make is required (min 2 chars).";
+    }
+    
+    // Model
+    if (!formData.model || formData.model.trim().length < 2) {
+      tempErrors.model = "Model is required (min 2 chars).";
+    }
+    
+    // Year
+    const currentYear = new Date().getFullYear();
+    if (!formData.year) {
+      tempErrors.year = "Year is required.";
+    } else if (!/^\d+$/.test(formData.year.toString())) {
+      tempErrors.year = "Year must contain only digits.";
+    } else if (formData.year < 1886 || formData.year > currentYear + 1) {
+      tempErrors.year = `Year must be between 1886 and ${currentYear + 1}.`;
+    }
+    
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     try {
       await api.post('/auth/register', { ...formData, role: 'Customer' });
       alert('Customer registered successfully');
@@ -44,23 +132,28 @@ const RegisterCustomer = () => {
         <div className="cs-form-grid">
           <div className="cs-field">
             <label>Full Name</label>
-            <input type="text" name="fullName" className="cs-input" required onChange={handleChange} />
+            <input type="text" name="fullName" className="cs-input" style={{ borderColor: errors.fullName ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
+            {errors.fullName && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.fullName}</span>}
           </div>
           <div className="cs-field">
             <label>Phone Number</label>
-            <input type="text" name="phoneNumber" className="cs-input" required onChange={handleChange} />
+            <input type="text" name="phoneNumber" className="cs-input" style={{ borderColor: errors.phoneNumber ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
+            {errors.phoneNumber && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.phoneNumber}</span>}
           </div>
           <div className="cs-field">
             <label>Email Address</label>
-            <input type="email" name="email" className="cs-input" required onChange={handleChange} />
+            <input type="email" name="email" className="cs-input" style={{ borderColor: errors.email ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
+            {errors.email && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.email}</span>}
           </div>
           <div className="cs-field">
             <label>Address</label>
-            <input type="text" name="address" className="cs-input" required onChange={handleChange} />
+            <input type="text" name="address" className="cs-input" style={{ borderColor: errors.address ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
+            {errors.address && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.address}</span>}
           </div>
           <div className="cs-field">
             <label>Initial Password</label>
-            <input type="password" name="password" className="cs-input" required onChange={handleChange} />
+            <input type="password" name="password" className="cs-input" style={{ borderColor: errors.password ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
+            {errors.password && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.password}</span>}
           </div>
         </div>
 
@@ -68,19 +161,23 @@ const RegisterCustomer = () => {
         <div className="cs-form-grid">
           <div className="cs-field">
             <label>Vehicle Number</label>
-            <input type="text" name="vehicleNumber" className="cs-input" placeholder="e.g. BA-1-PA-1234" required onChange={handleChange} />
+            <input type="text" name="vehicleNumber" className="cs-input" placeholder="e.g. BA-1-PA-1234" style={{ borderColor: errors.vehicleNumber ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
+            {errors.vehicleNumber && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.vehicleNumber}</span>}
           </div>
           <div className="cs-field">
             <label>Company</label>
-            <input type="text" name="make" className="cs-input" placeholder="e.g. Honda" required onChange={handleChange} />
+            <input type="text" name="make" className="cs-input" placeholder="e.g. Honda" style={{ borderColor: errors.make ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
+            {errors.make && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.make}</span>}
           </div>
           <div className="cs-field">
             <label>Model</label>
-            <input type="text" name="model" className="cs-input" required onChange={handleChange} />
+            <input type="text" name="model" className="cs-input" style={{ borderColor: errors.model ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
+            {errors.model && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.model}</span>}
           </div>
           <div className="cs-field">
             <label>Year</label>
-            <input type="number" name="year" className="cs-input" defaultValue={2024} required onChange={handleChange} />
+            <input type="number" name="year" className="cs-input" defaultValue={2024} style={{ borderColor: errors.year ? 'var(--err)' : 'var(--line)' }} required onChange={handleChange} />
+            {errors.year && <span style={{ color: 'var(--err)', fontSize: '12px', marginTop: '2px' }}>⚠️ {errors.year}</span>}
           </div>
         </div>
 
