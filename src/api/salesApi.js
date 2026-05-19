@@ -1,19 +1,17 @@
-import axios from 'axios';
-
-const API_BASE_URL = 'https://localhost:7294/api';
+import axiosClient from './axiosClient';
 
 export const createSalesInvoice = async (invoiceData) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/Sales/invoice`, invoiceData);
+    const response = await axiosClient.post('/api/Sales/invoice', invoiceData);
     return response.data;
   } catch (error) {
-    throw error.response?.data?.message || 'Failed to create sales invoice';
+    throw error.response?.data?.message || error.response?.data?.errors || 'Failed to create sales invoice';
   }
 };
 
 export const getRecentInvoices = async (limit = 10) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/Sales/invoice?limit=${limit}`);
+    const response = await axiosClient.get(`/api/Sales/invoice?limit=${limit}`);
     return response.data;
   } catch (error) {
     throw error.response?.data?.message || 'Failed to fetch invoices';
@@ -22,7 +20,7 @@ export const getRecentInvoices = async (limit = 10) => {
 
 export const getOverdueInvoices = async (months = 1) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/Sales/invoice/overdue?months=${months}`);
+    const response = await axiosClient.get(`/api/Sales/invoice/overdue?months=${months}`);
     return response.data;
   } catch (error) {
     throw error.response?.data?.message || 'Failed to fetch overdue invoices';
@@ -31,7 +29,7 @@ export const getOverdueInvoices = async (months = 1) => {
 
 export const sendBulkReminders = async (months = 1) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/Sales/invoice/remind-overdue?months=${months}`);
+    const response = await axiosClient.post(`/api/Sales/invoice/remind-overdue?months=${months}`);
     return response.data;
   } catch (error) {
     throw error.response?.data?.message || 'Failed to send bulk reminders';
@@ -40,7 +38,7 @@ export const sendBulkReminders = async (months = 1) => {
 
 export const sendSingleReminder = async (invoiceId) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/Sales/invoice/${invoiceId}/remind`);
+    const response = await axiosClient.post(`/api/Sales/invoice/${invoiceId}/remind`);
     return response.data;
   } catch (error) {
     throw error.response?.data?.message || 'Failed to send reminder';
@@ -49,16 +47,25 @@ export const sendSingleReminder = async (invoiceId) => {
 
 export const markInvoiceAsPaid = async (invoiceId) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/Sales/invoice/${invoiceId}/mark-paid`);
+    const response = await axiosClient.post(`/api/Sales/invoice/${invoiceId}/mark-paid`);
     return response.data;
   } catch (error) {
     throw error.response?.data?.message || 'Failed to mark invoice as paid';
   }
 };
 
+export const markInvoiceAsUnpaid = async (invoiceId) => {
+  try {
+    const response = await axiosClient.post(`/api/Sales/invoice/${invoiceId}/mark-unpaid`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data?.message || 'Failed to mark invoice as unpaid';
+  }
+};
+
 export const sendInvoiceEmail = async (invoiceId) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/Sales/invoice/${invoiceId}/email`);
+    const response = await axiosClient.post(`/api/Sales/invoice/${invoiceId}/email`);
     return response.data;
   } catch (error) {
     throw error.response?.data?.message || 'Failed to send email';
