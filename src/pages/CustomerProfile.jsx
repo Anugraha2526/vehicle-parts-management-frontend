@@ -29,6 +29,11 @@ const CustomerProfile = () => {
       });
     } catch (error) {
       console.error('Error fetching profile:', error);
+      if (error.message.includes('401') || error.message.includes('403')) {
+        setErrors({ auth: "You are not authorized to view this profile. Please login as the correct customer account." });
+      } else {
+        setErrors({ fetch: "Could not load profile. Please try again later." });
+      }
     } finally {
       setLoading(false);
     }
@@ -189,9 +194,7 @@ const CustomerProfile = () => {
       }
 
       alert('Your profile and vehicle details have been updated successfully!');
-      setIsEditing(false);
-      setDeletedVehicleIds([]);
-      fetchDetails();
+      window.location.reload();
     } catch (error) {
       alert('Failed to update profile or vehicle details: ' + error.message);
     }
@@ -241,6 +244,8 @@ const CustomerProfile = () => {
   };
 
   if (loading) return <div style={{ padding: '40px', textAlign: 'center', color: 'var(--ink-500)' }}>Loading your profile...</div>;
+  if (errors.auth) return <div style={{ padding: '40px', textAlign: 'center', color: 'var(--err)' }}>{errors.auth} <br/><button onClick={() => navigate('/login')} className="cs-button cs-button--ghost" style={{ marginTop: '10px' }}>Go to Login</button></div>;
+  if (errors.fetch) return <div style={{ padding: '40px', textAlign: 'center', color: 'var(--err)' }}>{errors.fetch}</div>;
   if (!customer) return <div style={{ padding: '40px', textAlign: 'center', color: 'var(--err)' }}>Profile not found.</div>;
 
   return (
