@@ -5,7 +5,7 @@ import Button from "../../../components/common/Button";
 import { formatDate } from "../../../utils/formatDate";
 import "./StaffTable.css";
 
-const ROLE_BADGE = { 1: "admin", 2: "staff", 3: "customer" };
+const ROLE_BADGE = { Admin: "admin", Staff: "staff", Customer: "customer" };
 
 export default function StaffTable({
   staff,
@@ -56,7 +56,7 @@ export default function StaffTable({
         ),
       },
       {
-        key: "createdAt",
+        key: "createdAtUtc",
         label: "Created",
         render: (value) => (
           <span className="staff-table-date">{formatDate(value)}</span>
