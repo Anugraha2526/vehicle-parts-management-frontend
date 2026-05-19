@@ -3,6 +3,7 @@ import { useParts } from "../hooks/useParts";
 import { vendorsForPartsApi } from "../../../api/vendorsForPartsApi";
 import PartTable from "../components/PartTable";
 import PartForm from "../components/PartForm";
+import PartRequestsPanel from "../components/PartRequestsPanel";
 import Modal from "../../../components/common/Modal";
 import Button from "../../../components/common/Button";
 import "./PartsPage.css";
@@ -140,6 +141,8 @@ export default function PartsPage() {
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
+
+      <PartRequestsPanel />
 
       <Modal
         isOpen={modalOpen}

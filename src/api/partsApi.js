@@ -1,6 +1,6 @@
 import axiosClient from "./axiosClient";
 
-// all parts api calls go through this module
+// all parts and part-request api calls go through this module
 export const partsApi = {
   // used by finance and sales modules
   list: () => axiosClient.get("/api/Parts"),
@@ -22,4 +22,11 @@ export const partsApi = {
 
   // delete part
   delete: (id) => axiosClient.delete(`/api/Parts/${id}`),
+};
+
+// admin endpoints for managing customer part requests
+export const adminPartRequestsApi = {
+  getAll: () => axiosClient.get("/api/AdminPartRequests"),
+  approve: (id) => axiosClient.patch(`/api/AdminPartRequests/${id}/approve`),
+  reject: (id) => axiosClient.patch(`/api/AdminPartRequests/${id}/reject`),
 };
