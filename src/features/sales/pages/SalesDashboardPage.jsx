@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import CreateInvoiceModule from '../components/CreateInvoiceModule';
-import { getRecentInvoices, sendInvoiceEmail } from '../../../api/salesApi';
+import { getRecentInvoices, sendInvoiceEmail, markInvoiceAsPaid, markInvoiceAsUnpaid } from '../../../api/salesApi';
 import Table from '../../../components/common/Table';
 import Button from '../../../components/common/Button';
 import '../../admin-core/pages/VendorPage.css';
@@ -35,6 +35,28 @@ export default function SalesDashboardPage() {
     }
   };
 
+  const handleMarkAsPaid = async (invoiceId) => {
+    try {
+      setLastResponse({ message: 'Marking as paid...', type: 'info' });
+      const res = await markInvoiceAsPaid(invoiceId);
+      setLastResponse({ message: res.message || 'Invoice marked as paid!', type: 'success' });
+      fetchInvoices();
+    } catch (e) {
+      setLastResponse({ message: e || 'Failed to mark as paid.', type: 'error' });
+    }
+  };
+
+  const handleMarkAsUnpaid = async (invoiceId) => {
+    try {
+      setLastResponse({ message: 'Marking as unpaid...', type: 'info' });
+      const res = await markInvoiceAsUnpaid(invoiceId);
+      setLastResponse({ message: res.message || 'Invoice marked as unpaid!', type: 'success' });
+      fetchInvoices();
+    } catch (e) {
+      setLastResponse({ message: e || 'Failed to mark as unpaid.', type: 'error' });
+    }
+  };
+
   useEffect(() => {
     fetchInvoices();
   }, []);
@@ -45,7 +67,7 @@ export default function SalesDashboardPage() {
     fetchInvoices();
   };
 
-  const columns = useMemo(() => [
+  const columns = [
     {
       key: "invoiceNumber",
       label: "INVOICE #",
@@ -78,12 +100,23 @@ export default function SalesDashboardPage() {
       key: "actions",
       label: "ACTIONS",
       render: (_, inv) => (
-        <Button variant="secondary" size="sm" onClick={() => handleSendEmail(inv.invoiceId)}>
-          Email
-        </Button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <Button variant="secondary" size="sm" onClick={() => handleSendEmail(inv.invoiceId)}>
+            Send Email
+          </Button>
+          {!inv.isPaid ? (
+            <Button variant="primary" size="sm" onClick={() => handleMarkAsPaid(inv.invoiceId)}>
+              Mark as Paid
+            </Button>
+          ) : (
+            <Button variant="outline" size="sm" onClick={() => handleMarkAsUnpaid(inv.invoiceId)}>
+              Mark as Unpaid
+            </Button>
+          )}
+        </div>
       )
     }
-  ], []);
+  ];
 
   return (
     <div className="vendor-page">
@@ -123,7 +156,6 @@ export default function SalesDashboardPage() {
         <div className="cs-card">
           <div className="vendor-page-header" style={{ marginBottom: '16px' }}>
             <h2 className="vendor-page-title" style={{ fontSize: '18px' }}>Recent Invoices</h2>
-            <Button variant="secondary" size="sm">Export</Button>
           </div>
           
           <Table 
