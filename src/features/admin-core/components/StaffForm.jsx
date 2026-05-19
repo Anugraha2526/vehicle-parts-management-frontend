@@ -13,6 +13,8 @@ const EMPTY_FIELDS = {
   fullName: "",
   email: "",
   password: "",
+  phoneNumber: "",
+  address: "",
   role: "",
   isActive: true,
 };
@@ -48,7 +50,19 @@ function validate(fields, isEditMode) {
     }
   }
 
-  if (!fields.role) {
+  if (fields.phoneNumber.trim()) {
+    const digits = fields.phoneNumber.replace(/[\s\-().+]/g, "");
+    if (!/^\d+$/.test(digits) || digits.length !== 10) {
+      errors.phoneNumber = "Phone number must be exactly 10 digits (e.g. 9841000000).";
+    }
+  }
+
+  if (fields.address.trim() && fields.address.trim().length < 5) {
+    errors.address = "Address must be at least 5 characters if provided (e.g. Kathmandu, Nepal).";
+  }
+
+  // role is only required when editing (to allow promotion/demotion)
+  if (isEditMode && !fields.role) {
     errors.role = "Please select a role for this staff member.";
   }
 
@@ -67,6 +81,8 @@ export default function StaffForm({ initialData, onSubmit, onCancel, loading, su
         fullName: initialData.fullName ?? "",
         email: initialData.email ?? "",
         password: "",
+        phoneNumber: initialData.phoneNumber ?? "",
+        address: initialData.address ?? "",
         role: initialData.role ?? "",
         isActive: initialData.isActive ?? true,
       });
@@ -96,11 +112,14 @@ export default function StaffForm({ initialData, onSubmit, onCancel, loading, su
     const payload = {
       fullName: fields.fullName.trim(),
       email: fields.email.trim(),
-      role: Number(fields.role),
-      isActive: fields.isActive,
+      phoneNumber: fields.phoneNumber.trim() || null,
+      address: fields.address.trim() || null,
     };
-    if (fields.password) {
-      payload.password = fields.password;
+
+    if (fields.password) payload.password = fields.password;
+    if (isEditMode) {
+      payload.role = Number(fields.role);
+      payload.isActive = fields.isActive;
     }
 
     onSubmit(payload);
@@ -133,7 +152,7 @@ export default function StaffForm({ initialData, onSubmit, onCancel, loading, su
           placeholder="e.g. aarav@chitospare.com"
           required
         />
-        {/* password field is optional on edit mode */}
+        {/* password is optional on edit, required on add */}
         <Input
           label={isEditMode ? "New Password (optional)" : "Password"}
           name="password"
@@ -144,16 +163,38 @@ export default function StaffForm({ initialData, onSubmit, onCancel, loading, su
           placeholder={isEditMode ? "Leave blank to keep current" : "Min. 8 characters"}
           required={!isEditMode}
         />
-        <Select
-          label="Role"
-          name="role"
-          value={fields.role}
+        <Input
+          label="Phone Number (optional)"
+          name="phoneNumber"
+          type="tel"
+          value={fields.phoneNumber}
           onChange={handleChange}
-          options={ROLE_OPTIONS}
-          error={errors.role}
-          required
+          error={errors.phoneNumber}
+          placeholder="e.g. 9841000000"
+          maxLength={20}
         />
-        {/* only show active toggle when editing an existing staff member */}
+        <Input
+          label="Address (optional)"
+          name="address"
+          value={fields.address}
+          onChange={handleChange}
+          error={errors.address}
+          placeholder="e.g. Kathmandu, Nepal"
+          maxLength={300}
+        />
+        {/* role selector only shown in edit mode for promoting or demoting staff */}
+        {isEditMode && (
+          <Select
+            label="Role"
+            name="role"
+            value={fields.role}
+            onChange={handleChange}
+            options={ROLE_OPTIONS}
+            error={errors.role}
+            required
+          />
+        )}
+        {/* active toggle only shown when editing an existing staff member */}
         {isEditMode && (
           <div className="staff-form-toggle">
             <label className="staff-form-toggle-label">
