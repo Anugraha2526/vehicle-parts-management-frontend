@@ -169,6 +169,20 @@ export function usePurchases() {
     void loadReferences();
   }, [loadReferences]);
 
+  useEffect(() => {
+    if (!successMessage) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setSuccessMessage("");
+    }, 3200);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [successMessage]);
+
   const updateItem = useCallback((rowKey, field, value) => {
     setItems((previousItems) =>
       previousItems.map((item) => {
@@ -234,10 +248,23 @@ export function usePurchases() {
         return;
       }
 
+      if (vendors.length > 0 && !vendors.some((vendor) => vendor.id === vendorId)) {
+        setFormError("Selected vendor is no longer available. Refresh references and try again.");
+        return;
+      }
+
       const cleanedItems = items.map(cleanInvoiceItem);
 
       if (cleanedItems.some((item) => !item.partId)) {
         setFormError("Each row requires a valid part id.");
+        return;
+      }
+
+      if (
+        parts.length > 0 &&
+        cleanedItems.some((item) => !parts.some((part) => part.id === item.partId))
+      ) {
+        setFormError("One or more selected parts are invalid. Refresh references and try again.");
         return;
       }
 
@@ -274,7 +301,7 @@ export function usePurchases() {
         setIsSubmitting(false);
       }
     },
-    [items, purchasedAtLocal, vendorId]
+    [items, parts, purchasedAtLocal, vendorId, vendors]
   );
 
   return {
