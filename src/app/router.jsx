@@ -2,7 +2,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import AdminLayout from "../layouts/AdminLayout";
 import StaffLayout from "../layouts/StaffLayout";
 import CustomerLayout from "../layouts/CustomerLayout";
-import MainLayout from "../layouts/MainLayout";
 import ProtectedRoute from "../routes/ProtectedRoute";
 import RoleBasedRoute from "../routes/RoleBasedRoute";
 import LandingPage from "../features/landing/LandingPage";
@@ -35,13 +34,6 @@ export function AppRouter() {
       <Route path="/signup" element={<PublicRegister />} />
       <Route path="/my-profile/:id" element={<CustomerProfile />} />
 
-      {/* pathless layout wraps the staff-facing customer management pages */}
-      <Route element={<MainLayout />}>
-        <Route path="customers" element={<CustomersPage />} />
-        <Route path="customers/:id" element={<CustomerDetails />} />
-        <Route path="register-customer" element={<RegisterCustomer />} />
-      </Route>
-
       <Route element={<ProtectedRoute />}>
         <Route
           path="/admin"
@@ -61,14 +53,23 @@ export function AppRouter() {
           <Route path="reminders" element={<OverdueRemindersPage />} />
         </Route>
 
-        <Route path="/staff" element={<StaffLayout />}>
+        <Route
+          path="/staff"
+          element={
+            <RoleBasedRoute allowedRoles={["Staff", "Admin"]}>
+              <StaffLayout />
+            </RoleBasedRoute>
+          }
+        >
           <Route index element={<StaffDashboardPage />} />
           <Route path="finance" element={<PurchaseInvoicePage />} />
           <Route path="finance/reports" element={<FinancialReportsPage />} />
           <Route path="finance/low-stock" element={<LowStockAlertsPage />} />
           <Route path="sales" element={<SalesDashboardPage />} />
-          <Route path="reminders" element={<OverdueRemindersPage />} />
           <Route path="crm" element={<CustomerListPage />} />
+          <Route path="customers" element={<CustomersPage />} />
+          <Route path="customers/:id" element={<CustomerDetails />} />
+          <Route path="customers/register" element={<RegisterCustomer />} />
         </Route>
 
         <Route path="/portal" element={<CustomerLayout />}>

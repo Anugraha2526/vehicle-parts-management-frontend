@@ -4,10 +4,8 @@ import "./Sidebar.css"; // Reuse existing Sidebar styling
 
 const NAV_ITEMS = [
   { to: "/staff", label: "Dashboard", icon: "DB", end: true },
-  { to: "/staff/sales", label: "Sales & Invoices", icon: "SD" },
-  { to: "/customers", label: "Customers & Search", icon: "👥" },
-  { to: "/register-customer", label: "Register Customer", icon: "➕" },
-  { to: "/staff/reminders", label: "Pending Credits", icon: "CR" },
+  { to: "/staff/sales", label: "Sales and Invoices", icon: "SD" },
+  { to: "/staff/customers", label: "Customer Management", icon: "CM" },
   { to: "/staff/finance/reports", label: "Reports", icon: "FR" },
 ];
 

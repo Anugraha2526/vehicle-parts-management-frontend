@@ -16,13 +16,21 @@ axiosClient.interceptors.request.use((config) => {
   return config;
 });
 
-// redirect to login when token expires or is invalid
+// redirect to login when token expires during a user action (mutation)
+// For GET data-loading requests (parts list, customers list, etc.), let the  
+// component's own catch block handle the error and show a message instead of
+// silently bouncing the user to the login page.
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem("chitospare_token");
-      window.location.href = "/login";
+      const method = error.config?.method?.toLowerCase();
+      if (method !== 'get') {
+        // session expired during a real user action — redirect to login
+        localStorage.removeItem("chitospare_token");
+        window.location.href = "/login";
+      }
+      // for GET 401s — just reject the promise, let the component show an error
     }
     return Promise.reject(error);
   }

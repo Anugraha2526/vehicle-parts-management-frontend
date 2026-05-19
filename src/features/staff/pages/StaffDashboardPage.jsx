@@ -33,32 +33,32 @@ export default function StaffDashboardPage() {
   }, []);
 
   return (
-    <div className="admin-dashboard" style={{ padding: '24px' }}>
+    <div className="admin-dashboard">
       <div className="admin-dashboard-header">
-        <h1 className="admin-dashboard-title" style={{ marginBottom: '8px', fontSize: '28px', fontWeight: 700 }}>Staff Dashboard</h1>
-        <p className="admin-dashboard-subtitle" style={{ color: 'var(--text-secondary)', marginBottom: '32px' }}>
+        <h1 className="admin-dashboard-title">Staff Dashboard</h1>
+        <p className="admin-dashboard-subtitle">
           Overview of key metrics and recent sales activity.
         </p>
       </div>
       
       {/* Quick Action Links */}
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '32px' }}>
-        <Link to="/staff/sales" className="cs-button cs-button--primary">🛒 Quick Sale</Link>
-        <Link to="/register-customer" className="cs-button cs-button--secondary">➕ Register Customer</Link>
+      <div style={{ display: 'flex', gap: '12px' }}>
+        <Link to="/staff/sales" className="btn btn-primary btn-md">🛒 Quick Sale</Link>
+        <Link to="/staff/customers/register" className="btn btn-secondary btn-md">➕ Register Customer</Link>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '32px' }}>
-        <div className="admin-dashboard-card" style={{ padding: '20px', backgroundColor: 'var(--card)', borderRadius: '8px', border: '1px solid var(--border)' }}>
-          <div className="admin-dashboard-card-label" style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>👥 Total Customers</div>
-          <div style={{ fontSize: '32px', fontWeight: 700, marginTop: '8px' }}>{stats?.totalCustomers || 0}</div>
+      <div className="admin-dashboard-grid">
+        <div className="admin-dashboard-card">
+          <div className="admin-dashboard-card-label">👥 Total Customers</div>
+          <p style={{ fontSize: '24px', fontWeight: 700, margin: '8px 0 0 0', color: 'var(--ink-900)' }}>{stats?.totalCustomers || 0}</p>
         </div>
-        <div className="admin-dashboard-card" style={{ padding: '20px', backgroundColor: 'var(--card)', borderRadius: '8px', border: '1px solid var(--border)' }}>
-          <div className="admin-dashboard-card-label" style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>🚗 Total Vehicles</div>
-          <div style={{ fontSize: '32px', fontWeight: 700, marginTop: '8px' }}>{stats?.totalVehicles || 0}</div>
+        <div className="admin-dashboard-card">
+          <div className="admin-dashboard-card-label">🚗 Total Vehicles</div>
+          <p style={{ fontSize: '24px', fontWeight: 700, margin: '8px 0 0 0', color: 'var(--ink-900)' }}>{stats?.totalVehicles || 0}</p>
         </div>
-        <div className="admin-dashboard-card" style={{ padding: '20px', backgroundColor: 'var(--card)', borderRadius: '8px', border: '1px solid var(--border)' }}>
-          <div className="admin-dashboard-card-label" style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>📜 Sales Invoices</div>
-          <div style={{ fontSize: '32px', fontWeight: 700, marginTop: '8px' }}>{stats?.totalSalesInvoices || 0}</div>
+        <div className="admin-dashboard-card">
+          <div className="admin-dashboard-card-label">📜 Sales Invoices</div>
+          <p style={{ fontSize: '24px', fontWeight: 700, margin: '8px 0 0 0', color: 'var(--ink-900)' }}>{stats?.totalSalesInvoices || 0}</p>
         </div>
       </div>
 
