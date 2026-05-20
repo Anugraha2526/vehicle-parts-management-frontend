@@ -107,7 +107,7 @@ export default function SalesDashboardPage() {
       key: "actions",
       label: "ACTIONS",
       render: (_, inv) => (
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: '8px' }} onClick={e => e.stopPropagation()}>
           <Button variant="secondary" size="sm" onClick={() => handleSendEmail(inv.invoiceId)}>
             Send Email
           </Button>
