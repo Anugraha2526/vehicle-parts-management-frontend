@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import CreateInvoiceModule from '../components/CreateInvoiceModule';
+import InvoiceDetailModal from '../components/InvoiceDetailModal';
 import { getRecentInvoices, sendInvoiceEmail, markInvoiceAsPaid, markInvoiceAsUnpaid } from '../../../api/salesApi';
 import Table from '../../../components/common/Table';
 import Button from '../../../components/common/Button';
@@ -10,6 +11,7 @@ export default function SalesDashboardPage() {
   const [lastResponse, setLastResponse] = useState(null);
   const [invoices, setInvoices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
 
   const fetchInvoices = async () => {
     setIsLoading(true);
@@ -83,6 +85,11 @@ export default function SalesDashboardPage() {
       label: "CUSTOMER"
     },
     {
+      key: "staffName",
+      label: "REPRESENTATIVE",
+      render: (val) => val || 'N/A'
+    },
+    {
       key: "status",
       label: "STATUS",
       render: (_, inv) => inv.isPaid ? (
@@ -122,7 +129,7 @@ export default function SalesDashboardPage() {
     <div className="vendor-page">
       <div className="vendor-page-header">
         <div>
-          <h1 className="vendor-page-title">Sales and Invoices</h1>
+          <h1 className="vendor-page-title">Sales Invoices</h1>
           <p className="vendor-page-subtitle">Manage customer orders, process sales, and generate invoices.</p>
         </div>
         <div>
@@ -163,8 +170,16 @@ export default function SalesDashboardPage() {
             data={invoices} 
             loading={isLoading} 
             emptyMessage="No recent invoices. Click '+ New invoice' to get started." 
+            onRowClick={setSelectedInvoice}
           />
         </div>
+      )}
+
+      {selectedInvoice && (
+        <InvoiceDetailModal 
+          invoice={selectedInvoice} 
+          onClose={() => setSelectedInvoice(null)} 
+        />
       )}
     </div>
   );
