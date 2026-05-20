@@ -29,6 +29,10 @@
   transition: background 0.12s;
 }
 
+.table-row--clickable {
+  cursor: pointer;
+}
+
 .table-row:last-child {
   border-bottom: none;
 }

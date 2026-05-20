@@ -5,6 +5,7 @@ export default function Table({
   data,
   loading = false,
   emptyMessage = "No records found.",
+  onRowClick = null,
 }) {
   return (
     <div className="table-wrapper">
@@ -33,7 +34,11 @@ export default function Table({
             </tr>
           ) : (
             data.map((row, rowIndex) => (
-              <tr key={row.id ?? rowIndex} className="table-row">
+              <tr 
+                key={row.id ?? rowIndex} 
+                className={`table-row ${onRowClick ? 'table-row--clickable' : ''}`}
+                onClick={() => onRowClick && onRowClick(row)}
+              >
                 {columns.map((col) => (
                   <td key={col.key} className="table-td">
                     {col.render

@@ -34,7 +34,9 @@ export default function CreateInvoiceModule({ onSuccess, onCancel }) {
           ? (Array.isArray(partsResult.value) ? partsResult.value : (partsResult.value?.data || [])) : [];
 
         const cData = Array.isArray(rawCust) ? rawCust : [];
-        const sData = Array.isArray(rawStaff) ? rawStaff : [];
+        const sData = Array.isArray(rawStaff) 
+          ? rawStaff.filter(s => (s.role || s.Role) === 'Staff') 
+          : [];
         const pData = Array.isArray(rawParts) ? rawParts : [];
 
         setCustomers(cData);
